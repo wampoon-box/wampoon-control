@@ -47,11 +47,6 @@ namespace PwampConsole.Controllers
         protected abstract string GetRestartArguments();
 
         /// <summary>
-        /// Updates the server configuration for the current directory
-        /// </summary>
-        public abstract bool UpdateConfiguration();
-
-        /// <summary>
         /// Start the server with the specified configuration
         /// </summary>
         public virtual bool StartServer()

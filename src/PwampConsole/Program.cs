@@ -39,7 +39,6 @@ namespace PwampConsole
                     case '1':
                         using (var apache = ServerManagerFactory.CreateManager(ServerManagerFactory.ServerType.Apache))
                         {
-                            apache.UpdateConfiguration();
                             apache.StartServer();
                             Console.WriteLine("Press Enter to stop Apache and exit.");
                             Console.ReadLine();
@@ -49,7 +48,6 @@ namespace PwampConsole
                     case '2':
                         using (var mysql = (MySqlManager)ServerManagerFactory.CreateManager(ServerManagerFactory.ServerType.MySQL))
                         {
-                            mysql.UpdateConfiguration();
                             mysql.InitializeDatabase();
                             mysql.StartServer();
                             Console.WriteLine("Press Enter to stop MySQL and exit.");
@@ -61,9 +59,6 @@ namespace PwampConsole
                         using (var apache = ServerManagerFactory.CreateManager(ServerManagerFactory.ServerType.Apache))
                         using (var mysql = (MySqlManager)ServerManagerFactory.CreateManager(ServerManagerFactory.ServerType.MySQL))
                         {
-                            apache.UpdateConfiguration();
-                            mysql.UpdateConfiguration();
-
                             ((MySqlManager)mysql).InitializeDatabase();
 
                             apache.StartServer();
@@ -85,5 +80,4 @@ namespace PwampConsole
             Console.ReadKey();
         }
     }
-}
 }

@@ -6,7 +6,7 @@
 # pwamp apps
 pwamp/
 bck/
-
+src/PwampConsole-stripped
 # User-specific files
 *.rsuser
 *.suo

@@ -28,10 +28,6 @@ namespace PwampConsole.Controllers
         {
             Console.WriteLine("Starting server application...");
 
-            // Update configurations with current paths
-            _apacheManager.UpdateConfiguration();
-            _mysqlManager.UpdateConfiguration();
-
             // Initialize MySQL if needed
             _mysqlManager.InitializeDatabase();
 
