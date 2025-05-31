@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using PwampControl.Helpers;
-using PwampControl.Models;
+using Pwamp.Helpers;
+using Pwamp.Models;
 
-namespace PwampControl.Forms
+namespace Pwamp.Forms
 {
     public partial class SettingsForm : Form
     {
@@ -47,12 +47,12 @@ namespace PwampControl.Forms
             _settings.PhpMyAdminUrl = phpMyAdminUrlTextBox.Text.Trim();
 
             // Save settings
-            if (SettingsManager.SaveSettings(_settings))
-            {
-                MessageBox.Show("Settings saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
-            }
+            //if (SettingsManager.SaveSettings(_settings))
+            //{
+            //    MessageBox.Show("Settings saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    DialogResult = DialogResult.OK;
+            //    Close();
+            //}
         }
 
         private void CancelButton_Click(object sender, EventArgs e)

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PWAMP-Control")]
+[assembly: AssemblyTitle("PwampAdmin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PWAMP-Control")]
-[assembly: AssemblyCopyright("Copyright ©  2025")]
+[assembly: AssemblyProduct("PWAMP Admin")]
+[assembly: AssemblyCopyright("Copyright ©  2025 - frostybee")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.35906.104
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWAMP-Control", "PWAMP-Control\PWAMP-Control.csproj", "{5EE00C4C-1062-4353-8170-E119B1F4F48E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwampConsole", "PwampConsole\PwampConsole.csproj", "{1FEAFD15-1AEC-4FE5-8784-0A5620A03A87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWAMP.Admin", "src\PWAMP.Admin\PWAMP.Admin.csproj", "{5EE00C4C-1062-4353-8170-E119B1F4F48E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{5EE00C4C-1062-4353-8170-E119B1F4F48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EE00C4C-1062-4353-8170-E119B1F4F48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EE00C4C-1062-4353-8170-E119B1F4F48E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FEAFD15-1AEC-4FE5-8784-0A5620A03A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FEAFD15-1AEC-4FE5-8784-0A5620A03A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FEAFD15-1AEC-4FE5-8784-0A5620A03A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FEAFD15-1AEC-4FE5-8784-0A5620A03A87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

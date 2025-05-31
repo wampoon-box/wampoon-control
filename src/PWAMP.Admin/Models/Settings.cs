@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace PwampControl.Models
+namespace Pwamp.Models
 {
     public class Settings
     {

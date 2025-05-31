@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace PwampControl
+namespace Pwamp.Admin
 {
     partial class MainForm
     {
@@ -44,10 +44,6 @@ namespace PwampControl
             apacheStatusLabel = new Label { Location = new Point(85, 30), Size = new Size(100, 20), Text = "Stopped", Font = new Font(this.Font, FontStyle.Bold), ForeColor = Color.Red, TextAlign = ContentAlignment.MiddleLeft };
             startApacheButton = new Button { Location = new Point(195, 25), Size = new Size(80, 30), Text = "Start" };
             stopApacheButton = new Button { Location = new Point(280, 25), Size = new Size(80, 30), Text = "Stop", Enabled = false };
-
-            startApacheButton.Click += StartApacheButton_Click;
-            stopApacheButton.Click += StopApacheButton_Click;
-
             apacheGroupBox.Controls.AddRange(new Control[] { apacheTitleLabel, apacheStatusLabel, startApacheButton, stopApacheButton });
             this.Controls.Add(apacheGroupBox);
 
@@ -58,25 +54,20 @@ namespace PwampControl
             startMysqlButton = new Button { Location = new Point(195, 25), Size = new Size(80, 30), Text = "Start" };
             stopMysqlButton = new Button { Location = new Point(280, 25), Size = new Size(80, 30), Text = "Stop", Enabled = false };
 
-            startMysqlButton.Click += StartMysqlButton_Click;
-            stopMysqlButton.Click += StopMysqlButton_Click;
 
             mysqlGroupBox.Controls.AddRange(new Control[] { mysqlTitleLabel, mysqlStatusLabel, startMysqlButton, stopMysqlButton });
             this.Controls.Add(mysqlGroupBox);
 
             // phpMyAdmin Button
             phpMyAdminButton = new Button { Location = new Point(15, 240), Size = new Size(170, 35), Text = "Open phpMyAdmin" };
-            phpMyAdminButton.Click += PhpMyAdminButton_Click;
             this.Controls.Add(phpMyAdminButton);
 
             // Refresh Button
             refreshStatusButton = new Button { Location = new Point(195, 240), Size = new Size(170, 35), Text = "Refresh Status" };
-            refreshStatusButton.Click += RefreshStatusButton_Click;
             this.Controls.Add(refreshStatusButton);
 
             // Settings Button
             settingsButton = new Button { Location = new Point(15, 285), Size = new Size(370, 35), Text = "Settings" };
-            settingsButton.Click += SettingsButton_Click;
             this.Controls.Add(settingsButton);
 
             // Warning Label

@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace PwampControl.Forms
+namespace Pwamp.Forms
 {
     partial class SettingsForm
     {
