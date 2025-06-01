@@ -27,9 +27,9 @@ namespace Pwamp.Admin
 
         private void LogError(object sender, string message)
         {
-            if (logTextBox.InvokeRequired)
+            if (txtOutputLog.InvokeRequired)
             {
-                logTextBox.Invoke(new Action<string, string>(LogMessage), message);
+                txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
                 return;
             }
 
@@ -42,16 +42,16 @@ namespace Pwamp.Admin
             //else
             //    prefix = "[S]";
 
-            logTextBox.AppendText(message + Environment.NewLine);
-            logTextBox.SelectionStart = logTextBox.Text.Length;
-            logTextBox.ScrollToCaret();
+            txtOutputLog.AppendText(message + Environment.NewLine);
+            txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
+            txtOutputLog.ScrollToCaret();
         }
 
         private void LogMessage(object sender, string message)
         {
-            if (logTextBox.InvokeRequired)
+            if (txtOutputLog.InvokeRequired)
             {
-                logTextBox.Invoke(new Action<string, string>(LogMessage), message);
+                txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
                 return;
             }
 
@@ -64,36 +64,17 @@ namespace Pwamp.Admin
             //else
             //    prefix = "[S]";
 
-            logTextBox.AppendText(message + Environment.NewLine);
-            logTextBox.SelectionStart = logTextBox.Text.Length;
-            logTextBox.ScrollToCaret();
+            txtOutputLog.AppendText(message + Environment.NewLine);
+            txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
+            txtOutputLog.ScrollToCaret();
         }
 
         private void InitializeApplication()
         {
             this.Text = "PWAMP Control Panel";
         }
-        
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //TODO: Check whether processes are running and ask the user if they want to stop them.
-            // Ask the user if they want to stop the processes on exit.
-            //var result = MessageBox.Show(
-            //    "Do you want to stop the running Apache and MySQL processes started by this application before closing?",
-            //    "Confirm Exit",
-            //    MessageBoxButtons.YesNoCancel,
-            //    MessageBoxIcon.Question);
 
-            //if (result == DialogResult.Cancel)
-            //{
-            //    e.Cancel = true; // Prevent the form from closing
-            //}
-            //else if (result == DialogResult.Yes)
-            //{
-            //    // Attempt to stop processes
-            //    //Task.Run(() => _processManager.StopAllProcessesAsync()).Wait(5000);
-            //}
-        }
+
 
         private async void btnStartApache_Click(object sender, EventArgs e)
         {
@@ -128,6 +109,61 @@ namespace Pwamp.Admin
                 }
             }
 
+        }
+
+        private async void btnStopApache_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool success = await _apacheManager.StopAsync();
+                if (success)
+                {
+                    btnStartApache.Enabled = true;
+                    btnStartApache.Text = "Apache: Running";
+                    //apacheStatusLabel.ForeColor = Color.Green;
+                }
+                else
+                {
+                    btnStartApache.Enabled = true;
+                    if (_apacheManager != null)
+                    {
+                        _apacheManager.Dispose();
+                        _apacheManager = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnStartApache.Enabled = true;
+                if (_apacheManager != null)
+                {
+                    _apacheManager.Dispose();
+                    _apacheManager = null;
+                }
+            }
+
+        }
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //TODO: Check whether processes are running and ask the user if they want to stop them.
+            // Ask the user if they want to stop the processes on exit.
+            //var result = MessageBox.Show(
+            //    "Do you want to stop the running Apache and MySQL processes started by this application before closing?",
+            //    "Confirm Exit",
+            //    MessageBoxButtons.YesNoCancel,
+            //    MessageBoxIcon.Question);
+
+            //if (result == DialogResult.Cancel)
+            //{
+            //    e.Cancel = true; // Prevent the form from closing
+            //}
+            //else if (result == DialogResult.Yes)
+            //{
+            //    // Attempt to stop processes
+            //    //Task.Run(() => _processManager.StopAllProcessesAsync()).Wait(5000);
+            //}
         }
     }
 }

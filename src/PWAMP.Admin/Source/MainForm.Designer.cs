@@ -32,38 +32,50 @@ namespace Pwamp.Admin
         private void InitializeComponent()
         {
             this.btnStartApache = new System.Windows.Forms.Button();
-            this.logTextBox = new System.Windows.Forms.TextBox();
+            this.txtOutputLog = new System.Windows.Forms.TextBox();
+            this.btnStopApache = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStartApache
             // 
             this.btnStartApache.Location = new System.Drawing.Point(46, 65);
             this.btnStartApache.Name = "btnStartApache";
-            this.btnStartApache.Size = new System.Drawing.Size(75, 23);
+            this.btnStartApache.Size = new System.Drawing.Size(138, 23);
             this.btnStartApache.TabIndex = 0;
             this.btnStartApache.Text = "Start Apache";
             this.btnStartApache.UseVisualStyleBackColor = true;
             this.btnStartApache.Click += new System.EventHandler(this.btnStartApache_Click);
             // 
-            // logTextBox
+            // txtOutputLog
             // 
-            this.logTextBox.BackColor = System.Drawing.Color.Black;
-            this.logTextBox.Font = new System.Drawing.Font("Consolas", 9F);
-            this.logTextBox.ForeColor = System.Drawing.Color.White;
-            this.logTextBox.Location = new System.Drawing.Point(12, 275);
-            this.logTextBox.Multiline = true;
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.ReadOnly = true;
-            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logTextBox.Size = new System.Drawing.Size(860, 380);
-            this.logTextBox.TabIndex = 0;
+            this.txtOutputLog.BackColor = System.Drawing.Color.Black;
+            this.txtOutputLog.Font = new System.Drawing.Font("Consolas", 9F);
+            this.txtOutputLog.ForeColor = System.Drawing.Color.White;
+            this.txtOutputLog.Location = new System.Drawing.Point(12, 275);
+            this.txtOutputLog.Multiline = true;
+            this.txtOutputLog.Name = "txtOutputLog";
+            this.txtOutputLog.ReadOnly = true;
+            this.txtOutputLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtOutputLog.Size = new System.Drawing.Size(860, 380);
+            this.txtOutputLog.TabIndex = 0;
+            // 
+            // btnStopApache
+            // 
+            this.btnStopApache.Location = new System.Drawing.Point(190, 65);
+            this.btnStopApache.Name = "btnStopApache";
+            this.btnStopApache.Size = new System.Drawing.Size(163, 23);
+            this.btnStopApache.TabIndex = 1;
+            this.btnStopApache.Text = "Stop";
+            this.btnStopApache.UseVisualStyleBackColor = true;
+            this.btnStopApache.Click += new System.EventHandler(this.btnStopApache_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(921, 694);
-            this.Controls.Add(this.logTextBox);
+            this.ClientSize = new System.Drawing.Size(952, 694);
+            this.Controls.Add(this.btnStopApache);
+            this.Controls.Add(this.txtOutputLog);
             this.Controls.Add(this.btnStartApache);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -75,6 +87,7 @@ namespace Pwamp.Admin
         #endregion
 
         private Button btnStartApache;
-        private TextBox logTextBox;
+        private TextBox txtOutputLog;
+        private Button btnStopApache;
     }
 }
