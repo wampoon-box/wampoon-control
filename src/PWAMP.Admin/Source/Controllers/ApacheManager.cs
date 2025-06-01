@@ -30,73 +30,39 @@ namespace Pwamp.Admin.Controllers
         }
         protected override int GetStartupDelay()
         {
-            // Return 2 seconds delay needed for Apache to start up.
+            // Allocate 2 seconds delay needed for Apache to start up.
             return 2000;
         }
 
-        public override async Task<bool> StartAsync()
+        protected override ProcessStartInfo GetProcessStartInfo()
         {
-            try
+            ProcessStartInfo startInfo = new ProcessStartInfo(_executablePath)
             {
-                if (IsRunning)
-                {
-                    OnStatusChanged($"{ServerName} is already running!");
-                    return true;
-                }
-
-
-                if (!File.Exists(_executablePath))
-                {
-                    OnErrorOccurred($"{ServerName} executable not found: {_executablePath}");
-                    return false;
-                }
-
-                OnStatusChanged($"Starting {ServerName}...");
-
-                ProcessStartInfo startInfo = new ProcessStartInfo(_executablePath)
-                {
-                    // UseShellExecute = false is important for having a direct process handle
-                    // and potentially for console control, though for GenerateConsoleCtrlEvent,
-                    // we primarily need the process ID to attach to its console (if it has one).
-                    UseShellExecute = true, // Set to true on purpose to allow setting WindowStyle to hidden.
-                    //Arguments = GetStartArguments(),
-                    //IMPORTANT:
-                    // CreateNoWindow = true, // This would hide the Apache console window.
-                    // For Ctrl+C to work as described (stopping Apache by "pressing Control-C
-                    // in the console window where Apache is running"), Apache needs to be
-                    // running in a visible console window that it owns.
-                    // If we set CreateNoWindow = true, sending Ctrl+C might not work as expected
-                    // because Apache might not set up its console handlers in the same way.
-                    CreateNoWindow = false, // Apache needs its own console window for Ctrl+C.
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    //RedirectStandardOutput = true,
-                    //RedirectStandardError = true
-                };
-                
-                //_serverProcess = await Task.Run(() => StartProcessInNewGroup(_executablePath, arguments));
-                _serverProcess = Process.Start(startInfo);
-                await Task.Delay(GetStartupDelay());
-
-                if (!IsRunning)
-                {
-                    OnErrorOccurred($"{ServerName} failed to start. Exit code: {_serverProcess.ExitCode}");
-                    return false;
-                }
-                //TODO: Pass the process ID to the main form.
-                OnStatusChanged($"{ServerName} started successfully (PID: {_serverProcess.Id})");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                OnErrorOccurred($"Failed to start {ServerName}: {ex.Message}");
-                return false;
-            }
+                // UseShellExecute = false is important for having a direct process handle
+                // and potentially for console control, though for GenerateConsoleCtrlEvent,
+                // we primarily need the process ID to attach to its console (if it has one).
+                UseShellExecute = true, // Set to true on purpose to allow setting WindowStyle to hidden.
+                                        //Arguments = GetStartArguments(),
+                                        //IMPORTANT:
+                                        // CreateNoWindow = true, // This would hide the Apache console window.
+                                        // For Ctrl+C to work as described (stopping Apache by "pressing Control-C
+                                        // in the console window where Apache is running"), Apache needs to be
+                                        // running in a visible console window that it owns.
+                                        // If we set CreateNoWindow = true, sending Ctrl+C might not work as expected
+                                        // because Apache might not set up its console handlers in the same way.
+                CreateNoWindow = false, // Apache needs its own console window for Ctrl+C.
+                WindowStyle = ProcessWindowStyle.Hidden,
+                //RedirectStandardOutput = true,
+                //RedirectStandardError = true
+            };
+            return startInfo;
         }
-        public override async Task<bool> StopAsync()
+
+        protected override async Task<bool> PerformGracefulShutdown()
         {
             if (!IsRunning)
             {
-                MessageBox.Show("Apache process is not running or has already exited.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                OnErrorOccurred("Apache process is not running or has already exited.");
                 return false;
             }
 
@@ -112,27 +78,30 @@ namespace Pwamp.Admin.Controllers
                     // Send the CTRL_C_EVENT to the attached console (shared by Apache)
                     // The 0 means it's sent to all processes attached to the console that share
                     // the same CTRL+C signal handler (which httpd.exe running in console mode should).
-                    if (NativeApi.GenerateConsoleCtrlEvent(NativeApi.CtrlTypes.CTRL_C_EVENT, 0))
+                    bool ctrlCSent = NativeApi.GenerateConsoleCtrlEvent(NativeApi.CtrlTypes.CTRL_C_EVENT, 0);
+                    if (ctrlCSent)
                     {
+                        
                         // Wait for a moment for Apache to shut down
                         // You might need to adjust the timeout.
-                        _serverProcess.WaitForExit(5000); 
-
+                        _serverProcess.WaitForExit(5000);
+                        //var shutdownCompleted = await Task.Run(() => _serverProcess.WaitForExit(5000));
+                        await Task.Delay(500);
                         if (_serverProcess.HasExited)
                         {
-                            MessageBox.Show("Apache stopped successfully (Ctrl+C sent).", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            OnErrorOccurred("Apache stopped successfully (Ctrl+C sent).");
                             return true;
                         }
                         else
                         {
-                            MessageBox.Show("Ctrl+C signal sent, but Apache has not exited yet. It might be shutting down or requires manual intervention.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            OnErrorOccurred("Ctrl+C signal sent, but Apache has not exited yet. It might be shutting down or requires manual intervention.");
                         }
                     }
                     else
                     {
-                        MessageBox.Show($"Failed to send Ctrl+C signal. Error code: {Marshal.GetLastWin32Error()}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        OnErrorOccurred($"Failed to send Ctrl+C signal. Error code: {Marshal.GetLastWin32Error()}");
                         //TODO: Force shutdown if Ctrl+C fails.
-                        return true;
+                        return false;
                     }
 
                     // Re-enable Ctrl-C handling for our process if it was disabled.
@@ -160,7 +129,7 @@ namespace Pwamp.Admin.Controllers
                     //FIXME: dispose and create a new process instance?
                     // Or just stop the current process and dispose it upon closing the application?s
                     _serverProcess.Dispose();
-                    _serverProcess = null;                    
+                    _serverProcess = null;
                 }
                 //else if (IsRunning) // Still running
                 //{
@@ -173,12 +142,7 @@ namespace Pwamp.Admin.Controllers
                 //    btnStopApache.Enabled = false;
                 //}
             }
-            return true;
-        }
-        protected override async Task<bool> PerformGracefulShutdown()
-        {
-            // Implement graceful shutdown logic here
-            throw new NotImplementedException();
+            return false;
         }
 
     }

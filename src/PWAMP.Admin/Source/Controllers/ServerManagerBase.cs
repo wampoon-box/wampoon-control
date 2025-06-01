@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Pwamp.Admin.Controllers
         public event EventHandler<string> StatusChanged;
         public event EventHandler<string> ErrorOccurred;
         public int? ProcessId => _serverProcess?.Id;
-        public abstract string ServerName { get; set; }        
+        public abstract string ServerName { get; set; }
         public bool IsRunning => _serverProcess != null && !_serverProcess.HasExited;
 
         protected ServerManagerBase(string executablePath, string configPath = null)
@@ -27,11 +28,11 @@ namespace Pwamp.Admin.Controllers
             _executablePath = executablePath;
             _configPath = configPath;
         }
-        public abstract Task<bool> StartAsync();
-        public abstract  Task<bool> StopAsync();
         protected abstract Task<bool> PerformGracefulShutdown();
-        protected abstract string GetStartArguments();        
+        protected abstract string GetStartArguments();
         protected abstract int GetStartupDelay();
+        protected abstract ProcessStartInfo GetProcessStartInfo();
+
 
         protected virtual void OnStatusChanged(string message)
         {
@@ -42,6 +43,113 @@ namespace Pwamp.Admin.Controllers
         {
             ErrorOccurred?.Invoke(this, message);
         }
+
+        public async Task<bool> StartAsync()
+        {
+            try
+            {
+                if (IsRunning)
+                {
+                    OnStatusChanged($"{ServerName} is already running!");
+                    return true;
+                }
+
+                if (!File.Exists(_executablePath))
+                {
+                    OnErrorOccurred($"{ServerName} executable not found: {_executablePath}");
+                    return false;
+                }
+
+                OnStatusChanged($"Starting {ServerName}...");
+
+                //_serverProcess = await Task.Run(() => StartProcessInNewGroup(_executablePath, arguments));
+                _serverProcess = Process.Start(GetProcessStartInfo());
+                await Task.Delay(GetStartupDelay());
+
+                if (!IsRunning)
+                {
+                    OnErrorOccurred($"{ServerName} failed to start. Exit code: {_serverProcess.ExitCode}");
+                    return false;
+                }
+                //TODO: Pass the process ID to the main form.
+                OnStatusChanged($"{ServerName} started successfully (PID: {_serverProcess.Id})");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred($"Failed to start {ServerName}: {ex.Message}");
+                return false;
+            }
+        }
+
+
+        public async Task<bool> StopAsync()
+        {
+            if (!IsRunning)
+            {
+                OnStatusChanged($"{ServerName} is not running.");
+                return true;
+            }
+
+            try
+            {
+                OnStatusChanged($"Stopping {ServerName} gracefully...");
+
+                //FIXME:
+                //TODO: log the amount of seconds the user has to wait for the graceful shutdown to complete.
+
+                //-- 1) First off, we attempt a graceful process shutdown.
+                if (await PerformGracefulShutdown())
+                {
+                    OnStatusChanged($"{ServerName} stopped gracefully!");
+                    return true;
+                }
+                else
+                {
+                    //-- 2) If graceful shutdown fails, we need to force-kill the process!
+                    return await ForceStop();
+                }
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred($"Failed to stop {ServerName}: {ex.Message}");
+                return false;
+            }
+        }
+
+        private async Task<bool> ForceStop()
+        {
+            if (!IsRunning)
+            {
+                OnStatusChanged($"{ServerName} is not running.");
+                return true;
+            }
+            try
+            {
+                OnStatusChanged($"Force-stopping {ServerName}...");
+                _serverProcess.Kill();
+                //_serverProcess.WaitForExit();
+                bool exited = await Task.Run(() => _serverProcess.WaitForExit(5000));
+
+                if (exited)
+                {
+                    OnStatusChanged($"{ServerName} forcely stopped...");
+                    return true;
+                }
+                else
+                {
+                    OnStatusChanged("Forcefully stopping ${ServerName}, trying TerminateProcess...");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred($"Failed to force-stop {ServerName}: {ex.Message}");
+                return false;
+            }
+           
+        }
+
         public virtual void Dispose()
         {
             if (IsRunning)

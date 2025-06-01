@@ -44,7 +44,7 @@ namespace Pwamp.Admin
             this.btnStartApache.TabIndex = 0;
             this.btnStartApache.Text = "Start Apache";
             this.btnStartApache.UseVisualStyleBackColor = true;
-            this.btnStartApache.Click += new System.EventHandler(this.btnStartApache_Click);
+            this.btnStartApache.Click += new System.EventHandler(this.BtnStartApache_Click);
             // 
             // txtOutputLog
             // 
@@ -67,7 +67,7 @@ namespace Pwamp.Admin
             this.btnStopApache.TabIndex = 1;
             this.btnStopApache.Text = "Stop";
             this.btnStopApache.UseVisualStyleBackColor = true;
-            this.btnStopApache.Click += new System.EventHandler(this.btnStopApache_Click);
+            this.btnStopApache.Click += new System.EventHandler(this.BtnStopApache_Click);
             // 
             // MainForm
             // 

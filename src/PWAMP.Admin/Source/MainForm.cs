@@ -76,7 +76,7 @@ namespace Pwamp.Admin
 
 
 
-        private async void btnStartApache_Click(object sender, EventArgs e)
+        private async void BtnStartApache_Click(object sender, EventArgs e)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace Pwamp.Admin
 
         }
 
-        private async void btnStopApache_Click(object sender, EventArgs e)
+        private async void BtnStopApache_Click(object sender, EventArgs e)
         {
             try
             {
