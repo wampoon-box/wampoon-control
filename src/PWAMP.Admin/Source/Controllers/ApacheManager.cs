@@ -14,6 +14,8 @@ namespace Pwamp.Admin.Controllers
     internal class ApacheManager : ServerManagerBase
     {
         public override string ServerName { get; set; } = "Apache";
+        protected override bool CanMonitorOutput { get; set; } = false;
+        
 
         public ApacheManager(string executablePath, string configPath = null)
             : base(executablePath, configPath)
@@ -41,16 +43,17 @@ namespace Pwamp.Admin.Controllers
                 // UseShellExecute = false is important for having a direct process handle
                 // and potentially for console control, though for GenerateConsoleCtrlEvent,
                 // we primarily need the process ID to attach to its console (if it has one).
-                UseShellExecute = true, // Set to true on purpose to allow setting WindowStyle to hidden.
-                                        //Arguments = GetStartArguments(),
-                                        //IMPORTANT:
-                                        // CreateNoWindow = true, // This would hide the Apache console window.
-                                        // For Ctrl+C to work as described (stopping Apache by "pressing Control-C
-                                        // in the console window where Apache is running"), Apache needs to be
-                                        // running in a visible console window that it owns.
-                                        // If we set CreateNoWindow = true, sending Ctrl+C might not work as expected
-                                        // because Apache might not set up its console handlers in the same way.
-                CreateNoWindow = false, // Apache needs its own console window for Ctrl+C.
+                UseShellExecute = false, // Set to true on purpose to allow setting WindowStyle to hidden.
+                //Arguments = GetStartArguments(),
+                //IMPORTANT:
+                // CreateNoWindow = true, // This would hide the Apache console window.
+                //
+                // For Ctrl+C to work as described (stopping Apache by "pressing Control-C
+                // in the console window where Apache is running"), Apache needs to be
+                // running in a visible console window that it owns.
+                // If we set CreateNoWindow = true, sending Ctrl+C might not work as expected
+                // because Apache might not set up its console handlers in the same way.
+                CreateNoWindow = true, // Apache needs its own console window for Ctrl+C.
                 WindowStyle = ProcessWindowStyle.Hidden,
                 //RedirectStandardOutput = true,
                 //RedirectStandardError = true
@@ -62,7 +65,7 @@ namespace Pwamp.Admin.Controllers
         {
             if (!IsRunning)
             {
-                OnErrorOccurred("Apache process is not running or has already exited.");
+                LogError("process is not running or has already exited.");
                 return false;
             }
 
@@ -81,7 +84,7 @@ namespace Pwamp.Admin.Controllers
                     bool ctrlCSent = NativeApi.GenerateConsoleCtrlEvent(NativeApi.CtrlTypes.CTRL_C_EVENT, 0);
                     if (ctrlCSent)
                     {
-                        
+
                         // Wait for a moment for Apache to shut down
                         // You might need to adjust the timeout.
                         _serverProcess.WaitForExit(5000);
@@ -89,17 +92,17 @@ namespace Pwamp.Admin.Controllers
                         await Task.Delay(500);
                         if (_serverProcess.HasExited)
                         {
-                            OnErrorOccurred("Apache stopped successfully (Ctrl+C sent).");
+                            LogMessage("stopped successfully (Ctrl+C sent).");
                             return true;
                         }
                         else
                         {
-                            OnErrorOccurred("Ctrl+C signal sent, but Apache has not exited yet. It might be shutting down or requires manual intervention.");
+                            LogError("Ctrl+C signal sent, but Apache has not exited yet. It might be shutting down or requires manual intervention.");
                         }
                     }
                     else
                     {
-                        OnErrorOccurred($"Failed to send Ctrl+C signal. Error code: {Marshal.GetLastWin32Error()}");
+                        LogError($"Failed to send Ctrl+C signal. Error code: {Marshal.GetLastWin32Error()}");
                         //TODO: Force shutdown if Ctrl+C fails.
                         return false;
                     }

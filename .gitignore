@@ -7,6 +7,8 @@
 pwamp/
 bck/
 src-Copy/
+PWAMP.TestApp/
+
 # User-specific files
 *.rsuser
 *.suo

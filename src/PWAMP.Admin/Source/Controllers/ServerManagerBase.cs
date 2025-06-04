@@ -21,6 +21,7 @@ namespace Pwamp.Admin.Controllers
         public event EventHandler<string> ErrorOccurred;
         public int? ProcessId => _serverProcess?.Id;
         public abstract string ServerName { get; set; }
+        protected abstract bool CanMonitorOutput { get; set; }
         public bool IsRunning => _serverProcess != null && !_serverProcess.HasExited;
 
         protected ServerManagerBase(string executablePath, string configPath = null)
@@ -28,39 +29,55 @@ namespace Pwamp.Admin.Controllers
             _executablePath = executablePath;
             _configPath = configPath;
         }
+
         protected abstract Task<bool> PerformGracefulShutdown();
         protected abstract string GetStartArguments();
         protected abstract int GetStartupDelay();
         protected abstract ProcessStartInfo GetProcessStartInfo();
 
 
-        protected virtual void OnStatusChanged(string message)
+        protected virtual void LogMessage(string message)
         {
-            StatusChanged?.Invoke(this, message);
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                StatusChanged?.Invoke(this, string.Format("[{0:HH:mm:ss}] [{1}] {2}",
+                    DateTime.Now,
+                    ServerName,
+                    message));
+            }
+
         }
 
-        protected virtual void OnErrorOccurred(string message)
+        protected virtual void LogError(string message)
         {
-            ErrorOccurred?.Invoke(this, message);
+            // Note: This method might be redundant. However, it is good to keep it for now just in case we want
+            // to log errors on the GUI differently in the future.
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                ErrorOccurred?.Invoke(this, string.Format("[{0:HH:mm:ss}] [{1}] {2}",
+                    DateTime.Now,
+                    ServerName,
+                    message));
+            }
         }
-
+        
         public async Task<bool> StartAsync()
         {
             try
             {
                 if (IsRunning)
                 {
-                    OnStatusChanged($"{ServerName} is already running!");
+                    LogMessage($"is already running!");
                     return true;
                 }
 
                 if (!File.Exists(_executablePath))
                 {
-                    OnErrorOccurred($"{ServerName} executable not found: {_executablePath}");
+                    LogError($"executable not found: {_executablePath}");
                     return false;
                 }
 
-                OnStatusChanged($"Starting {ServerName}...");
+                LogMessage($"is being started..");
 
                 //_serverProcess = await Task.Run(() => StartProcessInNewGroup(_executablePath, arguments));
                 _serverProcess = Process.Start(GetProcessStartInfo());
@@ -68,16 +85,16 @@ namespace Pwamp.Admin.Controllers
 
                 if (!IsRunning)
                 {
-                    OnErrorOccurred($"{ServerName} failed to start. Exit code: {_serverProcess.ExitCode}");
+                    LogError($"failed to start. Exit code: {_serverProcess.ExitCode}");
                     return false;
                 }
                 //TODO: Pass the process ID to the main form.
-                OnStatusChanged($"{ServerName} started successfully (PID: {_serverProcess.Id})");
+                LogMessage($"started successfully (PID: {_serverProcess.Id})");
                 return true;
             }
             catch (Exception ex)
             {
-                OnErrorOccurred($"Failed to start {ServerName}: {ex.Message}");
+                LogError($"failed to start: {ex.Message}");
                 return false;
             }
         }
@@ -87,13 +104,13 @@ namespace Pwamp.Admin.Controllers
         {
             if (!IsRunning)
             {
-                OnStatusChanged($"{ServerName} is not running.");
+                LogMessage($"is not running.");
                 return true;
             }
 
             try
             {
-                OnStatusChanged($"Stopping {ServerName} gracefully...");
+                LogMessage($"trying to stop gracefully...");
 
                 //FIXME:
                 //TODO: log the amount of seconds the user has to wait for the graceful shutdown to complete.
@@ -101,7 +118,7 @@ namespace Pwamp.Admin.Controllers
                 //-- 1) First off, we attempt a graceful process shutdown.
                 if (await PerformGracefulShutdown())
                 {
-                    OnStatusChanged($"{ServerName} stopped gracefully!");
+                    LogMessage($"stopped gracefully!");
                     return true;
                 }
                 else
@@ -112,7 +129,7 @@ namespace Pwamp.Admin.Controllers
             }
             catch (Exception ex)
             {
-                OnErrorOccurred($"Failed to stop {ServerName}: {ex.Message}");
+                LogError($"failed to stop: {ex.Message}");
                 return false;
             }
         }
@@ -121,33 +138,33 @@ namespace Pwamp.Admin.Controllers
         {
             if (!IsRunning)
             {
-                OnStatusChanged($"{ServerName} is not running.");
+                LogMessage($"is not running.");
                 return true;
             }
             try
             {
-                OnStatusChanged($"Force-stopping {ServerName}...");
+                LogMessage($"is being forcefully stopped..");
                 _serverProcess.Kill();
                 //_serverProcess.WaitForExit();
                 bool exited = await Task.Run(() => _serverProcess.WaitForExit(5000));
 
                 if (exited)
                 {
-                    OnStatusChanged($"{ServerName} forcely stopped...");
+                    LogMessage($"forcely stopped...");
                     return true;
                 }
                 else
                 {
-                    OnStatusChanged("Forcefully stopping ${ServerName}, trying TerminateProcess...");
+                    LogMessage("failed to forcefully stop. Please try to terminate the process using the Task Manager...");
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                OnErrorOccurred($"Failed to force-stop {ServerName}: {ex.Message}");
+                LogError($"failed to stop forcefully: {ex.Message}");
                 return false;
             }
-           
+
         }
 
         public virtual void Dispose()

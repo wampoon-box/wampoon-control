@@ -10,6 +10,7 @@ namespace Pwamp.Admin.Controllers
     internal class MySQLManager : ServerManagerBase
     {
         public override string ServerName { get; set; } = "MySQL/MariaDB";
+        protected override bool CanMonitorOutput { get; set; } = true;
 
         public MySQLManager(string executablePath, string configPath = null) : base(executablePath, configPath)
         {
@@ -17,24 +18,27 @@ namespace Pwamp.Admin.Controllers
 
         protected override ProcessStartInfo GetProcessStartInfo()
         {
-            return new ProcessStartInfo(_executablePath)
+            return new ProcessStartInfo()
             {
-                UseShellExecute = true, // MySQL typically runs in its own console window.
-                CreateNoWindow = false, // We want to see the MySQL console window.                
-                WindowStyle = ProcessWindowStyle.Normal,
-                Arguments = GetStartArguments()
+                FileName = _executablePath,
+                UseShellExecute = false, 
+                CreateNoWindow = true, 
+                RedirectStandardError = true, 
+                RedirectStandardOutput = true, 
+                WindowStyle = ProcessWindowStyle.Normal,         
             };
         }
 
         protected override string GetStartArguments()
         {
-            throw new NotImplementedException();
+            // Empty for now.
+            return string.Empty;
         }
 
         protected override int GetStartupDelay()
         {
-            // Allocate 5 seconds delay needed for MySQL to start up.
-            return 5000;
+            // Allocate 3 seconds delay needed for MySQL to start up.
+            return 3000;
         }
 
         protected override Task<bool> PerformGracefulShutdown()

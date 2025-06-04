@@ -14,14 +14,24 @@ namespace Pwamp.Admin
     public partial class MainForm : Form
     {
         ApacheManager _apacheManager;
+        MySQLManager _mysqlManager;
         private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
+
         private string configPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\conf\httpd.conf"; // CHANGE THIS
+
+        private string mysqlExecutablePath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mysql\bin\mysqld.exe"; // CHANGE THIS
+        private string mysqlConfigPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mysql\bin\my.ini"; // CHANGE THIS
         public MainForm()
         {
             InitializeComponent();
             _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
             _apacheManager.ErrorOccurred += LogError;
             _apacheManager.StatusChanged += LogMessage;
+            // Initialize MySQL Manager.
+            _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
+            _mysqlManager.ErrorOccurred += LogError;
+            _mysqlManager.StatusChanged += LogMessage;
+
             InitializeApplication();
         }
 
