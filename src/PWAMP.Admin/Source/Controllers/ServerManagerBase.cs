@@ -21,6 +21,10 @@ namespace Pwamp.Admin.Controllers
         public event EventHandler<string> ErrorOccurred;
         public int? ProcessId => _serverProcess?.Id;
         public abstract string ServerName { get; set; }
+
+        /// <summary>
+        /// Determine whether the server process's output and error streams can be monitored.
+        /// </summary>
         protected abstract bool CanMonitorOutput { get; set; }
         public bool IsRunning => _serverProcess != null && !_serverProcess.HasExited;
 
@@ -34,7 +38,6 @@ namespace Pwamp.Admin.Controllers
         protected abstract string GetStartArguments();
         protected abstract int GetStartupDelay();
         protected abstract ProcessStartInfo GetProcessStartInfo();
-
 
         protected virtual void LogMessage(string message)
         {
@@ -60,7 +63,7 @@ namespace Pwamp.Admin.Controllers
                     message));
             }
         }
-        
+
         public async Task<bool> StartAsync()
         {
             try
@@ -81,13 +84,23 @@ namespace Pwamp.Admin.Controllers
 
                 //_serverProcess = await Task.Run(() => StartProcessInNewGroup(_executablePath, arguments));
                 _serverProcess = Process.Start(GetProcessStartInfo());
+
                 await Task.Delay(GetStartupDelay());
 
                 if (!IsRunning)
                 {
-                    LogError($"failed to start. Exit code: {_serverProcess.ExitCode}");
+                    LogError($"failed to start, please try again! Exit code: {_serverProcess.ExitCode}");
                     return false;
                 }
+                if (CanMonitorOutput)
+                {
+                    ConfigOutputMonitoring();
+
+                }
+                _serverProcess.Exited += (sender, e) =>
+                {
+                    LogMessage($"has exited with code: {_serverProcess.ExitCode}");
+                };
                 //TODO: Pass the process ID to the main form.
                 LogMessage($"started successfully (PID: {_serverProcess.Id})");
                 return true;
@@ -99,6 +112,23 @@ namespace Pwamp.Admin.Controllers
             }
         }
 
+        private void ConfigOutputMonitoring()
+        {
+            _serverProcess.OutputDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    LogMessage($"[OUT] {e.Data}");
+                }
+            };
+            _serverProcess.ErrorDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    LogError($"[ERR] {e.Data}");
+                }
+            };
+        }
 
         public async Task<bool> StopAsync()
         {
@@ -164,7 +194,6 @@ namespace Pwamp.Admin.Controllers
                 LogError($"failed to stop forcefully: {ex.Message}");
                 return false;
             }
-
         }
 
         public virtual void Dispose()

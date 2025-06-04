@@ -34,6 +34,8 @@ namespace Pwamp.Admin
             this.btnStartApache = new System.Windows.Forms.Button();
             this.txtOutputLog = new System.Windows.Forms.TextBox();
             this.btnStopApache = new System.Windows.Forms.Button();
+            this.btnStartMySql = new System.Windows.Forms.Button();
+            this.btnStopMysql = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStartApache
@@ -69,11 +71,33 @@ namespace Pwamp.Admin
             this.btnStopApache.UseVisualStyleBackColor = true;
             this.btnStopApache.Click += new System.EventHandler(this.BtnStopApache_Click);
             // 
+            // btnStartMySql
+            // 
+            this.btnStartMySql.Location = new System.Drawing.Point(46, 127);
+            this.btnStartMySql.Name = "btnStartMySql";
+            this.btnStartMySql.Size = new System.Drawing.Size(138, 32);
+            this.btnStartMySql.TabIndex = 2;
+            this.btnStartMySql.Text = "Start MySQL";
+            this.btnStartMySql.UseVisualStyleBackColor = true;
+            this.btnStartMySql.Click += new System.EventHandler(this.BtnStartMySql_Click);
+            // 
+            // btnStopMysql
+            // 
+            this.btnStopMysql.Location = new System.Drawing.Point(215, 127);
+            this.btnStopMysql.Name = "btnStopMysql";
+            this.btnStopMysql.Size = new System.Drawing.Size(138, 32);
+            this.btnStopMysql.TabIndex = 3;
+            this.btnStopMysql.Text = "Stop MySQL";
+            this.btnStopMysql.UseVisualStyleBackColor = true;
+            this.btnStopMysql.Click += new System.EventHandler(this.BtnStopMysql_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(952, 694);
+            this.Controls.Add(this.btnStopMysql);
+            this.Controls.Add(this.btnStartMySql);
             this.Controls.Add(this.btnStopApache);
             this.Controls.Add(this.txtOutputLog);
             this.Controls.Add(this.btnStartApache);
@@ -89,5 +113,7 @@ namespace Pwamp.Admin
         private Button btnStartApache;
         private TextBox txtOutputLog;
         private Button btnStopApache;
+        private Button btnStartMySql;
+        private Button btnStopMysql;
     }
 }

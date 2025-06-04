@@ -19,8 +19,8 @@ namespace Pwamp.Admin
 
         private string configPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\conf\httpd.conf"; // CHANGE THIS
 
-        private string mysqlExecutablePath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mysql\bin\mysqld.exe"; // CHANGE THIS
-        private string mysqlConfigPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mysql\bin\my.ini"; // CHANGE THIS
+        private string mysqlExecutablePath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\bin\mariadbd.exe"; // CHANGE THIS
+        private string mysqlConfigPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\my.ini"; // CHANGE THIS
         public MainForm()
         {
             InitializeComponent();
@@ -153,8 +153,77 @@ namespace Pwamp.Admin
                     _apacheManager = null;
                 }
             }
+        }
+
+        private async void BtnStartMySql_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool success = await _mysqlManager.StartAsync();
+                if (success)
+                {
+                    btnStartMySql.Enabled = true;
+                    btnStartMySql.Text = "MariaDB: Running";
+                    //apacheStatusLabel.ForeColor = Color.Green;
+                }
+                else
+                {
+                    btnStartMySql.Enabled = true;
+                    if (_mysqlManager != null)
+                    {
+                        _mysqlManager.Dispose();
+                        _mysqlManager = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error starting MariaDB: " + ex.Message, "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnStartMySql.Enabled = true;
+                if (_mysqlManager != null)
+                {
+                    _mysqlManager.Dispose();
+                    _mysqlManager = null;
+                }
+            }
+        }
+
+        private async void BtnStopMysql_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool success = await _mysqlManager.StopAsync();
+                if (success)
+                {
+                    btnStopApache.Enabled = true;
+                    btnStopApache.Text = "Apache: Running";
+                    //apacheStatusLabel.ForeColor = Color.Green;
+                }
+                else
+                {
+                    btnStopApache.Enabled = true;
+                    if (_mysqlManager != null)
+                    {
+                        _mysqlManager.Dispose();
+                        _mysqlManager = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnStopApache.Enabled = true;
+                if (_mysqlManager != null)
+                {
+                    _mysqlManager.Dispose();
+                    _mysqlManager = null;
+                }
+            }
 
         }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //TODO: Check whether processes are running and ask the user if they want to stop them.
@@ -175,5 +244,7 @@ namespace Pwamp.Admin
             //    //Task.Run(() => _processManager.StopAllProcessesAsync()).Wait(5000);
             //}
         }
+
+       
     }
 }
