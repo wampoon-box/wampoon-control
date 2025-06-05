@@ -22,6 +22,7 @@ namespace Pwamp.Admin.Controllers
             return new ProcessStartInfo()
             {
                 FileName = _executablePath,
+                Arguments = GetStartArguments(),
                 UseShellExecute = false, 
                 CreateNoWindow = true, 
                 RedirectStandardError = true, 
@@ -32,7 +33,12 @@ namespace Pwamp.Admin.Controllers
 
         protected override string GetStartArguments()
         {
-            return "shutdown -u root";
+
+            if (!string.IsNullOrEmpty(_configPath))
+            {
+                return $"--defaults-file={_configPath} --console";
+            }
+            return string.Empty;
         }
 
         protected override int GetStartupDelay()
@@ -47,14 +53,10 @@ namespace Pwamp.Admin.Controllers
             string mariaDbBinPath = Path.GetDirectoryName(_executablePath);
             string mariaDbAdminExe = Path.Combine(mariaDbBinPath, "mariadb-admin.exe");
 
+            LogError($"attempting to stop { ServerName} using: {mariaDbAdminExe}");
+
             try
             {
-                if (IsRunning)
-                {
-                    LogMessage($"is already running!");
-                    return true;
-                }
-
                 if (!File.Exists(_executablePath))
                 {
                     LogError($"executable not found: {_executablePath}");
@@ -66,7 +68,7 @@ namespace Pwamp.Admin.Controllers
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {
                     FileName = mariaDbAdminExe,
-                    Arguments = GetStartArguments(),
+                    Arguments = GetStopArguments(),
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
@@ -79,29 +81,25 @@ namespace Pwamp.Admin.Controllers
 
                 await Task.Delay(GetStartupDelay());
 
-                if (!IsRunning)
-                {
-                    LogError($"failed to start, please try again! Exit code: {shutdownProcess.ExitCode}");
-                    return false;
-                }
-
                 shutdownProcess.Exited += (sender, e) =>
                 {
                     LogMessage($"has exited with code: {shutdownProcess.ExitCode}");
                 };
 
                 //TODO: Check if the shutdown was successful by checking the exit code or output.
-                // Or check if the process is no longer running?
-
-                //TODO: Pass the process ID to the main form.
-                LogMessage($"started successfully (PID: {shutdownProcess.Id})");
+                // Or check if the process is no longer running?                
                 return true;
             }
             catch (Exception ex)
             {
-                LogError($"failed to start: {ex.Message}");
+                LogError($"failed to stop: {ex.Message}");
                 return false;
             }
+        }
+
+        private string GetStopArguments()
+        {
+            return "shutdown -u root";
         }
     }
 }

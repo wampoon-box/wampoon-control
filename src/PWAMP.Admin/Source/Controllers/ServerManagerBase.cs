@@ -94,6 +94,7 @@ namespace Pwamp.Admin.Controllers
                 }
                 if (CanMonitorOutput)
                 {
+                    LogMessage($"Congigure monitoring output...");
                     ConfigOutputMonitoring();
 
                 }

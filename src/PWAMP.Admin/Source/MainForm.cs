@@ -24,6 +24,12 @@ namespace Pwamp.Admin
         public MainForm()
         {
             InitializeComponent();
+            Text = "PWAMP Control Panel";
+            InitializeApplication();
+        }
+        private void InitializeApplication()
+        {
+
             _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
             _apacheManager.ErrorOccurred += LogError;
             _apacheManager.StatusChanged += LogMessage;
@@ -31,8 +37,6 @@ namespace Pwamp.Admin
             _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
             _mysqlManager.ErrorOccurred += LogError;
             _mysqlManager.StatusChanged += LogMessage;
-
-            InitializeApplication();
         }
 
         private void LogError(object sender, string message)
@@ -42,16 +46,7 @@ namespace Pwamp.Admin
                 txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
                 return;
             }
-
-            //// Simple prefix based on service name (no emojis for .NET 4.8 compatibility)
-            //string prefix;
-            //if (serviceName == "Apache")
-            //    prefix = "[A]";
-            //else if (serviceName == "MySQL")
-            //    prefix = "[M]";
-            //else
-            //    prefix = "[S]";
-
+            txtOutputLog.ForeColor = Color.Red;
             txtOutputLog.AppendText(message + Environment.NewLine);
             txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
             txtOutputLog.ScrollToCaret();
@@ -64,26 +59,11 @@ namespace Pwamp.Admin
                 txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
                 return;
             }
-
-            //// Simple prefix based on service name (no emojis for .NET 4.8 compatibility)
-            //string prefix;
-            //if (serviceName == "Apache")
-            //    prefix = "[A]";
-            //else if (serviceName == "MySQL")
-            //    prefix = "[M]";
-            //else
-            //    prefix = "[S]";
-
+            txtOutputLog.ForeColor = Color.Green;
             txtOutputLog.AppendText(message + Environment.NewLine);
             txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
             txtOutputLog.ScrollToCaret();
         }
-
-        private void InitializeApplication()
-        {
-            this.Text = "PWAMP Control Panel";
-        }
-
 
 
         private async void BtnStartApache_Click(object sender, EventArgs e)
@@ -130,7 +110,7 @@ namespace Pwamp.Admin
                 {
                     btnStartApache.Enabled = true;
                     btnStartApache.Text = "Apache: Running";
-                    //apacheStatusLabel.ForeColor = Color.Green;
+                    
                 }
                 else
                 {
@@ -245,6 +225,6 @@ namespace Pwamp.Admin
             //}
         }
 
-       
+
     }
 }
