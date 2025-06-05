@@ -41,28 +41,44 @@ namespace Pwamp.Admin
 
         private void LogError(object sender, string message)
         {
-            if (txtOutputLog.InvokeRequired)
+            try
             {
-                txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
-                return;
+                if (txtOutputLog.InvokeRequired)
+                {
+                    txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
+                    return;
+                }
+                txtOutputLog.ForeColor = Color.Red;
+                txtOutputLog.AppendText(message + Environment.NewLine);
+                txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
+                txtOutputLog.ScrollToCaret();
             }
-            txtOutputLog.ForeColor = Color.Red;
-            txtOutputLog.AppendText(message + Environment.NewLine);
-            txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
-            txtOutputLog.ScrollToCaret();
+            catch (Exception ex) 
+            {
+                MessageBox.Show("An error has occurred: " + ex.Message, "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void LogMessage(object sender, string message)
         {
-            if (txtOutputLog.InvokeRequired)
-            {
-                txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
-                return;
-            }
-            txtOutputLog.ForeColor = Color.Green;
-            txtOutputLog.AppendText(message + Environment.NewLine);
-            txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
-            txtOutputLog.ScrollToCaret();
+            //try
+            //{
+                if (txtOutputLog.InvokeRequired)
+                {
+                    txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
+                    return;
+                }
+                txtOutputLog.ForeColor = Color.Green;
+                txtOutputLog.AppendText(message + Environment.NewLine);
+                txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
+                txtOutputLog.ScrollToCaret();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("An error has occurred: " + ex.Message, "Error",
+            //                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
 
 

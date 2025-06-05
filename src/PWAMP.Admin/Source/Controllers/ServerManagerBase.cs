@@ -83,7 +83,24 @@ namespace Pwamp.Admin.Controllers
                 LogMessage($"is being started..");
 
                 //_serverProcess = await Task.Run(() => StartProcessInNewGroup(_executablePath, arguments));
-                _serverProcess = Process.Start(GetProcessStartInfo());
+                _serverProcess = new Process()
+                {
+                    StartInfo = GetProcessStartInfo()
+                };
+
+                if (CanMonitorOutput)
+                {
+                    //ConfigOutputMonitoring();                    
+                }
+
+                _serverProcess.Start();
+
+                if (CanMonitorOutput)
+                {
+                    LogMessage($"Congigure monitoring output...");
+                    //_serverProcess.BeginOutputReadLine();
+                    //  _serverProcess.BeginErrorReadLine();
+                }
 
                 await Task.Delay(GetStartupDelay());
 
@@ -91,12 +108,6 @@ namespace Pwamp.Admin.Controllers
                 {
                     LogError($"failed to start, please try again! Exit code: {_serverProcess.ExitCode}");
                     return false;
-                }
-                if (CanMonitorOutput)
-                {
-                    LogMessage($"Congigure monitoring output...");
-                    ConfigOutputMonitoring();
-
                 }
                 _serverProcess.Exited += (sender, e) =>
                 {
@@ -115,20 +126,24 @@ namespace Pwamp.Admin.Controllers
 
         private void ConfigOutputMonitoring()
         {
-            _serverProcess.OutputDataReceived += (sender, e) =>
+            _serverProcess.OutputDataReceived += OnOutputDataReceived;
+            _serverProcess.ErrorDataReceived += OnErrorDataReceived;
+        }
+
+        private void OnErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Data))
             {
-                if (!string.IsNullOrEmpty(e.Data))
-                {
-                    LogMessage($"[OUT] {e.Data}");
-                }
-            };
-            _serverProcess.ErrorDataReceived += (sender, e) =>
+                LogError($"[ERR] {e.Data}");
+            }
+        }
+
+        private void OnOutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Data))
             {
-                if (!string.IsNullOrEmpty(e.Data))
-                {
-                    LogError($"[ERR] {e.Data}");
-                }
-            };
+                LogMessage($"[OUT] {e.Data}");
+            }
         }
 
         public async Task<bool> StopAsync()

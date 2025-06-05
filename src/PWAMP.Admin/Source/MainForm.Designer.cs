@@ -32,7 +32,7 @@ namespace Pwamp.Admin
         private void InitializeComponent()
         {
             this.btnStartApache = new System.Windows.Forms.Button();
-            this.txtOutputLog = new System.Windows.Forms.TextBox();
+            this.txtOutputLog = new System.Windows.Forms.RichTextBox();
             this.btnStopApache = new System.Windows.Forms.Button();
             this.btnStartMySql = new System.Windows.Forms.Button();
             this.btnStopMysql = new System.Windows.Forms.Button();
@@ -57,7 +57,7 @@ namespace Pwamp.Admin
             this.txtOutputLog.Multiline = true;
             this.txtOutputLog.Name = "txtOutputLog";
             this.txtOutputLog.ReadOnly = true;
-            this.txtOutputLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtOutputLog.ScrollBars = RichTextBoxScrollBars.Both;
             this.txtOutputLog.Size = new System.Drawing.Size(860, 380);
             this.txtOutputLog.TabIndex = 0;
             // 
@@ -111,7 +111,7 @@ namespace Pwamp.Admin
         #endregion
 
         private Button btnStartApache;
-        private TextBox txtOutputLog;
+        private RichTextBox txtOutputLog;
         private Button btnStopApache;
         private Button btnStartMySql;
         private Button btnStopMysql;
