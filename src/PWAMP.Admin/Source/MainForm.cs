@@ -8,6 +8,7 @@ using Pwamp.Admin.Controllers;
 using Pwamp.Forms;
 using Pwamp.Helpers;
 using Pwamp.Models;
+using System.Linq;
 
 namespace Pwamp.Admin
 {
@@ -86,20 +87,26 @@ namespace Pwamp.Admin
         {
             try
             {
+                btnStartApache.Enabled = false;
+                btnStartApache.Text = "Starting...";
+                
                 bool success = await _apacheManager.StartAsync();
                 if (success)
                 {
-                    btnStartApache.Enabled = true;
                     btnStartApache.Text = "Apache: Running";
-                    //apacheStatusLabel.ForeColor = Color.Green;
+                    btnStartApache.Enabled = true;
                 }
                 else
                 {
+                    btnStartApache.Text = "Start Apache";
                     btnStartApache.Enabled = true;
+                    // Only dispose on failure - manager is reusable
                     if (_apacheManager != null)
                     {
                         _apacheManager.Dispose();
-                        _apacheManager = null;
+                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                        _apacheManager.ErrorOccurred += LogError;
+                        _apacheManager.StatusChanged += LogMessage;
                     }
                 }
             }
@@ -107,46 +114,62 @@ namespace Pwamp.Admin
             {
                 MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnStartApache.Text = "Start Apache";
                 btnStartApache.Enabled = true;
+                // Only dispose on unrecoverable error
                 if (_apacheManager != null)
                 {
                     _apacheManager.Dispose();
-                    _apacheManager = null;
+                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                    _apacheManager.ErrorOccurred += LogError;
+                    _apacheManager.StatusChanged += LogMessage;
                 }
             }
-
         }
 
         private async void BtnStopApache_Click(object sender, EventArgs e)
         {
             try
             {
+                btnStopApache.Enabled = false;
+                btnStopApache.Text = "Stopping...";
+                
                 bool success = await _apacheManager.StopAsync();
                 if (success)
                 {
+                    btnStartApache.Text = "Start Apache";
+                    btnStopApache.Text = "Stop Apache";
                     btnStartApache.Enabled = true;
-                    btnStartApache.Text = "Apache: Running";
-                    
+                    btnStopApache.Enabled = true;
+                    // Don't dispose manager - keep it for future use
                 }
                 else
                 {
-                    btnStartApache.Enabled = true;
+                    btnStopApache.Text = "Stop Apache";
+                    btnStopApache.Enabled = true;
+                    // Only dispose on failure
                     if (_apacheManager != null)
                     {
                         _apacheManager.Dispose();
-                        _apacheManager = null;
+                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                        _apacheManager.ErrorOccurred += LogError;
+                        _apacheManager.StatusChanged += LogMessage;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
+                MessageBox.Show("Error stopping Apache: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStartApache.Enabled = true;
+                btnStopApache.Text = "Stop Apache";
+                btnStopApache.Enabled = true;
+                // Only dispose on unrecoverable error
                 if (_apacheManager != null)
                 {
                     _apacheManager.Dispose();
-                    _apacheManager = null;
+                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                    _apacheManager.ErrorOccurred += LogError;
+                    _apacheManager.StatusChanged += LogMessage;
                 }
             }
         }
@@ -155,20 +178,26 @@ namespace Pwamp.Admin
         {
             try
             {
+                btnStartMySql.Enabled = false;
+                btnStartMySql.Text = "Starting...";
+                
                 bool success = await _mysqlManager.StartAsync();
                 if (success)
                 {
-                    btnStartMySql.Enabled = true;
                     btnStartMySql.Text = "MariaDB: Running";
-                    //apacheStatusLabel.ForeColor = Color.Green;
+                    btnStartMySql.Enabled = true;
                 }
                 else
                 {
+                    btnStartMySql.Text = "Start MariaDB";
                     btnStartMySql.Enabled = true;
+                    // Only dispose on failure - manager is reusable
                     if (_mysqlManager != null)
                     {
                         _mysqlManager.Dispose();
-                        _mysqlManager = null;
+                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
+                        _mysqlManager.ErrorOccurred += LogError;
+                        _mysqlManager.StatusChanged += LogMessage;
                     }
                 }
             }
@@ -176,11 +205,15 @@ namespace Pwamp.Admin
             {
                 MessageBox.Show("Error starting MariaDB: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnStartMySql.Text = "Start MariaDB";
                 btnStartMySql.Enabled = true;
+                // Only dispose on unrecoverable error
                 if (_mysqlManager != null)
                 {
                     _mysqlManager.Dispose();
-                    _mysqlManager = null;
+                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
+                    _mysqlManager.ErrorOccurred += LogError;
+                    _mysqlManager.StatusChanged += LogMessage;
                 }
             }
         }
@@ -189,56 +222,70 @@ namespace Pwamp.Admin
         {
             try
             {
+                btnStopMysql.Enabled = false;
+                btnStopMysql.Text = "Stopping...";
+                
                 bool success = await _mysqlManager.StopAsync();
                 if (success)
                 {
-                    btnStopApache.Enabled = true;
-                    btnStopApache.Text = "Apache: Running";
-                    //apacheStatusLabel.ForeColor = Color.Green;
+                    btnStartMySql.Text = "Start MariaDB";
+                    btnStopMysql.Text = "Stop MariaDB";
+                    btnStartMySql.Enabled = true;
+                    btnStopMysql.Enabled = true;
+                    // Don't dispose manager - keep it for future use
                 }
                 else
                 {
-                    btnStopApache.Enabled = true;
+                    btnStopMysql.Text = "Stop MariaDB";
+                    btnStopMysql.Enabled = true;
+                    // Only dispose on failure
                     if (_mysqlManager != null)
                     {
                         _mysqlManager.Dispose();
-                        _mysqlManager = null;
+                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
+                        _mysqlManager.ErrorOccurred += LogError;
+                        _mysqlManager.StatusChanged += LogMessage;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
+                MessageBox.Show("Error stopping MariaDB: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStopApache.Enabled = true;
+                btnStopMysql.Text = "Stop MariaDB";
+                btnStopMysql.Enabled = true;
+                // Only dispose on unrecoverable error
+                if (_mysqlManager != null)
+                {
+                    _mysqlManager.Dispose();
+                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
+                    _mysqlManager.ErrorOccurred += LogError;
+                    _mysqlManager.StatusChanged += LogMessage;
+                }
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Clean up managers on application exit
+            try
+            {
+                if (_apacheManager != null)
+                {
+                    _apacheManager.Dispose();
+                    _apacheManager = null;
+                }
                 if (_mysqlManager != null)
                 {
                     _mysqlManager.Dispose();
                     _mysqlManager = null;
                 }
             }
-
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //TODO: Check whether processes are running and ask the user if they want to stop them.
-            // Ask the user if they want to stop the processes on exit.
-            //var result = MessageBox.Show(
-            //    "Do you want to stop the running Apache and MySQL processes started by this application before closing?",
-            //    "Confirm Exit",
-            //    MessageBoxButtons.YesNoCancel,
-            //    MessageBoxIcon.Question);
-
-            //if (result == DialogResult.Cancel)
-            //{
-            //    e.Cancel = true; // Prevent the form from closing
-            //}
-            //else if (result == DialogResult.Yes)
-            //{
-            //    // Attempt to stop processes
-            //    //Task.Run(() => _processManager.StopAllProcessesAsync()).Wait(5000);
-            //}
+            catch (Exception ex)
+            {
+                // Log error but don't prevent closing
+                System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
+            }
         }
 
 
