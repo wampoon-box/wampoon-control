@@ -39,6 +39,7 @@ namespace Pwamp.Admin.Controllers
         protected abstract int GetStartupDelay();
         protected abstract ProcessStartInfo GetProcessStartInfo();
 
+        //FIXME: Remove this method if it is not needed.
         protected virtual void LogMessage(string message)
         {
             if (!string.IsNullOrWhiteSpace(message))
@@ -51,6 +52,7 @@ namespace Pwamp.Admin.Controllers
 
         }
 
+        //FIXME: Remove this method if it is not needed.
         protected virtual void LogError(string message)
         {
             // Note: This method might be redundant. However, it is good to keep it for now just in case we want

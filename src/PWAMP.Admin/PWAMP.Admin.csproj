@@ -55,10 +55,19 @@
     <Compile Include="Source\Controllers\ApacheManager.cs" />
     <Compile Include="Source\Controllers\MySQLManager.cs" />
     <Compile Include="Source\Controllers\ServerManagerBase.cs" />
-    <Compile Include="Source\Forms\SettingsForm.cs">
+    <Compile Include="Source\UI\ApacheControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Source\UI\ServerBaseControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Source\UI\ServerBaseControl.Designer.cs">
+      <DependentUpon>ServerBaseControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Source\UI\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\Forms\SettingsForm.Designer.cs">
+    <Compile Include="Source\UI\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Helpers\BrowserHelper.cs" />
@@ -85,6 +94,9 @@
     <EmbeddedResource Include="Source\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Source\UI\ServerBaseControl.resx">
+      <DependentUpon>ServerBaseControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Notes.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -98,6 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Source\Enums\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Pwamp.Admin.Controllers;
+﻿using Pwamp.Admin.Controllers;
 using Pwamp.Forms;
 using Pwamp.Helpers;
 using Pwamp.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Pwamp.Admin
 {
@@ -16,6 +17,7 @@ namespace Pwamp.Admin
     {
         ApacheManager _apacheManager;
         MySQLManager _mysqlManager;
+        public static MainForm Instance { get; private set; }
         private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
 
         private string configPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\conf\httpd.conf"; // CHANGE THIS
@@ -24,37 +26,38 @@ namespace Pwamp.Admin
         private string mysqlConfigPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\my.ini"; // CHANGE THIS
         public MainForm()
         {
+            Instance = this;
             InitializeComponent();
             Text = "PWAMP Control Panel";
             InitializeApplication();
         }
         private void InitializeApplication()
         {
-
-            _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-            _apacheManager.ErrorOccurred += LogError;
-            _apacheManager.StatusChanged += LogMessage;
             // Initialize MySQL Manager.
             _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
             _mysqlManager.ErrorOccurred += LogError;
             _mysqlManager.StatusChanged += LogMessage;
+            //--
+            _apacheModule.InitializeModule();
+            AddLog("Initializing module...", LogType.Error);
+            _logTextBox.AppendText("fdjsfkjdkfjdskjf");
         }
 
         private void LogError(object sender, string message)
         {
             try
             {
-                if (txtOutputLog.InvokeRequired)
+                if (_logTextBox.InvokeRequired)
                 {
-                    txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
+                    _logTextBox.Invoke(new Action<string, string>(LogMessage), message);
                     return;
                 }
-                txtOutputLog.ForeColor = Color.Red;
-                txtOutputLog.AppendText(message + Environment.NewLine);
-                txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
-                txtOutputLog.ScrollToCaret();
+                _logTextBox.ForeColor = Color.Red;
+                _logTextBox.AppendText(message + Environment.NewLine);
+                _logTextBox.SelectionStart = _logTextBox.Text.Length;
+                _logTextBox.ScrollToCaret();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show("An error has occurred: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -65,15 +68,15 @@ namespace Pwamp.Admin
         {
             //try
             //{
-                if (txtOutputLog.InvokeRequired)
-                {
-                    txtOutputLog.Invoke(new Action<string, string>(LogMessage), message);
-                    return;
-                }
-                txtOutputLog.ForeColor = Color.Green;
-                txtOutputLog.AppendText(message + Environment.NewLine);
-                txtOutputLog.SelectionStart = txtOutputLog.Text.Length;
-                txtOutputLog.ScrollToCaret();
+            if (_logTextBox.InvokeRequired)
+            {
+                _logTextBox.Invoke(new Action<string, string>(LogMessage), message);
+                return;
+            }
+            _logTextBox.ForeColor = Color.Green;
+            _logTextBox.AppendText(message + Environment.NewLine);
+            _logTextBox.SelectionStart = _logTextBox.Text.Length;
+            _logTextBox.ScrollToCaret();
             //}
             //catch (Exception ex)
             //{
@@ -89,7 +92,7 @@ namespace Pwamp.Admin
             {
                 btnStartApache.Enabled = false;
                 btnStartApache.Text = "Starting...";
-                
+
                 bool success = await _apacheManager.StartAsync();
                 if (success)
                 {
@@ -133,7 +136,7 @@ namespace Pwamp.Admin
             {
                 btnStopApache.Enabled = false;
                 btnStopApache.Text = "Stopping...";
-                
+
                 bool success = await _apacheManager.StopAsync();
                 if (success)
                 {
@@ -180,7 +183,7 @@ namespace Pwamp.Admin
             {
                 btnStartMySql.Enabled = false;
                 btnStartMySql.Text = "Starting...";
-                
+
                 bool success = await _mysqlManager.StartAsync();
                 if (success)
                 {
@@ -224,7 +227,7 @@ namespace Pwamp.Admin
             {
                 btnStopMysql.Enabled = false;
                 btnStopMysql.Text = "Stopping...";
-                
+
                 bool success = await _mysqlManager.StopAsync();
                 if (success)
                 {
@@ -265,6 +268,82 @@ namespace Pwamp.Admin
             }
         }
 
+        public void AddLog(string module, string log, LogType logType = LogType.Default)
+        {
+            if (_logTextBox == null) return;
+
+            var timestamp = DateTime.Now.ToString("HH:mm:ss");
+            var logEntry = $"[{timestamp}] [{module}] {log}";
+
+            if (_logTextBox.InvokeRequired)
+            {
+                _logTextBox.Invoke(new Action(() => AddLogInternal(logEntry, logType)));
+            }
+            else
+            {
+                AddLogInternal(logEntry, logType);
+            }
+        }
+
+        public void AddLog(string log, LogType logType = LogType.Default)
+        {
+            AddLog("System", log, logType);
+        }
+        public enum LogType
+        {
+            Default,
+            Info,
+            Error,
+            Debug,
+            DebugDetails
+        }
+        private void AddLogInternal(string logEntry, LogType logType)
+        {
+            if (_logTextBox == null) return;
+
+            Color textColor = GetLogColor(logType);
+
+            _logTextBox.SelectionStart = _logTextBox.TextLength;
+            _logTextBox.SelectionLength = 0;
+            _logTextBox.SelectionColor = textColor;
+            _logTextBox.AppendText(logEntry + Environment.NewLine);
+            _logTextBox.SelectionColor = _logTextBox.ForeColor;
+            _logTextBox.ScrollToCaret();
+
+            // Limit log size
+            if (_logTextBox.Lines.Length > 1000)
+            {
+                var lines = _logTextBox.Lines;
+                var newLines = new string[500];
+                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
+                _logTextBox.Lines = newLines;
+            }
+        }
+
+        private Color GetLogColor(LogType logType)
+        {
+            Color textColor;
+            switch (logType)
+            {
+                case LogType.Error:
+                    textColor = Color.Red;
+                    break;
+                case LogType.Info:
+                    textColor = Color.LightBlue;
+                    break;
+                case LogType.Debug:
+                    textColor = Color.Gray;
+                    break;
+                case LogType.DebugDetails:
+                    textColor = Color.DarkGray;
+                    break;
+                default:
+                    textColor = Color.White;
+                    break;
+            }
+            return textColor;
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Clean up managers on application exit
@@ -287,7 +366,5 @@ namespace Pwamp.Admin
                 System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
             }
         }
-
-
     }
 }
