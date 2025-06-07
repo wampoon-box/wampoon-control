@@ -31,8 +31,6 @@ namespace Pwamp.Admin
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnStartMySql = new System.Windows.Forms.Button();
-            this.btnStopMysql = new System.Windows.Forms.Button();
             this.logsPanel = new System.Windows.Forms.Panel();
             this.logsHeaderLabel = new System.Windows.Forms.Label();
             this.logTabControl = new System.Windows.Forms.TabControl();
@@ -44,32 +42,13 @@ namespace Pwamp.Admin
             this.refreshLogsBtn = new System.Windows.Forms.Button();
             this.exportLogsBtn = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this._apacheModule = new Pwamp.Admin.UI.ApacheControl();
+            this._mySqlModule = new Pwamp.Admin.Controls.MySqlControl();
+            this._apacheModule = new Pwamp.Admin.Controls.ApacheControl();
             this.logsPanel.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.SuspendLayout();           
-            // 
-            // btnStartMySql
-            // 
-            this.btnStartMySql.Location = new System.Drawing.Point(450, 134);
-            this.btnStartMySql.Name = "btnStartMySql";
-            this.btnStartMySql.Size = new System.Drawing.Size(138, 32);
-            this.btnStartMySql.TabIndex = 2;
-            this.btnStartMySql.Text = "Start MySQL";
-            this.btnStartMySql.UseVisualStyleBackColor = true;
-            this.btnStartMySql.Click += new System.EventHandler(this.BtnStartMySql_Click);
-            // 
-            // btnStopMysql
-            // 
-            this.btnStopMysql.Location = new System.Drawing.Point(619, 134);
-            this.btnStopMysql.Name = "btnStopMysql";
-            this.btnStopMysql.Size = new System.Drawing.Size(138, 32);
-            this.btnStopMysql.TabIndex = 3;
-            this.btnStopMysql.Text = "Stop MySQL";
-            this.btnStopMysql.UseVisualStyleBackColor = true;
-            this.btnStopMysql.Click += new System.EventHandler(this.BtnStopMysql_Click);
+            this.SuspendLayout();
             // 
             // logsPanel
             // 
@@ -108,7 +87,7 @@ namespace Pwamp.Admin
             this.logTabControl.Location = new System.Drawing.Point(20, 50);
             this.logTabControl.Name = "logTabControl";
             this.logTabControl.SelectedIndex = 0;
-            this.logTabControl.Size = new System.Drawing.Size(521, 272);
+            this.logTabControl.Size = new System.Drawing.Size(719, 272);
             this.logTabControl.TabIndex = 1;
             // 
             // outputTab
@@ -118,7 +97,7 @@ namespace Pwamp.Admin
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTab.Size = new System.Drawing.Size(513, 244);
+            this.outputTab.Size = new System.Drawing.Size(711, 244);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
@@ -134,7 +113,7 @@ namespace Pwamp.Admin
             this._logTextBox.Name = "_logTextBox";
             this._logTextBox.ReadOnly = true;
             this._logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._logTextBox.Size = new System.Drawing.Size(507, 238);
+            this._logTextBox.Size = new System.Drawing.Size(712, 238);
             this._logTextBox.TabIndex = 0;
             this._logTextBox.Text = "";
             // 
@@ -143,7 +122,7 @@ namespace Pwamp.Admin
             this.errorTab.Location = new System.Drawing.Point(4, 24);
             this.errorTab.Name = "errorTab";
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.errorTab.Size = new System.Drawing.Size(513, 244);
+            this.errorTab.Size = new System.Drawing.Size(711, 244);
             this.errorTab.TabIndex = 1;
             this.errorTab.Text = "Error Logs";
             this.errorTab.UseVisualStyleBackColor = true;
@@ -153,7 +132,7 @@ namespace Pwamp.Admin
             this.accessTab.Location = new System.Drawing.Point(4, 24);
             this.accessTab.Name = "accessTab";
             this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(513, 244);
+            this.accessTab.Size = new System.Drawing.Size(711, 244);
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
@@ -211,10 +190,17 @@ namespace Pwamp.Admin
             this.panel1.Size = new System.Drawing.Size(803, 395);
             this.panel1.TabIndex = 6;
             // 
+            // _mySqlModule
+            // 
+            this._mySqlModule.Location = new System.Drawing.Point(452, 80);
+            this._mySqlModule.Name = "_mySqlModule";
+            this._mySqlModule.Size = new System.Drawing.Size(407, 177);
+            this._mySqlModule.TabIndex = 7;
+            // 
             // _apacheModule
             // 
             this._apacheModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(248)))));
-            this._apacheModule.Location = new System.Drawing.Point(12, 12);
+            this._apacheModule.Location = new System.Drawing.Point(13, 80);
             this._apacheModule.Name = "_apacheModule";
             this._apacheModule.Size = new System.Drawing.Size(407, 177);
             this._apacheModule.TabIndex = 4;
@@ -223,11 +209,11 @@ namespace Pwamp.Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(966, 794);
+            this.ClientSize = new System.Drawing.Size(897, 710);
+            this.Controls.Add(this._mySqlModule);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._apacheModule);
-            this.Controls.Add(this.btnStopMysql);
-            this.Controls.Add(this.btnStartMySql);
+            this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PWAMP Control Panel";
@@ -241,9 +227,7 @@ namespace Pwamp.Admin
         }
         #endregion
 
-        private Button btnStartMySql;
-        private Button btnStopMysql;
-        private UI.ApacheControl _apacheModule;
+        private Controls.ApacheControl _apacheModule;
         private Panel logsPanel;
         private Label logsHeaderLabel;
         private TabControl logTabControl;
@@ -255,5 +239,6 @@ namespace Pwamp.Admin
         private Button refreshLogsBtn;
         private Button exportLogsBtn;
         private Panel panel1;
+        private Controls.MySqlControl _mySqlModule;
     }
 }

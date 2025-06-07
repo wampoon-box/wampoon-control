@@ -15,14 +15,8 @@ namespace Pwamp.Admin
 {
     public partial class MainForm : Form
     {        
-        MySQLManager _mysqlManager;
         public static MainForm Instance { get; private set; }
-        private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
-
-        private string configPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\conf\httpd.conf"; // CHANGE THIS
-
-        private string mysqlExecutablePath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\bin\mariadbd.exe"; // CHANGE THIS
-        private string mysqlConfigPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\my.ini"; // CHANGE THIS
+        
         public MainForm()
         {
             Instance = this;
@@ -32,13 +26,8 @@ namespace Pwamp.Admin
         }
         private void InitializeApplication()
         {
-            // Initialize MySQL Manager.
-            _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-            _mysqlManager.ErrorOccurred += LogError;
-            _mysqlManager.StatusChanged += LogMessage;
-            
-            //--
             _apacheModule.InitializeModule();
+            _mySqlModule.InitializeModule();
             AddLog("Application initialized successfully", LogType.Info);
         }
 
@@ -84,97 +73,7 @@ namespace Pwamp.Admin
             //}
         }
 
-        private async void BtnStartMySql_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStartMySql.Enabled = false;
-                btnStartMySql.Text = "Starting...";
-
-                bool success = await _mysqlManager.StartAsync();
-                if (success)
-                {
-                    btnStartMySql.Text = "MariaDB: Running";
-                    btnStartMySql.Enabled = true;
-                }
-                else
-                {
-                    btnStartMySql.Text = "Start MariaDB";
-                    btnStartMySql.Enabled = true;
-                    // Only dispose on failure - manager is reusable
-                    if (_mysqlManager != null)
-                    {
-                        _mysqlManager.Dispose();
-                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                        _mysqlManager.ErrorOccurred += LogError;
-                        _mysqlManager.StatusChanged += LogMessage;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error starting MariaDB: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStartMySql.Text = "Start MariaDB";
-                btnStartMySql.Enabled = true;
-                // Only dispose on unrecoverable error
-                if (_mysqlManager != null)
-                {
-                    _mysqlManager.Dispose();
-                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                    _mysqlManager.ErrorOccurred += LogError;
-                    _mysqlManager.StatusChanged += LogMessage;
-                }
-            }
-        }
-
-        private async void BtnStopMysql_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStopMysql.Enabled = false;
-                btnStopMysql.Text = "Stopping...";
-
-                bool success = await _mysqlManager.StopAsync();
-                if (success)
-                {
-                    btnStartMySql.Text = "Start MariaDB";
-                    btnStopMysql.Text = "Stop MariaDB";
-                    btnStartMySql.Enabled = true;
-                    btnStopMysql.Enabled = true;
-                    // Don't dispose manager - keep it for future use
-                }
-                else
-                {
-                    btnStopMysql.Text = "Stop MariaDB";
-                    btnStopMysql.Enabled = true;
-                    // Only dispose on failure
-                    if (_mysqlManager != null)
-                    {
-                        _mysqlManager.Dispose();
-                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                        _mysqlManager.ErrorOccurred += LogError;
-                        _mysqlManager.StatusChanged += LogMessage;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error stopping MariaDB: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStopMysql.Text = "Stop MariaDB";
-                btnStopMysql.Enabled = true;
-                // Only dispose on unrecoverable error
-                if (_mysqlManager != null)
-                {
-                    _mysqlManager.Dispose();
-                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                    _mysqlManager.ErrorOccurred += LogError;
-                    _mysqlManager.StatusChanged += LogMessage;
-                }
-            }
-        }
-
+       
         public void AddLog(string module, string log, LogType logType = LogType.Default)
         {
             if (_logTextBox == null) return;
@@ -257,11 +156,11 @@ namespace Pwamp.Admin
             try
             {
                 _apacheModule?.Dispose();
-                if (_mysqlManager != null)
-                {
-                    _mysqlManager.Dispose();
-                    _mysqlManager = null;
-                }
+                //if (_mysqlManager != null)
+                //{
+                //    _mysqlManager.Dispose();
+                //    _mysqlManager = null;
+                //}
             }
             catch (Exception ex)
             {

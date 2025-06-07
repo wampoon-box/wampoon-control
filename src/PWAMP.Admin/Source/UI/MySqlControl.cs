@@ -10,27 +10,27 @@ using static Pwamp.Admin.MainForm;
 
 namespace Pwamp.Admin.Controls
 {
-    internal partial class ApacheControl: ServerBaseControl, IDisposable
+    internal partial class MySqlControl : ServerBaseControl, IDisposable
     {
-        ApacheManager _apacheManager;
-        private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
+        MySQLManager _mysqlManager;
 
-        private string configPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\conf\httpd.conf"; // CHANGE THIS
+        private string mysqlExecutablePath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\bin\mariadbd.exe"; // CHANGE THIS
+        private string mysqlConfigPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\my.ini"; // CHANGE THIS
 
-        public ApacheControl()
+        public MySqlControl()
         {
-            ServiceName = "Apache";
-            DisplayName = "Apache HTTP Server";
+            ServiceName = "MySQL";
+            DisplayName = "MySQL Server";
             lblServerIcon.Text = "\uf0e8"; // FontAwesome icon for server
-            lblServerTitle.Text = "Apache HTTP Server";
+            lblServerTitle.Text = "MySQL Server";
         }
         public void InitializeModule()
         {
-            lblServerTitle.Text = "Apache HTTP Server";
+            lblServerTitle.Text = "MySQL Server";
             this.BackColor = Color.FromArgb(255, 248, 248);
-            _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-            _apacheManager.ErrorOccurred += LogError;
-            _apacheManager.StatusChanged += LogMessage;
+            _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
+            _mysqlManager.ErrorOccurred += LogError;
+            _mysqlManager.StatusChanged += LogMessage;
 
             AddLog($"Initializing {ServiceName}", LogType.Info);
         }
@@ -59,7 +59,7 @@ namespace Pwamp.Admin.Controls
             {
                 btnStart.Enabled = false;                
                 UpdateStatus(STATUS_STARTING);
-                bool success = await _apacheManager.StartAsync();
+                bool success = await _mysqlManager.StartAsync();
                 if (success)
                 {
                     UpdateStatus(STATUS_RUNNING);
@@ -71,10 +71,10 @@ namespace Pwamp.Admin.Controls
                     btnStart.Enabled = true;
                     UpdateStatus(STATUS_STOPPED);
                     // Only dispose on failure - manager is reusable
-                    if (_apacheManager != null)
+                    if (_mysqlManager != null)
                     {
-                        _apacheManager.Dispose();
-                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                        _mysqlManager.Dispose();
+                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
                         //FIXME: reinitialize event handlers?
                         //_apacheManager.ErrorOccurred += LogError;
                         //_apacheManager.StatusChanged += LogMessage;
@@ -88,10 +88,10 @@ namespace Pwamp.Admin.Controls
                 btnStart.Enabled = true;
                 UpdateStatus(STATUS_STOPPED);
                 // Only dispose on unrecoverable error
-                if (_apacheManager != null)
+                if (_mysqlManager != null)
                 {
-                    _apacheManager.Dispose();
-                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                    _mysqlManager.Dispose();
+                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
                     //FIXME: reinitialize event handlers?
                     //_apacheManager.ErrorOccurred += LogError;
                     //_apacheManager.StatusChanged += LogMessage;
@@ -106,7 +106,7 @@ namespace Pwamp.Admin.Controls
                 btnStart.Enabled = false;                
                 UpdateStatus(STATUS_STOPPING);
 
-                bool success = await _apacheManager.StopAsync();
+                bool success = await _mysqlManager.StopAsync();
                 if (success)
                 {
                     btnStart.Enabled = true;
@@ -118,10 +118,10 @@ namespace Pwamp.Admin.Controls
                 {
                     btnStop.Enabled = true;
                     // Only dispose on failure
-                    if (_apacheManager != null)
+                    if (_mysqlManager != null)
                     {
-                        _apacheManager.Dispose();
-                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                        _mysqlManager.Dispose();
+                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
                         //_apacheManager.ErrorOccurred += LogError;
                         //_apacheManager.StatusChanged += LogMessage;
                     }
@@ -134,10 +134,10 @@ namespace Pwamp.Admin.Controls
                 btnStop.Enabled = true;
                 UpdateStatus(STATUS_STOPPED);
                 // Only dispose on unrecoverable error
-                if (_apacheManager != null)
+                if (_mysqlManager != null)
                 {
-                    _apacheManager.Dispose();
-                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                    _mysqlManager.Dispose();
+                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
                     //_apacheManager.ErrorOccurred += LogError;
                     //_apacheManager.StatusChanged += LogMessage;
                 }
@@ -146,10 +146,10 @@ namespace Pwamp.Admin.Controls
 
         public virtual void Dispose()
         {
-            if (_apacheManager != null)
+            if (_mysqlManager != null)
             {
-                _apacheManager.Dispose();
-                _apacheManager = null;
+                _mysqlManager.Dispose();
+                _mysqlManager = null;
             }
         }
     }

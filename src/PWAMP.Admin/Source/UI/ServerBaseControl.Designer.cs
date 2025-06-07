@@ -1,4 +1,4 @@
-﻿namespace Pwamp.Admin.UI
+﻿namespace Pwamp.Admin.Controls
 {
     partial class ServerBaseControl
     {
@@ -52,7 +52,7 @@
             this.pnlControls.Controls.Add(this.btnRestart);
             this.pnlControls.Location = new System.Drawing.Point(3, 3);
             this.pnlControls.Name = "pnlControls";
-            this.pnlControls.Size = new System.Drawing.Size(401, 172);
+            this.pnlControls.Size = new System.Drawing.Size(356, 139);
             this.pnlControls.TabIndex = 2;
             // 
             // lblServerIcon
@@ -139,13 +139,13 @@
             this.btnRestart.Text = "🔄 Restart";
             this.btnRestart.UseVisualStyleBackColor = false;
             // 
-            // ServerControl
+            // ServerBaseControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlControls);
-            this.Name = "ServerControl";
-            this.Size = new System.Drawing.Size(475, 216);
+            this.Name = "ServerBaseControl";
+            this.Size = new System.Drawing.Size(368, 159);
             this.pnlControls.ResumeLayout(false);
             this.pnlControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).EndInit();

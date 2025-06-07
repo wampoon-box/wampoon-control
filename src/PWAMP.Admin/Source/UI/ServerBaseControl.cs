@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Pwamp.Admin.MainForm;
 
-namespace Pwamp.Admin.UI
+namespace Pwamp.Admin.Controls
 {
     public partial class ServerBaseControl : UserControl
     {
@@ -48,6 +48,14 @@ namespace Pwamp.Admin.UI
         {
             lblStatus.Text = $"{status}";
             lblStatus.Refresh();
+            if (status == STATUS_RUNNING)
+            {
+                //lblStatus.BackColor = Color.Green;
+            }
+            else
+            {
+                //lblStatus.BackColor = Color.White;
+            }
         }
         protected virtual void AddLog(string module, string log, LogType logType = LogType.Default)
         {
