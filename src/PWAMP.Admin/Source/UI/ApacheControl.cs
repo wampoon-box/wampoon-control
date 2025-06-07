@@ -10,7 +10,7 @@ using static Pwamp.Admin.MainForm;
 
 namespace Pwamp.Admin.UI
 {
-    internal partial class ApacheControl: ServerBaseControl
+    internal partial class ApacheControl: ServerBaseControl, IDisposable
     {
         ApacheManager _apacheManager;
         private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
@@ -27,20 +27,12 @@ namespace Pwamp.Admin.UI
         public void InitializeModule()
         {
             lblServerTitle.Text = "Apache HTTP Server";
-            //lblServerTitle.ForeColor = Color.DarkRed;
             this.BackColor = Color.FromArgb(255, 248, 248);
             _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-            AddLog("Initializing module...", LogType.Error);
             _apacheManager.ErrorOccurred += LogError;
             _apacheManager.StatusChanged += LogMessage;
 
-            // Apache-specific styling
-            //this.btnStart.BackColor = Color.FromArgb(220, 255, 220);
-            //this.btnStop.BackColor = Color.FromArgb(255, 220, 220);
-            //this.btnRestart.BackColor = Color.FromArgb(255, 255, 220);
-
-            //LogOutput("Apache HTTP Server control initialized");
-            //UpdateStatus("Ready");
+            AddLog($"Initializing {ServiceName}", LogType.Info);
         }
 
         private void LogMessage(object sender, string message)
@@ -63,30 +55,27 @@ namespace Pwamp.Admin.UI
 
         protected async override void BtnStart_Click(object sender, EventArgs e)
         {
-            //LogOutput("Executing: httpd.exe -k start");
-            //LogOutput("Apache HTTP Server starting...");
-            //UpdateStatus("Running");
-            //LogOutput("Apache started successfully on port 80 and 443");
             try
             {
-                btnStart.Enabled = false;
-                btnStart.Text = "Starting...";
-
+                btnStart.Enabled = false;                
+                UpdateStatus(STATUS_STARTING);
                 bool success = await _apacheManager.StartAsync();
                 if (success)
                 {
-                    btnStart.Text = "Apache: Running";
-                    btnStart.Enabled = true;
+                    UpdateStatus(STATUS_RUNNING);
+                    btnStop.Enabled = true;
+                    btnStart.Enabled = false;
                 }
                 else
                 {
-                    btnStart.Text = "Start Apache";
                     btnStart.Enabled = true;
+                    UpdateStatus(STATUS_STOPPED);
                     // Only dispose on failure - manager is reusable
                     if (_apacheManager != null)
                     {
                         _apacheManager.Dispose();
                         _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                        //FIXME: reinitialize event handlers?
                         //_apacheManager.ErrorOccurred += LogError;
                         //_apacheManager.StatusChanged += LogMessage;
                     }
@@ -96,13 +85,14 @@ namespace Pwamp.Admin.UI
             {
                 MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStart.Text = "Start Apache";
                 btnStart.Enabled = true;
+                UpdateStatus(STATUS_STOPPED);
                 // Only dispose on unrecoverable error
                 if (_apacheManager != null)
                 {
                     _apacheManager.Dispose();
                     _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                    //FIXME: reinitialize event handlers?
                     //_apacheManager.ErrorOccurred += LogError;
                     //_apacheManager.StatusChanged += LogMessage;
                 }
@@ -111,28 +101,21 @@ namespace Pwamp.Admin.UI
 
         protected async override void BtnStop_Click(object sender, EventArgs e)
         {
-            //LogOutput("Executing: httpd.exe -k stop");
-            //LogOutput("Apache HTTP Server stopping...");
-            //UpdateStatus("Stopped");
-            //LogOutput("Apache stopped successfully");
-
             try
             {
-                btnStart.Enabled = false;
-                btnStart.Text = "Stopping...";
+                btnStart.Enabled = false;                
+                UpdateStatus(STATUS_STOPPING);
 
                 bool success = await _apacheManager.StopAsync();
                 if (success)
                 {
-                    btnStart.Text = "Start Apache";
-                    btnStart.Text = "Stop Apache";
                     btnStart.Enabled = true;
-                    btnStart.Enabled = true;
+                    btnStop.Enabled = false;
+                    UpdateStatus(STATUS_STOPPED);
                     // Don't dispose manager - keep it for future use
                 }
                 else
                 {
-                    btnStop.Text = "Stop Apache";
                     btnStop.Enabled = true;
                     // Only dispose on failure
                     if (_apacheManager != null)
@@ -148,8 +131,8 @@ namespace Pwamp.Admin.UI
             {
                 MessageBox.Show("Error stopping Apache: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStop.Text = "Stop Apache";
                 btnStop.Enabled = true;
+                UpdateStatus(STATUS_STOPPED);
                 // Only dispose on unrecoverable error
                 if (_apacheManager != null)
                 {
@@ -159,16 +142,15 @@ namespace Pwamp.Admin.UI
                     //_apacheManager.StatusChanged += LogMessage;
                 }
             }
-        }
+        }               
 
-        protected async override void BtnRestart_Click(object sender, EventArgs e)
+        public virtual void Dispose()
         {
-            //LogOutput("Executing: httpd.exe -k restart");
-            //LogOutput("Apache HTTP Server restarting...");
-            //UpdateStatus("Restarting");
-            //LogOutput("Apache configuration reloaded");
-            //UpdateStatus("Running");
-            //LogOutput("Apache restarted successfully");
+            if (_apacheManager != null)
+            {
+                _apacheManager.Dispose();
+                _apacheManager = null;
+            }
         }
     }
 }

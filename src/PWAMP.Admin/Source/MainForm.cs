@@ -14,8 +14,7 @@ using System.Windows.Forms;
 namespace Pwamp.Admin
 {
     public partial class MainForm : Form
-    {
-        ApacheManager _apacheManager;
+    {        
         MySQLManager _mysqlManager;
         public static MainForm Instance { get; private set; }
         private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
@@ -37,10 +36,10 @@ namespace Pwamp.Admin
             _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
             _mysqlManager.ErrorOccurred += LogError;
             _mysqlManager.StatusChanged += LogMessage;
+            
             //--
             _apacheModule.InitializeModule();
-            AddLog("Initializing module...", LogType.Error);
-            _logTextBox.AppendText("fdjsfkjdkfjdskjf");
+            AddLog("Application initialized successfully", LogType.Info);
         }
 
         private void LogError(object sender, string message)
@@ -49,7 +48,7 @@ namespace Pwamp.Admin
             {
                 if (_logTextBox.InvokeRequired)
                 {
-                    _logTextBox.Invoke(new Action<string, string>(LogMessage), message);
+                    _logTextBox.Invoke(new Action<object, string>(LogError), sender, message);
                     return;
                 }
                 _logTextBox.ForeColor = Color.Red;
@@ -70,7 +69,7 @@ namespace Pwamp.Admin
             //{
             if (_logTextBox.InvokeRequired)
             {
-                _logTextBox.Invoke(new Action<string, string>(LogMessage), message);
+                _logTextBox.Invoke(new Action<object, string>(LogMessage), sender, message);
                 return;
             }
             _logTextBox.ForeColor = Color.Green;
@@ -83,98 +82,6 @@ namespace Pwamp.Admin
             //    MessageBox.Show("An error has occurred: " + ex.Message, "Error",
             //                  MessageBoxButtons.OK, MessageBoxIcon.Error);
             //}
-        }
-
-
-        private async void BtnStartApache_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStartApache.Enabled = false;
-                btnStartApache.Text = "Starting...";
-
-                bool success = await _apacheManager.StartAsync();
-                if (success)
-                {
-                    btnStartApache.Text = "Apache: Running";
-                    btnStartApache.Enabled = true;
-                }
-                else
-                {
-                    btnStartApache.Text = "Start Apache";
-                    btnStartApache.Enabled = true;
-                    // Only dispose on failure - manager is reusable
-                    if (_apacheManager != null)
-                    {
-                        _apacheManager.Dispose();
-                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                        _apacheManager.ErrorOccurred += LogError;
-                        _apacheManager.StatusChanged += LogMessage;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStartApache.Text = "Start Apache";
-                btnStartApache.Enabled = true;
-                // Only dispose on unrecoverable error
-                if (_apacheManager != null)
-                {
-                    _apacheManager.Dispose();
-                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                    _apacheManager.ErrorOccurred += LogError;
-                    _apacheManager.StatusChanged += LogMessage;
-                }
-            }
-        }
-
-        private async void BtnStopApache_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStopApache.Enabled = false;
-                btnStopApache.Text = "Stopping...";
-
-                bool success = await _apacheManager.StopAsync();
-                if (success)
-                {
-                    btnStartApache.Text = "Start Apache";
-                    btnStopApache.Text = "Stop Apache";
-                    btnStartApache.Enabled = true;
-                    btnStopApache.Enabled = true;
-                    // Don't dispose manager - keep it for future use
-                }
-                else
-                {
-                    btnStopApache.Text = "Stop Apache";
-                    btnStopApache.Enabled = true;
-                    // Only dispose on failure
-                    if (_apacheManager != null)
-                    {
-                        _apacheManager.Dispose();
-                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                        _apacheManager.ErrorOccurred += LogError;
-                        _apacheManager.StatusChanged += LogMessage;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error stopping Apache: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStopApache.Text = "Stop Apache";
-                btnStopApache.Enabled = true;
-                // Only dispose on unrecoverable error
-                if (_apacheManager != null)
-                {
-                    _apacheManager.Dispose();
-                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                    _apacheManager.ErrorOccurred += LogError;
-                    _apacheManager.StatusChanged += LogMessage;
-                }
-            }
         }
 
         private async void BtnStartMySql_Click(object sender, EventArgs e)
@@ -349,11 +256,7 @@ namespace Pwamp.Admin
             // Clean up managers on application exit
             try
             {
-                if (_apacheManager != null)
-                {
-                    _apacheManager.Dispose();
-                    _apacheManager = null;
-                }
+                _apacheModule?.Dispose();
                 if (_mysqlManager != null)
                 {
                     _mysqlManager.Dispose();

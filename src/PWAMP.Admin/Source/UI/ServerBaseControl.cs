@@ -15,6 +15,10 @@ namespace Pwamp.Admin.UI
     {
         protected string ServiceName { get; set; }
         protected string DisplayName { get; set; }
+        protected const string STATUS_STOPPED = "Stopped";
+        protected const string STATUS_RUNNING = "Running";
+        protected const string STATUS_STOPPING = "Stopping";
+        protected const string STATUS_STARTING = "Starting";
 
         public ServerBaseControl()
         {
@@ -39,6 +43,11 @@ namespace Pwamp.Admin.UI
 
         protected async virtual void BtnStart_Click(object sender, EventArgs e)
         {
+        }
+        protected void UpdateStatus(string status)
+        {
+            lblStatus.Text = $"{status}";
+            lblStatus.Refresh();
         }
         protected virtual void AddLog(string module, string log, LogType logType = LogType.Default)
         {

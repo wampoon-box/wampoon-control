@@ -31,8 +31,6 @@ namespace Pwamp.Admin
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnStartApache = new System.Windows.Forms.Button();
-            this.btnStopApache = new System.Windows.Forms.Button();
             this.btnStartMySql = new System.Windows.Forms.Button();
             this.btnStopMysql = new System.Windows.Forms.Button();
             this.logsPanel = new System.Windows.Forms.Panel();
@@ -51,27 +49,7 @@ namespace Pwamp.Admin
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // btnStartApache
-            // 
-            this.btnStartApache.Location = new System.Drawing.Point(450, 72);
-            this.btnStartApache.Name = "btnStartApache";
-            this.btnStartApache.Size = new System.Drawing.Size(138, 23);
-            this.btnStartApache.TabIndex = 0;
-            this.btnStartApache.Text = "Start Apache";
-            this.btnStartApache.UseVisualStyleBackColor = true;
-            this.btnStartApache.Click += new System.EventHandler(this.BtnStartApache_Click);
-            // 
-            // btnStopApache
-            // 
-            this.btnStopApache.Location = new System.Drawing.Point(594, 72);
-            this.btnStopApache.Name = "btnStopApache";
-            this.btnStopApache.Size = new System.Drawing.Size(163, 23);
-            this.btnStopApache.TabIndex = 1;
-            this.btnStopApache.Text = "Stop";
-            this.btnStopApache.UseVisualStyleBackColor = true;
-            this.btnStopApache.Click += new System.EventHandler(this.BtnStopApache_Click);
+            this.SuspendLayout();           
             // 
             // btnStartMySql
             // 
@@ -156,7 +134,7 @@ namespace Pwamp.Admin
             this._logTextBox.Name = "_logTextBox";
             this._logTextBox.ReadOnly = true;
             this._logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._logTextBox.Size = new System.Drawing.Size(0, 0);
+            this._logTextBox.Size = new System.Drawing.Size(507, 238);
             this._logTextBox.TabIndex = 0;
             this._logTextBox.Text = "";
             // 
@@ -250,8 +228,6 @@ namespace Pwamp.Admin
             this.Controls.Add(this._apacheModule);
             this.Controls.Add(this.btnStopMysql);
             this.Controls.Add(this.btnStartMySql);
-            this.Controls.Add(this.btnStopApache);
-            this.Controls.Add(this.btnStartApache);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PWAMP Control Panel";
@@ -265,8 +241,6 @@ namespace Pwamp.Admin
         }
         #endregion
 
-        private Button btnStartApache;
-        private Button btnStopApache;
         private Button btnStartMySql;
         private Button btnStopMysql;
         private UI.ApacheControl _apacheModule;
