@@ -10,7 +10,7 @@ using static Pwamp.Admin.MainForm;
 
 namespace Pwamp.Admin.Controls
 {
-    internal partial class MySqlControl : ServerBaseControl, IDisposable
+    internal partial class MySqlControl : ServerControlBase, IDisposable
     {
         MySQLManager _mysqlManager;
 

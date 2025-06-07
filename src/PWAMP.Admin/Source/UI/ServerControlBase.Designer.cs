@@ -1,6 +1,6 @@
 ﻿namespace Pwamp.Admin.Controls
 {
-    partial class ServerBaseControl
+    partial class ServerControlBase
     {
         /// <summary> 
         /// Required designer variable.

@@ -10,7 +10,7 @@ using static Pwamp.Admin.MainForm;
 
 namespace Pwamp.Admin.Controls
 {
-    internal partial class ApacheControl: ServerBaseControl, IDisposable
+    internal partial class ApacheControl: ServerControlBase, IDisposable
     {
         ApacheManager _apacheManager;
         private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS

@@ -11,7 +11,7 @@ using static Pwamp.Admin.MainForm;
 
 namespace Pwamp.Admin.Controls
 {
-    public partial class ServerBaseControl : UserControl
+    public partial class ServerControlBase : UserControl
     {
         protected string ServiceName { get; set; }
         protected string DisplayName { get; set; }
@@ -20,7 +20,7 @@ namespace Pwamp.Admin.Controls
         protected const string STATUS_STOPPING = "Stopping";
         protected const string STATUS_STARTING = "Starting";
 
-        public ServerBaseControl()
+        public ServerControlBase()
         {
             InitializeComponent();
             SetupEventHandlers();
