@@ -59,5 +59,15 @@ namespace Pwamp.Admin.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] pwamp_icon {
+            get {
+                object obj = ResourceManager.GetObject("pwamp-icon", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

@@ -30,7 +30,29 @@ namespace Pwamp.Admin
             _apacheModule.InitializeModule();
             _mySqlModule.InitializeModule();
 
+            SetFromIcon();
+
             AddLog("Application initialized successfully", LogType.Info);
+        }
+
+        private void SetFromIcon()
+        {
+            try
+            {
+                byte[] pwamp_icon = Properties.Resources.pwamp_icon;
+                using (MemoryStream ms = new MemoryStream(pwamp_icon))
+                using (Bitmap bitmap = new Bitmap(ms))
+                {
+                    IntPtr hIcon = bitmap.GetHicon();
+                    this.Icon = Icon.FromHandle(hIcon);
+
+                    // Optional: Clean up the handle when form closes
+                    // DestroyIcon(hIcon); // Requires [DllImport("user32.dll")]
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public void AddLog(string module, string log, LogType logType = LogType.Default)
