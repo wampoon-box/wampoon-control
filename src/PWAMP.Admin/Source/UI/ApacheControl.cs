@@ -1,4 +1,5 @@
 ﻿using Pwamp.Admin.Controllers;
+using Pwamp.Admin.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -151,6 +152,17 @@ namespace Pwamp.Admin.Controls
                 _apacheManager.Dispose();
                 _apacheManager = null;
             }
+        }
+
+        internal Task StopServer()
+        {
+            Dispose();
+            return Task.CompletedTask;
+        }
+
+        internal bool IsRunning()
+        {
+            return _apacheManager != null && _apacheManager.IsRunning;
         }
     }
 }

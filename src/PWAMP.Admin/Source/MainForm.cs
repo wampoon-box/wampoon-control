@@ -1,4 +1,5 @@
 ﻿using Pwamp.Admin.Controllers;
+using Pwamp.Admin.Helpers;
 using Pwamp.Forms;
 using Pwamp.Helpers;
 using Pwamp.Models;
@@ -14,9 +15,9 @@ using System.Windows.Forms;
 namespace Pwamp.Admin
 {
     public partial class MainForm : Form
-    {        
+    {
         public static MainForm Instance { get; private set; }
-        
+
         public MainForm()
         {
             Instance = this;
@@ -28,52 +29,10 @@ namespace Pwamp.Admin
         {
             _apacheModule.InitializeModule();
             _mySqlModule.InitializeModule();
+
             AddLog("Application initialized successfully", LogType.Info);
         }
 
-        private void LogError(object sender, string message)
-        {
-            try
-            {
-                if (_logTextBox.InvokeRequired)
-                {
-                    _logTextBox.Invoke(new Action<object, string>(LogError), sender, message);
-                    return;
-                }
-                _logTextBox.ForeColor = Color.Red;
-                _logTextBox.AppendText(message + Environment.NewLine);
-                _logTextBox.SelectionStart = _logTextBox.Text.Length;
-                _logTextBox.ScrollToCaret();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error has occurred: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void LogMessage(object sender, string message)
-        {
-            //try
-            //{
-            if (_logTextBox.InvokeRequired)
-            {
-                _logTextBox.Invoke(new Action<object, string>(LogMessage), sender, message);
-                return;
-            }
-            _logTextBox.ForeColor = Color.Green;
-            _logTextBox.AppendText(message + Environment.NewLine);
-            _logTextBox.SelectionStart = _logTextBox.Text.Length;
-            _logTextBox.ScrollToCaret();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("An error has occurred: " + ex.Message, "Error",
-            //                  MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-        }
-
-       
         public void AddLog(string module, string log, LogType logType = LogType.Default)
         {
             if (_logTextBox == null) return;
@@ -95,19 +54,12 @@ namespace Pwamp.Admin
         {
             AddLog("System", log, logType);
         }
-        public enum LogType
-        {
-            Default,
-            Info,
-            Error,
-            Debug,
-            DebugDetails
-        }
+
         private void AddLogInternal(string logEntry, LogType logType)
         {
             if (_logTextBox == null) return;
 
-            Color textColor = GetLogColor(logType);
+            Color textColor = LogMessageHelper.GetLogColor(logType);
 
             _logTextBox.SelectionStart = _logTextBox.TextLength;
             _logTextBox.SelectionLength = 0;
@@ -126,46 +78,75 @@ namespace Pwamp.Admin
             }
         }
 
-        private Color GetLogColor(LogType logType)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            Color textColor;
-            switch (logType)
-            {
-                case LogType.Error:
-                    textColor = Color.Red;
-                    break;
-                case LogType.Info:
-                    textColor = Color.LightGreen;
-                    break;
-                case LogType.Debug:
-                    textColor = Color.Gray;
-                    break;
-                case LogType.DebugDetails:
-                    textColor = Color.DarkGray;
-                    break;
-                default:
-                    textColor = Color.White;
-                    break;
-            }
-            return textColor;
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // Clean up managers on application exit
             try
             {
-                _apacheModule?.Dispose();
-                //if (_mysqlManager != null)
-                //{
-                //    _mysqlManager.Dispose();
-                //    _mysqlManager = null;
-                //}
+                // Clean up managers on application exit.
+                bool hasRunningServices = (_apacheModule != null && _apacheModule.IsRunning()) ||
+                                         (_mySqlModule != null && _mySqlModule.IsRunning());
+
+                if (hasRunningServices)
+                {
+                    var result = MessageBox.Show(
+                        "Some services are still running. Do you want to stop them before closing?",
+                        "Confirm Close",
+                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        e.Cancel = true;
+                                                
+                        Task.Run(async () =>
+                        {
+                            try
+                            {
+                                await _apacheModule?.StopServer();
+                                await _mySqlModule?.StopServer();
+
+                                // Fix: Check if form is still valid before invoking
+                                if (!this.IsDisposed && this.IsHandleCreated)
+                                {
+                                    this.Invoke(new Action(() =>
+                                    {
+                                        if (!this.IsDisposed)
+                                            this.Close();
+                                    }));
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                // Handle errors in the async operation.
+                                System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
+
+                                // Still try to close the form if possible.
+                                if (!this.IsDisposed && this.IsHandleCreated)
+                                {
+                                    this.Invoke(new Action(() =>
+                                    {
+                                        if (!this.IsDisposed)
+                                            this.Close();
+                                    }));
+                                }
+                            }
+                        });
+                    }
+                    else if (result == DialogResult.Cancel)
+                    {
+                        e.Cancel = true;
+                    }
+                    // If result == DialogResult.No, let the form close normally.
+                }
             }
             catch (Exception ex)
             {
-                // Log error but don't prevent closing
+                // Log error but don't prevent closing.
                 System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
+            }
+            finally
+            {
+                base.OnFormClosing(e);
             }
         }
     }
