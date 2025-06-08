@@ -163,5 +163,25 @@ namespace Pwamp.Admin.Controls
         {
             return _mysqlManager != null && _mysqlManager.IsRunning;
         }
+
+        private void InitializeComponent()
+        {
+            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // lblServerTitle
+            // 
+            this.lblServerTitle.Size = new System.Drawing.Size(138, 25);
+            this.lblServerTitle.Text = "MySQL Server";
+            // 
+            // MySqlControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.Name = "MySqlControl";
+            this.Size = new System.Drawing.Size(359, 143);
+            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).EndInit();
+            this.ResumeLayout(false);
+
+        }
     }
 }

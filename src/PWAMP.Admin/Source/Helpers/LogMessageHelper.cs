@@ -27,16 +27,16 @@ namespace Pwamp.Admin.Helpers
                     textColor = Color.Red;
                     break;
                 case LogType.Info:
-                    textColor = Color.LightGreen;
+                    textColor = Color.Blue;
                     break;
                 case LogType.Debug:
-                    textColor = Color.Gray;
+                    textColor = Color.Orange;
                     break;
                 case LogType.DebugDetails:
                     textColor = Color.DarkGray;
                     break;
                 default:
-                    textColor = Color.White;
+                    textColor = Color.Black;
                     break;
             }
             return textColor;

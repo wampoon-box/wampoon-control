@@ -44,10 +44,7 @@ namespace Pwamp.Admin.Controllers
         {
             if (!string.IsNullOrWhiteSpace(message))
             {
-                StatusChanged?.Invoke(this, string.Format("[{0:HH:mm:ss}] [{1}] {2}",
-                    DateTime.Now,
-                    ServerName,
-                    message));
+                StatusChanged?.Invoke(this, message);
             }
 
         }
@@ -59,10 +56,7 @@ namespace Pwamp.Admin.Controllers
             // to log errors on the GUI differently in the future.
             if (!string.IsNullOrWhiteSpace(message))
             {
-                ErrorOccurred?.Invoke(this, string.Format("[{0:HH:mm:ss}] [{1}] {2}",
-                    DateTime.Now,
-                    ServerName,
-                    message));
+                ErrorOccurred?.Invoke(this, message);
             }
         }
 
@@ -113,7 +107,7 @@ namespace Pwamp.Admin.Controllers
                 }
                 _serverProcess.Exited += (sender, e) =>
                 {
-                    LogMessage($"has exited with code: {_serverProcess.ExitCode}");
+                    LogError($"has exited with code: {_serverProcess.ExitCode}");
                 };
                 //TODO: Pass the process ID to the main form.
                 LogMessage($"started successfully (PID: {_serverProcess.Id})");
@@ -198,7 +192,7 @@ namespace Pwamp.Admin.Controllers
 
                 if (exited)
                 {
-                    LogMessage($"forcely stopped...");
+                    LogMessage($"forcefully stopped...");
                     return true;
                 }
                 else

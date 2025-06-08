@@ -1,5 +1,6 @@
 ﻿using Pwamp.Admin.Controllers;
 using Pwamp.Admin.Helpers;
+using Pwamp.Admin.Source.Helpers;
 using Pwamp.Forms;
 using Pwamp.Helpers;
 using Pwamp.Models;
@@ -31,10 +32,16 @@ namespace Pwamp.Admin
             _mySqlModule.InitializeModule();
 
             SetFromIcon();
-
+            FormClosing += MainForm_FormClosing;
             AddLog("Application initialized successfully", LogType.Info);
-        }
 
+            if (NetworkPortHelper.IsPortInUse(80))
+            {
+                MessageBox.Show($"Port {80} is in use.", "Port Status",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }           
+        }
+                
         private void SetFromIcon()
         {
             try
@@ -100,9 +107,9 @@ namespace Pwamp.Admin
             }
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
+         try
             {
                 // Clean up managers on application exit.
                 bool hasRunningServices = (_apacheModule != null && _apacheModule.IsRunning()) ||
@@ -116,47 +123,16 @@ namespace Pwamp.Admin
                         MessageBoxButtons.YesNoCancel,
                         MessageBoxIcon.Question);
 
-                    if (result == DialogResult.Yes)
+                    if (result != DialogResult.Yes)
                     {
                         e.Cancel = true;
-                                                
-                        Task.Run(async () =>
-                        {
-                            try
-                            {
-                                await _apacheModule?.StopServer();
-                                await _mySqlModule?.StopServer();
 
-                                // Fix: Check if form is still valid before invoking
-                                if (!this.IsDisposed && this.IsHandleCreated)
-                                {
-                                    this.Invoke(new Action(() =>
-                                    {
-                                        if (!this.IsDisposed)
-                                            this.Close();
-                                    }));
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                // Handle errors in the async operation.
-                                System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
-
-                                // Still try to close the form if possible.
-                                if (!this.IsDisposed && this.IsHandleCreated)
-                                {
-                                    this.Invoke(new Action(() =>
-                                    {
-                                        if (!this.IsDisposed)
-                                            this.Close();
-                                    }));
-                                }
-                            }
-                        });
+                        
                     }
-                    else if (result == DialogResult.Cancel)
+                    else 
                     {
                         e.Cancel = true;
+                        StopRunningService();
                     }
                     // If result == DialogResult.No, let the form close normally.
                 }
@@ -165,11 +141,44 @@ namespace Pwamp.Admin
             {
                 // Log error but don't prevent closing.
                 System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
-            }
-            finally
+            }            
+        }
+        
+        private void StopRunningService()
+        {
+            Task.Run(async () =>
             {
-                base.OnFormClosing(e);
-            }
+                try
+                {
+                    await _apacheModule?.StopServer();
+                    await _mySqlModule?.StopServer();
+
+                    // Fix: Check if form is still valid before invoking
+                    if (!this.IsDisposed && this.IsHandleCreated)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            if (!this.IsDisposed)
+                                this.Close();
+                        }));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle errors in the async operation.
+                    System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
+
+                    // Still try to close the form if possible.
+                    if (!this.IsDisposed && this.IsHandleCreated)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            if (!this.IsDisposed)
+                                this.Close();
+                        }));
+                    }
+                }
+            });
         }
     }
 }

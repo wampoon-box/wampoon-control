@@ -72,14 +72,14 @@ namespace Pwamp.Admin.Controls
                     btnStart.Enabled = true;
                     UpdateStatus(STATUS_STOPPED);
                     // Only dispose on failure - manager is reusable
-                    if (_apacheManager != null)
-                    {
-                        _apacheManager.Dispose();
-                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                        //FIXME: reinitialize event handlers?
-                        //_apacheManager.ErrorOccurred += LogError;
-                        //_apacheManager.StatusChanged += LogMessage;
-                    }
+                    //if (_apacheManager != null)
+                    //{
+                    //    _apacheManager.Dispose();
+                    //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                    //    //FIXME: reinitialize event handlers?
+                    //    //_apacheManager.ErrorOccurred += LogError;
+                    //    //_apacheManager.StatusChanged += LogMessage;
+                    //}
                 }
             }
             catch (Exception ex)
@@ -89,14 +89,14 @@ namespace Pwamp.Admin.Controls
                 btnStart.Enabled = true;
                 UpdateStatus(STATUS_STOPPED);
                 // Only dispose on unrecoverable error
-                if (_apacheManager != null)
-                {
-                    _apacheManager.Dispose();
-                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                    //FIXME: reinitialize event handlers?
-                    //_apacheManager.ErrorOccurred += LogError;
-                    //_apacheManager.StatusChanged += LogMessage;
-                }
+                //if (_apacheManager != null)
+                //{
+                //    _apacheManager.Dispose();
+                //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                //    //FIXME: reinitialize event handlers?
+                //    //_apacheManager.ErrorOccurred += LogError;
+                //    //_apacheManager.StatusChanged += LogMessage;
+                //}
             }
         }
 
@@ -119,13 +119,13 @@ namespace Pwamp.Admin.Controls
                 {
                     btnStop.Enabled = true;
                     // Only dispose on failure
-                    if (_apacheManager != null)
-                    {
-                        _apacheManager.Dispose();
-                        _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                        //_apacheManager.ErrorOccurred += LogError;
-                        //_apacheManager.StatusChanged += LogMessage;
-                    }
+                    //if (_apacheManager != null)
+                    //{
+                    //    _apacheManager.Dispose();
+                    //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                    //    //_apacheManager.ErrorOccurred += LogError;
+                    //    //_apacheManager.StatusChanged += LogMessage;
+                    //}
                 }
             }
             catch (Exception ex)
@@ -135,13 +135,13 @@ namespace Pwamp.Admin.Controls
                 btnStop.Enabled = true;
                 UpdateStatus(STATUS_STOPPED);
                 // Only dispose on unrecoverable error
-                if (_apacheManager != null)
-                {
-                    _apacheManager.Dispose();
-                    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                    //_apacheManager.ErrorOccurred += LogError;
-                    //_apacheManager.StatusChanged += LogMessage;
-                }
+                //if (_apacheManager != null)
+                //{
+                //    _apacheManager.Dispose();
+                //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                //    //_apacheManager.ErrorOccurred += LogError;
+                //    //_apacheManager.StatusChanged += LogMessage;
+                //}
             }
         }               
 
@@ -163,6 +163,21 @@ namespace Pwamp.Admin.Controls
         internal bool IsRunning()
         {
             return _apacheManager != null && _apacheManager.IsRunning;
+        }
+
+        private void InitializeComponent()
+        {
+            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // ApacheControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.Name = "ApacheControl";
+            this.Size = new System.Drawing.Size(354, 143);
+            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).EndInit();
+            this.ResumeLayout(false);
+
         }
     }
 }
