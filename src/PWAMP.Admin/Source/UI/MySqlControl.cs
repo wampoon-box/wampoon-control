@@ -28,7 +28,10 @@ namespace Pwamp.Admin.Controls
         public void InitializeModule()
         {
             lblServerTitle.Text = DisplayName;
-            _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
+
+            _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);            
+            ServerManager = _mysqlManager;
+
             _mysqlManager.ErrorOccurred += LogError;
             _mysqlManager.StatusChanged += LogMessage;
 
@@ -45,105 +48,7 @@ namespace Pwamp.Admin.Controls
         {
             AddLog(message, LogType.Error);
         }
-
-        protected override void SetupEventHandlers()
-        {
-            btnStart.Click += BtnStart_Click;
-            btnStop.Click += BtnStop_Click;
-            btnRestart.Click += BtnStop_Click;
-        }
-
-        protected async override void BtnStart_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStart.Enabled = false;                
-                UpdateStatus(STATUS_STARTING);
-                bool success = await _mysqlManager.StartAsync();
-                if (success)
-                {
-                    UpdateStatus(STATUS_RUNNING);
-                    btnStop.Enabled = true;
-                    btnStart.Enabled = false;
-                }
-                else
-                {
-                    btnStart.Enabled = true;
-                    UpdateStatus(STATUS_STOPPED);
-                    // Only dispose on failure - manager is reusable
-                    if (_mysqlManager != null)
-                    {
-                        _mysqlManager.Dispose();
-                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                        //FIXME: reinitialize event handlers?
-                        //_apacheManager.ErrorOccurred += LogError;
-                        //_apacheManager.StatusChanged += LogMessage;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStart.Enabled = true;
-                UpdateStatus(STATUS_STOPPED);
-                // Only dispose on unrecoverable error
-                if (_mysqlManager != null)
-                {
-                    _mysqlManager.Dispose();
-                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                    //FIXME: reinitialize event handlers?
-                    //_apacheManager.ErrorOccurred += LogError;
-                    //_apacheManager.StatusChanged += LogMessage;
-                }
-            }
-        }
-
-        protected async override void BtnStop_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStart.Enabled = false;                
-                UpdateStatus(STATUS_STOPPING);
-
-                bool success = await _mysqlManager.StopAsync();
-                if (success)
-                {
-                    btnStart.Enabled = true;
-                    btnStop.Enabled = false;
-                    UpdateStatus(STATUS_STOPPED);
-                    // Don't dispose manager - keep it for future use
-                }
-                else
-                {
-                    btnStop.Enabled = true;
-                    // Only dispose on failure
-                    if (_mysqlManager != null)
-                    {
-                        _mysqlManager.Dispose();
-                        _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                        //_apacheManager.ErrorOccurred += LogError;
-                        //_apacheManager.StatusChanged += LogMessage;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error stopping Apache: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStop.Enabled = true;
-                UpdateStatus(STATUS_STOPPED);
-                // Only dispose on unrecoverable error
-                if (_mysqlManager != null)
-                {
-                    _mysqlManager.Dispose();
-                    _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
-                    //_apacheManager.ErrorOccurred += LogError;
-                    //_apacheManager.StatusChanged += LogMessage;
-                }
-            }
-        }               
-
+         
         public virtual void Dispose()
         {
             if (_mysqlManager != null)
@@ -162,26 +67,6 @@ namespace Pwamp.Admin.Controls
         internal bool IsRunning()
         {
             return _mysqlManager != null && _mysqlManager.IsRunning;
-        }
-
-        private void InitializeComponent()
-        {
-            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // lblServerTitle
-            // 
-            this.lblServerTitle.Size = new System.Drawing.Size(138, 25);
-            this.lblServerTitle.Text = "MySQL Server";
-            // 
-            // MySqlControl
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.Name = "MySqlControl";
-            this.Size = new System.Drawing.Size(359, 143);
-            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).EndInit();
-            this.ResumeLayout(false);
-
-        }
+        }        
     }
 }

@@ -28,7 +28,7 @@ namespace Pwamp.Admin.Controllers
         protected abstract bool CanMonitorOutput { get; set; }
         public bool IsRunning => _serverProcess != null && !_serverProcess.HasExited;
 
-        protected ServerManagerBase(string executablePath, string configPath = null)
+        internal ServerManagerBase(string executablePath, string configPath = null)
         {
             _executablePath = executablePath;
             _configPath = configPath;

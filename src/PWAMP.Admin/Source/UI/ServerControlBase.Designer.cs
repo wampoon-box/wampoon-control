@@ -58,7 +58,7 @@
             // lblServerIcon
             // 
             this.lblServerIcon.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.lblServerIcon.Location = new System.Drawing.Point(12, 20);
+            this.lblServerIcon.Location = new System.Drawing.Point(12, 19);
             this.lblServerIcon.Name = "lblServerIcon";
             this.lblServerIcon.Size = new System.Drawing.Size(50, 50);
             this.lblServerIcon.TabIndex = 0;

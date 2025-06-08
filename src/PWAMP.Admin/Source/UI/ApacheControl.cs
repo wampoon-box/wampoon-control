@@ -32,6 +32,7 @@ namespace Pwamp.Admin.Controls
             _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
             _apacheManager.ErrorOccurred += LogError;
             _apacheManager.StatusChanged += LogMessage;
+            ServerManager = _apacheManager;
 
             AddLog($"Initializing {ServiceName}", LogType.Info);
         }
@@ -46,105 +47,7 @@ namespace Pwamp.Admin.Controls
         {
             AddLog(message, LogType.Error);
         }
-
-        protected override void SetupEventHandlers()
-        {
-            btnStart.Click += BtnStart_Click;
-            btnStop.Click += BtnStop_Click;
-            btnRestart.Click += BtnStop_Click;
-        }
-
-        protected async override void BtnStart_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStart.Enabled = false;                
-                UpdateStatus(STATUS_STARTING);
-                bool success = await _apacheManager.StartAsync();
-                if (success)
-                {
-                    UpdateStatus(STATUS_RUNNING);
-                    btnStop.Enabled = true;
-                    btnStart.Enabled = false;
-                }
-                else
-                {
-                    btnStart.Enabled = true;
-                    UpdateStatus(STATUS_STOPPED);
-                    // Only dispose on failure - manager is reusable
-                    //if (_apacheManager != null)
-                    //{
-                    //    _apacheManager.Dispose();
-                    //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                    //    //FIXME: reinitialize event handlers?
-                    //    //_apacheManager.ErrorOccurred += LogError;
-                    //    //_apacheManager.StatusChanged += LogMessage;
-                    //}
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStart.Enabled = true;
-                UpdateStatus(STATUS_STOPPED);
-                // Only dispose on unrecoverable error
-                //if (_apacheManager != null)
-                //{
-                //    _apacheManager.Dispose();
-                //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                //    //FIXME: reinitialize event handlers?
-                //    //_apacheManager.ErrorOccurred += LogError;
-                //    //_apacheManager.StatusChanged += LogMessage;
-                //}
-            }
-        }
-
-        protected async override void BtnStop_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                btnStart.Enabled = false;                
-                UpdateStatus(STATUS_STOPPING);
-
-                bool success = await _apacheManager.StopAsync();
-                if (success)
-                {
-                    btnStart.Enabled = true;
-                    btnStop.Enabled = false;
-                    UpdateStatus(STATUS_STOPPED);
-                    // Don't dispose manager - keep it for future use
-                }
-                else
-                {
-                    btnStop.Enabled = true;
-                    // Only dispose on failure
-                    //if (_apacheManager != null)
-                    //{
-                    //    _apacheManager.Dispose();
-                    //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                    //    //_apacheManager.ErrorOccurred += LogError;
-                    //    //_apacheManager.StatusChanged += LogMessage;
-                    //}
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error stopping Apache: " + ex.Message, "Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnStop.Enabled = true;
-                UpdateStatus(STATUS_STOPPED);
-                // Only dispose on unrecoverable error
-                //if (_apacheManager != null)
-                //{
-                //    _apacheManager.Dispose();
-                //    _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-                //    //_apacheManager.ErrorOccurred += LogError;
-                //    //_apacheManager.StatusChanged += LogMessage;
-                //}
-            }
-        }               
-
+        
         public virtual void Dispose()
         {
             if (_apacheManager != null)
@@ -163,21 +66,6 @@ namespace Pwamp.Admin.Controls
         internal bool IsRunning()
         {
             return _apacheManager != null && _apacheManager.IsRunning;
-        }
-
-        private void InitializeComponent()
-        {
-            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // ApacheControl
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.Name = "ApacheControl";
-            this.Size = new System.Drawing.Size(354, 143);
-            ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).EndInit();
-            this.ResumeLayout(false);
-
-        }
+        }       
     }
 }
