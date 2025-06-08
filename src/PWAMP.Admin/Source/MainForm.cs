@@ -135,7 +135,7 @@ namespace Pwamp.Admin
                     textColor = Color.Red;
                     break;
                 case LogType.Info:
-                    textColor = Color.LightBlue;
+                    textColor = Color.LightGreen;
                     break;
                 case LogType.Debug:
                     textColor = Color.Gray;

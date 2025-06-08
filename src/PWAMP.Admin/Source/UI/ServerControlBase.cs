@@ -49,12 +49,17 @@ namespace Pwamp.Admin.Controls
             lblStatus.Text = $"{status}";
             lblStatus.Refresh();
             if (status == STATUS_RUNNING)
-            {
-                //lblStatus.BackColor = Color.Green;
+            {                
+                pcbServerStatus.BackColor = Color.Green;
+                lblStatus.ForeColor = Color.DarkBlue;
+                lblStatus.BackColor= Color.LightGreen;
+
             }
             else
             {
-                //lblStatus.BackColor = Color.White;
+                pcbServerStatus.BackColor = Color.Red;
+                lblStatus.ForeColor = Color.Red;
+                lblStatus.BackColor = Color.White;
             }
         }
         protected virtual void AddLog(string module, string log, LogType logType = LogType.Default)

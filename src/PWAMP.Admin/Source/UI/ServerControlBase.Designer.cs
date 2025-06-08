@@ -58,7 +58,7 @@
             // lblServerIcon
             // 
             this.lblServerIcon.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.lblServerIcon.Location = new System.Drawing.Point(20, 20);
+            this.lblServerIcon.Location = new System.Drawing.Point(12, 20);
             this.lblServerIcon.Name = "lblServerIcon";
             this.lblServerIcon.Size = new System.Drawing.Size(50, 50);
             this.lblServerIcon.TabIndex = 0;
@@ -70,7 +70,7 @@
             this.lblServerTitle.AutoSize = true;
             this.lblServerTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblServerTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.lblServerTitle.Location = new System.Drawing.Point(80, 20);
+            this.lblServerTitle.Location = new System.Drawing.Point(68, 10);
             this.lblServerTitle.Name = "lblServerTitle";
             this.lblServerTitle.Size = new System.Drawing.Size(140, 25);
             this.lblServerTitle.TabIndex = 1;
@@ -79,20 +79,20 @@
             // pcbServerStatus
             // 
             this.pcbServerStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.pcbServerStatus.Location = new System.Drawing.Point(80, 50);
+            this.pcbServerStatus.Location = new System.Drawing.Point(70, 50);
             this.pcbServerStatus.Name = "pcbServerStatus";
-            this.pcbServerStatus.Size = new System.Drawing.Size(12, 12);
+            this.pcbServerStatus.Size = new System.Drawing.Size(20, 20);
             this.pcbServerStatus.TabIndex = 2;
             this.pcbServerStatus.TabStop = false;
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.lblStatus.Location = new System.Drawing.Point(100, 47);
+            this.lblStatus.Location = new System.Drawing.Point(97, 50);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(54, 15);
+            this.lblStatus.Size = new System.Drawing.Size(66, 19);
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "Stopped";
             // 
@@ -139,12 +139,12 @@
             this.btnRestart.Text = "🔄 Restart";
             this.btnRestart.UseVisualStyleBackColor = false;
             // 
-            // ServerBaseControl
+            // ServerControlBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlControls);
-            this.Name = "ServerBaseControl";
+            this.Name = "ServerControlBase";
             this.Size = new System.Drawing.Size(368, 159);
             this.pnlControls.ResumeLayout(false);
             this.pnlControls.PerformLayout();

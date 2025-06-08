@@ -20,14 +20,13 @@ namespace Pwamp.Admin.Controls
         public MySqlControl()
         {
             ServiceName = "MySQL";
-            DisplayName = "MySQL Server";
-            lblServerIcon.Text = "\uf0e8"; // FontAwesome icon for server
-            lblServerTitle.Text = "MySQL Server";
+            DisplayName = "MySQL DB Server";
+            lblServerIcon.Text = "🗄️"; // FontAwesome icon for server
+            
         }
         public void InitializeModule()
         {
-            lblServerTitle.Text = "MySQL Server";
-            this.BackColor = Color.FromArgb(255, 248, 248);
+            lblServerTitle.Text = DisplayName;
             _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);
             _mysqlManager.ErrorOccurred += LogError;
             _mysqlManager.StatusChanged += LogMessage;

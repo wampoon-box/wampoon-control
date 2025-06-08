@@ -108,7 +108,7 @@ namespace Pwamp.Admin
             | System.Windows.Forms.AnchorStyles.Right)));
             this._logTextBox.BackColor = System.Drawing.Color.Black;
             this._logTextBox.Font = new System.Drawing.Font("Consolas", 9F);
-            this._logTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this._logTextBox.ForeColor = System.Drawing.Color.Black;
             this._logTextBox.Location = new System.Drawing.Point(3, 3);
             this._logTextBox.Name = "_logTextBox";
             this._logTextBox.ReadOnly = true;
@@ -194,7 +194,7 @@ namespace Pwamp.Admin
             // 
             this._mySqlModule.Location = new System.Drawing.Point(452, 80);
             this._mySqlModule.Name = "_mySqlModule";
-            this._mySqlModule.Size = new System.Drawing.Size(407, 177);
+            this._mySqlModule.Size = new System.Drawing.Size(364, 153);
             this._mySqlModule.TabIndex = 7;
             // 
             // _apacheModule
@@ -202,7 +202,7 @@ namespace Pwamp.Admin
             this._apacheModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(248)))));
             this._apacheModule.Location = new System.Drawing.Point(13, 80);
             this._apacheModule.Name = "_apacheModule";
-            this._apacheModule.Size = new System.Drawing.Size(407, 177);
+            this._apacheModule.Size = new System.Drawing.Size(366, 142);
             this._apacheModule.TabIndex = 4;
             // 
             // MainForm

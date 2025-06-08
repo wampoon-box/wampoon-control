@@ -13,6 +13,8 @@ namespace Pwamp.Admin.Controls
     internal partial class ApacheControl: ServerControlBase, IDisposable
     {
         ApacheManager _apacheManager;
+
+        //FIXME: Make these path dynamic or configurable based on the startup location of the current assembly.
         private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
 
         private string configPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\conf\httpd.conf"; // CHANGE THIS
@@ -21,13 +23,11 @@ namespace Pwamp.Admin.Controls
         {
             ServiceName = "Apache";
             DisplayName = "Apache HTTP Server";
-            lblServerIcon.Text = "\uf0e8"; // FontAwesome icon for server
-            lblServerTitle.Text = "Apache HTTP Server";
+            lblServerIcon.Text = "🌐"; // FontAwesome icon for server            
         }
         public void InitializeModule()
         {
-            lblServerTitle.Text = "Apache HTTP Server";
-            this.BackColor = Color.FromArgb(255, 248, 248);
+            lblServerTitle.Text = DisplayName;
             _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
             _apacheManager.ErrorOccurred += LogError;
             _apacheManager.StatusChanged += LogMessage;
