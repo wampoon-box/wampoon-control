@@ -78,7 +78,7 @@
     <Compile Include="Source\UI\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Helpers\BrowserHelper.cs" />
+    <Compile Include="Source\Helpers\SystemHelper.cs" />
     <Compile Include="Source\Helpers\NativeApi.cs" />
     <Compile Include="Source\MainForm.cs">
       <SubType>Form</SubType>

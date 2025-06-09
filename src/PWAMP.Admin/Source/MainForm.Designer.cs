@@ -47,6 +47,8 @@ namespace Pwamp.Admin
             this._apacheModule = new Pwamp.Admin.Controls.ApacheControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpHelpers = new System.Windows.Forms.GroupBox();
+            this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.logsPanel.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
@@ -54,6 +56,7 @@ namespace Pwamp.Admin
             this.headerPanel.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.grpHelpers.SuspendLayout();
             this.SuspendLayout();
             // 
             // logsPanel
@@ -65,7 +68,7 @@ namespace Pwamp.Admin
             this.logsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logsPanel.Location = new System.Drawing.Point(0, 0);
             this.logsPanel.Name = "logsPanel";
-            this.logsPanel.Size = new System.Drawing.Size(803, 395);
+            this.logsPanel.Size = new System.Drawing.Size(814, 395);
             this.logsPanel.TabIndex = 5;
             // 
             // logsHeaderLabel
@@ -91,7 +94,7 @@ namespace Pwamp.Admin
             this.logTabControl.Location = new System.Drawing.Point(20, 50);
             this.logTabControl.Name = "logTabControl";
             this.logTabControl.SelectedIndex = 0;
-            this.logTabControl.Size = new System.Drawing.Size(780, 272);
+            this.logTabControl.Size = new System.Drawing.Size(791, 272);
             this.logTabControl.TabIndex = 1;
             // 
             // outputTab
@@ -101,7 +104,7 @@ namespace Pwamp.Admin
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTab.Size = new System.Drawing.Size(772, 244);
+            this.outputTab.Size = new System.Drawing.Size(783, 244);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
@@ -117,7 +120,7 @@ namespace Pwamp.Admin
             this._logTextBox.Name = "_logTextBox";
             this._logTextBox.ReadOnly = true;
             this._logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._logTextBox.Size = new System.Drawing.Size(766, 238);
+            this._logTextBox.Size = new System.Drawing.Size(777, 238);
             this._logTextBox.TabIndex = 0;
             this._logTextBox.Text = "";
             // 
@@ -126,7 +129,7 @@ namespace Pwamp.Admin
             this.errorTab.Location = new System.Drawing.Point(4, 24);
             this.errorTab.Name = "errorTab";
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.errorTab.Size = new System.Drawing.Size(772, 244);
+            this.errorTab.Size = new System.Drawing.Size(783, 244);
             this.errorTab.TabIndex = 1;
             this.errorTab.Text = "Error Logs";
             this.errorTab.UseVisualStyleBackColor = true;
@@ -136,7 +139,7 @@ namespace Pwamp.Admin
             this.accessTab.Location = new System.Drawing.Point(4, 24);
             this.accessTab.Name = "accessTab";
             this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(772, 244);
+            this.accessTab.Size = new System.Drawing.Size(783, 244);
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
@@ -159,9 +162,9 @@ namespace Pwamp.Admin
             // panel1
             // 
             this.panel1.Controls.Add(this.logsPanel);
-            this.panel1.Location = new System.Drawing.Point(12, 359);
+            this.panel1.Location = new System.Drawing.Point(12, 386);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(803, 395);
+            this.panel1.Size = new System.Drawing.Size(814, 395);
             this.panel1.TabIndex = 6;
             // 
             // headerPanel
@@ -172,7 +175,7 @@ namespace Pwamp.Admin
             this.headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.headerPanel.Location = new System.Drawing.Point(0, 0);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(803, 82);
+            this.headerPanel.Size = new System.Drawing.Size(814, 82);
             this.headerPanel.TabIndex = 8;
             // 
             // titleLabel
@@ -218,7 +221,7 @@ namespace Pwamp.Admin
             this.panel2.Controls.Add(this.headerPanel);
             this.panel2.Location = new System.Drawing.Point(12, 12);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(803, 82);
+            this.panel2.Size = new System.Drawing.Size(814, 82);
             this.panel2.TabIndex = 9;
             // 
             // groupBox1
@@ -227,16 +230,41 @@ namespace Pwamp.Admin
             this.groupBox1.Controls.Add(this._apacheModule);
             this.groupBox1.Location = new System.Drawing.Point(12, 128);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(814, 190);
+            this.groupBox1.Size = new System.Drawing.Size(814, 183);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
+            // 
+            // grpHelpers
+            // 
+            this.grpHelpers.Controls.Add(this.btnOpenExplorer);
+            this.grpHelpers.Location = new System.Drawing.Point(12, 318);
+            this.grpHelpers.Name = "grpHelpers";
+            this.grpHelpers.Size = new System.Drawing.Size(814, 62);
+            this.grpHelpers.TabIndex = 11;
+            this.grpHelpers.TabStop = false;
+            this.grpHelpers.Text = "Helpers";
+            // 
+            // btnOpenExplorer
+            // 
+            this.btnOpenExplorer.BackColor = System.Drawing.Color.LightGreen;
+            this.btnOpenExplorer.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnOpenExplorer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnOpenExplorer.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btnOpenExplorer.Location = new System.Drawing.Point(6, 19);
+            this.btnOpenExplorer.Name = "btnOpenExplorer";
+            this.btnOpenExplorer.Size = new System.Drawing.Size(94, 37);
+            this.btnOpenExplorer.TabIndex = 0;
+            this.btnOpenExplorer.Text = "Explorer";
+            this.btnOpenExplorer.UseVisualStyleBackColor = false;
+            this.btnOpenExplorer.Click += new System.EventHandler(this.BtnOpenExplorer_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.ClientSize = new System.Drawing.Size(1445, 946);
+            this.ClientSize = new System.Drawing.Size(1173, 946);
+            this.Controls.Add(this.grpHelpers);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -253,6 +281,7 @@ namespace Pwamp.Admin
             this.headerPanel.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.grpHelpers.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -274,5 +303,7 @@ namespace Pwamp.Admin
         private Label subtitleLabel;
         private Panel panel2;
         private GroupBox groupBox1;
+        private GroupBox grpHelpers;
+        private Button btnOpenExplorer;
     }
 }

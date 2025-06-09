@@ -1,11 +1,13 @@
 using System;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace Pwamp.Helpers
 {
-    public class BrowserHelper
+    public class SystemHelper
     {
+
         /// <summary>
         /// Opens a specified URL in the default web browser after validating its format and protocol.
         /// </summary>
@@ -36,6 +38,19 @@ namespace Pwamp.Helpers
                 MessageBox.Show($"Could not open URL: {uri}\n\nError: {ex.Message}",
                     "Browser Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        internal static void ExecuteFile(string fileName, string parameters, ProcessWindowStyle windowStyle)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = fileName,
+                Arguments = parameters,
+                WindowStyle = windowStyle,
+                UseShellExecute = true
+            };
+
+            Process.Start(startInfo);
         }
     }
 }

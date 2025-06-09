@@ -23,6 +23,10 @@ namespace Pwamp.Admin
         {
             Instance = this;
             InitializeComponent();
+            MinimumSize = new Size(800, 800);
+            StartPosition = FormStartPosition.Manual;
+            Icon = SystemIcons.Application;
+            SizeGripStyle = SizeGripStyle.Show;
             Text = "PWAMP Control Panel";
             InitializeApplication();
         }
@@ -31,7 +35,8 @@ namespace Pwamp.Admin
             _apacheModule.InitializeModule();
             _mySqlModule.InitializeModule();
 
-            SetFromIcon();
+            //SetFromIcon();
+
             FormClosing += MainForm_FormClosing;
             AddLog("Application initialized successfully", LogType.Info);
 
@@ -104,6 +109,19 @@ namespace Pwamp.Admin
                 var newLines = new string[500];
                 Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
                 _logTextBox.Lines = newLines;
+            }
+        }
+
+        private void BtnOpenExplorer_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string path = AppDomain.CurrentDomain.BaseDirectory;
+                SystemHelper.ExecuteFile("explorer.exe", path, ProcessWindowStyle.Normal);
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error opening file explorer: {ex.Message}", LogType.Error);
             }
         }
 
@@ -180,5 +198,7 @@ namespace Pwamp.Admin
                 }
             });
         }
+
+        
     }
 }
