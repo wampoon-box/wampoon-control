@@ -15,11 +15,7 @@ using static Frostybee.Pwamp.MainForm;
 namespace Frostybee.Pwamp.Controls
 {
     public partial class ServerControlBase : UserControl
-    {
-        protected const string STATUS_STOPPED = "Stopped";
-        protected const string STATUS_RUNNING = "Running";
-        protected const string STATUS_STOPPING = "Stopping";
-        protected const string STATUS_STARTING = "Starting";
+    {        
         protected string ServiceName { get; set; }
         protected string DisplayName { get; set; }
         protected int PortNumber { get; set; }
@@ -51,6 +47,10 @@ namespace Frostybee.Pwamp.Controls
         {
             try
             {
+                if (!ServerManager.IsRunning)
+                {
+                    return;
+                }
                 btnStart.Enabled = false;
                 UpdateStatus(ServerStatus.Stopping);
 
@@ -111,27 +111,28 @@ namespace Frostybee.Pwamp.Controls
             switch (status)
             {
                 case ServerStatus.Stopped:
-                    pcbServerStatus.BackColor = Color.Red;
-                    lblStatus.ForeColor = Color.Red;
-                    lblStatus.BackColor = Color.White;
+                    UpdateControlStyle(Color.Red, Color.DarkRed, Color.FromArgb(255, 200, 200));
                     break;
                 case ServerStatus.Running:
-                    pcbServerStatus.BackColor = Color.Green;
-                    lblStatus.ForeColor = Color.DarkBlue;
-                    lblStatus.BackColor = Color.FromArgb(200, 255, 200);
+                    UpdateControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200)); 
                     break;
                 case ServerStatus.Stopping:
-                    pcbServerStatus.BackColor = Color.Orange;
-                    lblStatus.ForeColor = Color.Red;
-                    lblStatus.BackColor = Color.Orange;
+                    UpdateControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
                     break;
                 case ServerStatus.Starting:
-
+                    UpdateControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
                     break;
                 case ServerStatus.Error:
 
                     break;
             }
+        }
+       
+        private void UpdateControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
+        {
+            pcbServerStatus.BackColor = statusColor;
+            lblStatus.ForeColor = lblForeColor;
+            lblStatus.BackColor = lblBackColor;
         }
 
 
