@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Pwamp.Helpers;
-using Pwamp.Models;
+using Frostybee.Helpers;
+using Frostybee.Models;
 
-namespace Pwamp.Forms
+namespace Frostybee.Forms
 {
     public partial class SettingsForm : Form
     {

@@ -1,19 +1,16 @@
-﻿using Pwamp.Admin.Controllers;
-using Pwamp.Admin.Helpers;
-using Pwamp.Admin.Source.Helpers;
-using Pwamp.Forms;
-using Pwamp.Helpers;
-using Pwamp.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Frostybee.Pwamp.Helpers;
+using Frostybee.Pwamp.Source.Helpers;
+using Frostybee.Helpers;
+using Frostybee.Pwamp.Enums;
 
-namespace Pwamp.Admin
+namespace Frostybee.Pwamp
 {
     public partial class MainForm : Form
     {
@@ -21,30 +18,28 @@ namespace Pwamp.Admin
 
         public MainForm()
         {
-            Instance = this;
-            InitializeComponent();
-            MinimumSize = new Size(800, 800);
-            StartPosition = FormStartPosition.Manual;
-            Icon = SystemIcons.Application;
-            SizeGripStyle = SizeGripStyle.Show;
             Text = "PWAMP Control Panel";
-            InitializeApplication();
+            InitializeComponent();
+            
+            Instance = this;
+            
+            MinimumSize = new Size(850, 790);
+            StartPosition = FormStartPosition.Manual;
+             CenterToScreen();
+            SizeGripStyle = SizeGripStyle.Show;
+
+            FormClosing += MainForm_FormClosing;
+            Load += MainForm_Load;            
         }
-        private void InitializeApplication()
+
+        private void MainForm_Load(object sender, EventArgs e)
         {
+            SetFromIcon();
+            // Attempt to initialize the service modules.
             _apacheModule.InitializeModule();
             _mySqlModule.InitializeModule();
 
-            //SetFromIcon();
-
-            FormClosing += MainForm_FormClosing;
-            AddLog("Application initialized successfully", LogType.Info);
-
-            if (NetworkPortHelper.IsPortInUse(80))
-            {
-                MessageBox.Show($"Port {80} is in use.", "Port Status",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }           
+            AddLog("Application initialized successfully", LogType.Info);            
         }
                 
         private void SetFromIcon()
@@ -199,6 +194,11 @@ namespace Pwamp.Admin
             });
         }
 
-        
+        private async void BtnStopAllServers_Click(object sender, EventArgs e)
+        {
+            //TODO: Enable the button if both servers are running.
+            await _apacheModule?.StopServer();
+            await _mySqlModule?.StopServer();
+        }
     }
 }

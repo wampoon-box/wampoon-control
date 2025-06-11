@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Pwamp.Admin
+namespace Frostybee.Pwamp
 {
     partial class MainForm
     {
@@ -43,12 +43,13 @@ namespace Pwamp.Admin
             this.headerPanel = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
             this.subtitleLabel = new System.Windows.Forms.Label();
-            this._mySqlModule = new Pwamp.Admin.Controls.MySqlControl();
-            this._apacheModule = new Pwamp.Admin.Controls.ApacheControl();
+            this._mySqlModule = new Frostybee.Pwamp.Controls.MySqlControl();
+            this._apacheModule = new Frostybee.Pwamp.Controls.ApacheControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.grpHelpers = new System.Windows.Forms.GroupBox();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
+            this.btnStopAllServers = new System.Windows.Forms.Button();
             this.logsPanel.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
@@ -236,6 +237,7 @@ namespace Pwamp.Admin
             // 
             // grpHelpers
             // 
+            this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Location = new System.Drawing.Point(12, 318);
             this.grpHelpers.Name = "grpHelpers";
@@ -258,12 +260,26 @@ namespace Pwamp.Admin
             this.btnOpenExplorer.UseVisualStyleBackColor = false;
             this.btnOpenExplorer.Click += new System.EventHandler(this.BtnOpenExplorer_Click);
             // 
+            // btnStopAllServers
+            // 
+            this.btnStopAllServers.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStopAllServers.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btnStopAllServers.Location = new System.Drawing.Point(120, 19);
+            this.btnStopAllServers.Name = "btnStopAllServers";
+            this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
+            this.btnStopAllServers.TabIndex = 1;
+            this.btnStopAllServers.Text = "Stop All";
+            this.btnStopAllServers.UseVisualStyleBackColor = false;
+            this.btnStopAllServers.Click += new System.EventHandler(this.BtnStopAllServers_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.ClientSize = new System.Drawing.Size(1173, 946);
+            this.ClientSize = new System.Drawing.Size(839, 791);
             this.Controls.Add(this.grpHelpers);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel2);
@@ -305,5 +321,6 @@ namespace Pwamp.Admin
         private GroupBox groupBox1;
         private GroupBox grpHelpers;
         private Button btnOpenExplorer;
+        private Button btnStopAllServers;
     }
 }

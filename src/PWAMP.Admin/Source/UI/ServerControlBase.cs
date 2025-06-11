@@ -1,5 +1,6 @@
-﻿using Pwamp.Admin.Controllers;
-using Pwamp.Admin.Helpers;
+﻿using Frostybee.Pwamp.Controllers;
+using Frostybee.Pwamp.Enums;
+using Frostybee.Pwamp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Pwamp.Admin.MainForm;
+using static Frostybee.Pwamp.MainForm;
 
-namespace Pwamp.Admin.Controls
+namespace Frostybee.Pwamp.Controls
 {
     public partial class ServerControlBase : UserControl
     {
@@ -21,6 +22,7 @@ namespace Pwamp.Admin.Controls
         protected const string STATUS_STARTING = "Starting";
         protected string ServiceName { get; set; }
         protected string DisplayName { get; set; }
+        protected int PortNumber { get; set; }
         internal ServerManagerBase ServerManager { get; set; }
 
         public ServerControlBase()
@@ -38,33 +40,38 @@ namespace Pwamp.Admin.Controls
 
         protected async virtual void BtnRestart_Click(object sender, EventArgs e)
         {
+
         }
 
         protected async virtual void BtnStop_Click(object sender, EventArgs e)
         {
+            await StopServer();
+        }
+        public async Task StopServer()
+        {
             try
             {
                 btnStart.Enabled = false;
-                UpdateStatus(STATUS_STOPPING);
+                UpdateStatus(ServerStatus.Stopping);
 
                 bool success = await ServerManager.StopAsync();
                 if (success)
                 {
                     btnStart.Enabled = true;
                     btnStop.Enabled = false;
-                    UpdateStatus(STATUS_STOPPED);
+                    UpdateStatus(ServerStatus.Stopped);
                 }
                 else
                 {
-                    btnStop.Enabled = true;                   
+                    btnStop.Enabled = true;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error stopping Apache: " + ex.Message, "Error",
+                MessageBox.Show($"Error stopping {ServiceName}: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnStop.Enabled = true;
-                UpdateStatus(STATUS_STOPPED);                
+                UpdateStatus(ServerStatus.Stopped);
             }
         }
 
@@ -73,54 +80,69 @@ namespace Pwamp.Admin.Controls
             try
             {
                 btnStart.Enabled = false;
-                UpdateStatus(STATUS_STARTING);
+                UpdateStatus(ServerStatus.Starting);
                 bool success = await ServerManager.StartAsync();
                 if (success)
                 {
-                    UpdateStatus(STATUS_RUNNING);
+                    UpdateStatus(ServerStatus.Running);
                     btnStop.Enabled = true;
                     btnStart.Enabled = false;
                 }
                 else
                 {
                     btnStart.Enabled = true;
-                    UpdateStatus(STATUS_STOPPED);                   
+                    UpdateStatus(ServerStatus.Stopped);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error starting Apache: " + ex.Message, "Error",
+                MessageBox.Show($"Error starting {ServiceName}: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnStart.Enabled = true;
-                UpdateStatus(STATUS_STOPPED);                
+                UpdateStatus(ServerStatus.Stopped);
             }
         }
-        protected void UpdateStatus(string status)
+
+        protected void UpdateStatus(ServerStatus status)
         {
             lblStatus.Text = $"{status}";
             lblStatus.Refresh();
-            if (status == STATUS_RUNNING)
-            {                
-                pcbServerStatus.BackColor = Color.Green;
-                lblStatus.ForeColor = Color.DarkBlue;
-                lblStatus.BackColor= Color.LightGreen;
 
-            }
-            else
+            switch (status)
             {
-                pcbServerStatus.BackColor = Color.Red;
-                lblStatus.ForeColor = Color.Red;
-                lblStatus.BackColor = Color.White;
+                case ServerStatus.Stopped:
+                    pcbServerStatus.BackColor = Color.Red;
+                    lblStatus.ForeColor = Color.Red;
+                    lblStatus.BackColor = Color.White;
+                    break;
+                case ServerStatus.Running:
+                    pcbServerStatus.BackColor = Color.Green;
+                    lblStatus.ForeColor = Color.DarkBlue;
+                    lblStatus.BackColor = Color.FromArgb(200, 255, 200);
+                    break;
+                case ServerStatus.Stopping:
+                    pcbServerStatus.BackColor = Color.Orange;
+                    lblStatus.ForeColor = Color.Red;
+                    lblStatus.BackColor = Color.Orange;
+                    break;
+                case ServerStatus.Starting:
+
+                    break;
+                case ServerStatus.Error:
+
+                    break;
             }
         }
-        protected virtual void AddLog(string module, string log, LogType logType = LogType.Default)
+
+
+        protected virtual void LogMessage(string serverModule, string log, LogType logType = LogType.Default)
         {
-            MainForm.Instance?.AddLog(module, log, logType);
+            MainForm.Instance?.AddLog(serverModule, log, logType);
         }
 
-        protected virtual void AddLog(string log, LogType logType = LogType.Default)
+        protected virtual void LogMessage(string log, LogType logType = LogType.Default)
         {
-            AddLog(ServiceName, log, logType);
+            LogMessage(ServiceName, log, logType);
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using Pwamp.Admin.Controllers;
-using Pwamp.Admin.Helpers;
+﻿using Frostybee.Pwamp.Controllers;
+using Frostybee.Pwamp.Enums;
+using Frostybee.Pwamp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Pwamp.Admin.MainForm;
+using static Frostybee.Pwamp.MainForm;
 
-namespace Pwamp.Admin.Controls
+namespace Frostybee.Pwamp.Controls
 {
     internal partial class MySqlControl : ServerControlBase, IDisposable
     {
@@ -22,7 +23,9 @@ namespace Pwamp.Admin.Controls
         {
             ServiceName = "MySQL";
             DisplayName = "MySQL DB Server";
-            lblServerIcon.Text = "🗄️"; // FontAwesome icon for server
+            // Default MySQL port, change if needed.
+            PortNumber = 3306; 
+            lblServerIcon.Text = "🗄️"; 
             
         }
         public void InitializeModule()
@@ -35,32 +38,36 @@ namespace Pwamp.Admin.Controls
             _mysqlManager.ErrorOccurred += LogError;
             _mysqlManager.StatusChanged += LogMessage;
 
-            AddLog($"Initializing {ServiceName}", LogType.Info);
+            LogMessage($"Initializing server settings... ", LogType.Info);
         }
 
         private void LogMessage(object sender, string message)
         {
             //AddLog(string.Format(LanguageManager._("{0} Service is disabled."), ModuleName), LogType.Debug);
-            AddLog(message, LogType.Info);
+            LogMessage(message, LogType.Info);
         }
 
         private void LogError(object sender, string message)
         {
-            AddLog(message, LogType.Error);
+            LogMessage(message, LogType.Error);
         }
          
-        public virtual void Dispose()
+        //public virtual void Dispose()
+        //{
+        //    if (_mysqlManager != null)
+        //    {
+        //        _mysqlManager.Dispose();
+        //        _mysqlManager = null;
+        //    }
+        //}
+
+        internal Task Dispose()
         {
             if (_mysqlManager != null)
             {
                 _mysqlManager.Dispose();
                 _mysqlManager = null;
             }
-        }
-
-        internal Task StopServer()
-        {
-            Dispose();
             return Task.CompletedTask;
         }
 

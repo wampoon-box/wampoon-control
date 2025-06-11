@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5EE00C4C-1062-4353-8170-E119B1F4F48E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Pwamp.Admin</RootNamespace>
-    <AssemblyName>Pwamp.Admin</AssemblyName>
+    <RootNamespace>Frostybee.Pwamp</RootNamespace>
+    <AssemblyName>PwampAdmin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -58,6 +58,7 @@
     <Compile Include="Source\Controllers\ApacheManager.cs" />
     <Compile Include="Source\Controllers\MySQLManager.cs" />
     <Compile Include="Source\Controllers\ServerManagerBase.cs" />
+    <Compile Include="Source\Enums\Enums.cs" />
     <Compile Include="Source\Helpers\LogMessageHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />
     <Compile Include="Source\UI\MySqlControl.cs">
@@ -127,7 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Source\Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="full_size_app_icon.ico" />

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pwamp.Admin.Helpers
+namespace Frostybee.Pwamp.Helpers
 {
     internal class NativeApi
     {

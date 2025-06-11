@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
-namespace Pwamp.Helpers
+namespace Frostybee.Helpers
 {
     public class SystemHelper
     {

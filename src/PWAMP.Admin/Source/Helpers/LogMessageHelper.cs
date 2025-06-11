@@ -1,21 +1,14 @@
-﻿using System;
+﻿using Frostybee.Pwamp.Enums;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pwamp.Admin.Helpers
+namespace Frostybee.Pwamp.Helpers
 {
-    public enum LogType
-    {
-        Default,
-        Info,
-        Error,
-        Debug,
-        DebugDetails
-    }
-
+    
     internal class LogMessageHelper
     {
         internal static Color GetLogColor(LogType logType)

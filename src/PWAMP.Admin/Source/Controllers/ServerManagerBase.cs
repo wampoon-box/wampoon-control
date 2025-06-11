@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pwamp.Admin.Controllers
+namespace Frostybee.Pwamp.Controllers
 {
     /// <summary>
     /// This class is intended to be a base class for server management functionality.

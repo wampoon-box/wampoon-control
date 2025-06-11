@@ -1,4 +1,4 @@
-﻿using Pwamp.Admin.Helpers;
+﻿using Frostybee.Pwamp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Pwamp.Admin.Controllers
+namespace Frostybee.Pwamp.Controllers
 {
     internal class ApacheManager : ServerManagerBase
     {

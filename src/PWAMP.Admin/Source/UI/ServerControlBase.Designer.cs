@@ -1,4 +1,4 @@
-﻿namespace Pwamp.Admin.Controls
+﻿namespace Frostybee.Pwamp.Controls
 {
     partial class ServerControlBase
     {
