@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Controllers\ApacheManager.cs" />
-    <Compile Include="Source\Controllers\AppBootstrap.cs" />
     <Compile Include="Source\Controllers\MySQLManager.cs" />
     <Compile Include="Source\Controllers\ServerManagerBase.cs" />
     <Compile Include="Source\Controllers\ServerManagerFactory.cs" />
