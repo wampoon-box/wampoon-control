@@ -1,4 +1,5 @@
-﻿using Frostybee.PwampAdmin.Controllers;
+﻿using Frostybee.Pwamp.Models;
+using Frostybee.PwampAdmin.Controllers;
 using Frostybee.PwampAdmin.Enums;
 using Frostybee.PwampAdmin.Helpers;
 using System;
@@ -14,10 +15,7 @@ namespace Frostybee.PwampAdmin.Controls
 {
     internal partial class MySqlControl : ServerControlBase, IDisposable
     {
-        MySQLManager _mysqlManager;
-
-        private string mysqlExecutablePath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\bin\mariadbd.exe"; // CHANGE THIS
-        private string mysqlConfigPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\mariadb\my.ini"; // CHANGE THIS
+        private MySQLManager _mysqlManager;
 
         public MySqlControl()
         {
@@ -31,8 +29,8 @@ namespace Frostybee.PwampAdmin.Controls
         public void InitializeModule()
         {
             lblServerTitle.Text = DisplayName;
-
-            _mysqlManager = new MySQLManager(mysqlExecutablePath, mysqlConfigPath);            
+            
+            _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLManager>(ServerDefinitions.MariaDB.Name);            
             ServerManager = _mysqlManager;
 
             _mysqlManager.ErrorOccurred += LogError;

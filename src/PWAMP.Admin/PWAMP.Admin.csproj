@@ -58,6 +58,7 @@
     <Compile Include="Source\Controllers\ApacheManager.cs" />
     <Compile Include="Source\Controllers\MySQLManager.cs" />
     <Compile Include="Source\Controllers\ServerManagerBase.cs" />
+    <Compile Include="Source\Controllers\ServerManagerFactory.cs" />
     <Compile Include="Source\Controllers\ServerPathManager.cs" />
     <Compile Include="Source\Enums\Enums.cs" />
     <Compile Include="Source\Helpers\ServerConfigHelper.cs" />
@@ -65,7 +66,7 @@
     <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />
     <Compile Include="Source\Models\ServerConfigInfo.cs" />
-    <Compile Include="Source\Models\ServerDefinition.cs" />
+    <Compile Include="Source\Models\ServerDefinitionInfo.cs" />
     <Compile Include="Source\Models\ServerDefinitions.cs" />
     <Compile Include="Source\Models\ServerPathInfo.cs" />
     <Compile Include="Source\UI\Controls\MySqlControl.cs">

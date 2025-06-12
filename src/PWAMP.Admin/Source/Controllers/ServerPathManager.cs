@@ -29,7 +29,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Initializes the server paths based on the known directory structure
+        /// Initializes the server paths based on the known directory structure.
         /// </summary>
         private static void InitializeServerPaths()
         {
@@ -61,7 +61,7 @@ namespace Frostybee.PwampAdmin.Controllers
                     IsAvailable = File.Exists(executablePath)
                 };
 
-                // Compute special paths
+                // Compute special paths.
                 foreach (var specialDir in definition.SpecialDirectories)
                 {
                     var specialPath = specialDir.Value.Contains(".exe")
@@ -76,7 +76,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets the path information for a specific server
+        /// Gets the path information for a specific server.
         /// </summary>
         public static ServerPathInfo GetServerPath(string serverName)
         {
@@ -88,7 +88,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets all available server path information
+        /// Gets all available server path information.
         /// </summary>
         public static Dictionary<string, ServerPathInfo> GetAllServerPaths()
         {
@@ -96,7 +96,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets only the servers that are available (executable exists)
+        /// Gets only the servers that are available (executable exists).
         /// </summary>
         public static List<ServerPathInfo> GetAvailableServers()
         {
@@ -104,7 +104,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets the executable path for a server
+        /// Gets the executable path for a server.
         /// </summary>
         public static string GetExecutablePath(string serverName)
         {
@@ -113,7 +113,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets the configuration file path for a server
+        /// Gets the configuration file path for a server.
         /// </summary>
         public static string GetConfigPath(string serverName)
         {
@@ -122,7 +122,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets a special path for a server (e.g., DocumentRoot, Data directory, etc.)
+        /// Gets a special path for a server (e.g., DocumentRoot, Data directory, etc.).
         /// </summary>
         public static string GetSpecialPath(string serverName, string pathType)
         {
@@ -135,7 +135,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Checks if a server is available (executable exists)
+        /// Checks if a server is available (executable exists).
         /// </summary>
         public static bool IsServerAvailable(string serverName)
         {
@@ -144,16 +144,16 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets the server directory (bin folder)
+        /// Gets the server directory (bin folder).
         /// </summary>
-        public static string GetServerDirectory(string serverName)
+        public static string GetServerBinDirectory(string serverName)
         {
             var serverPath = GetServerPath(serverName);
             return serverPath != null ? serverPath.ServerDirectory : null;
         }
 
         /// <summary>
-        /// Gets the server base directory (parent of bin folder)
+        /// Gets the server base directory (parent of bin folder).
         /// </summary>
         public static string GetServerBaseDirectory(string serverName)
         {
@@ -162,7 +162,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets a list of all configured server names
+        /// Gets a list of all configured server names.
         /// </summary>
         public static List<string> GetServerNames()
         {
@@ -170,7 +170,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Gets a list of available server names
+        /// Gets a list of available server names.
         /// </summary>
         public static List<string> GetAvailableServerNames()
         {
@@ -178,7 +178,7 @@ namespace Frostybee.PwampAdmin.Controllers
         }
 
         /// <summary>
-        /// Refreshes the availability status of all servers (re-checks if executables exist)
+        /// Refreshes the availability status of all servers (re-checks if executables exist).
         /// </summary>
         public static void RefreshServerAvailability()
         {
@@ -331,73 +331,5 @@ namespace Frostybee.PwampAdmin.Controllers
 
             return diagnostics;
         }
-    }
-
-    
-
-    /// <summary>
-    /// Extension methods for ServerManagerBase to work with the path manager
-    /// </summary>
-    public static class ServerManagerPathExtensions
-    {
-        /// <summary>
-        /// Creates a server manager instance using paths from the path manager
-        /// </summary>
-        public static T CreateFromPaths<T>(string serverName) where T : class
-        {
-            var pathInfo = ServerPathManager.GetServerPath(serverName);
-            if (pathInfo == null)
-                throw new ArgumentException(string.Format("Server configuration not found: {0}", serverName));
-
-            if (!pathInfo.IsAvailable)
-                throw new InvalidOperationException(string.Format("Server executable not found: {0}", pathInfo.ExecutablePath));
-
-            // Use reflection to create the server manager instance
-            return (T)Activator.CreateInstance(typeof(T), pathInfo.ExecutablePath, pathInfo.ConfigPath);
-        }
-
-        /// <summary>
-        /// Validates that a server is available before creating a manager
-        /// </summary>
-        public static bool CanCreateServerManager(string serverName)
-        {
-            return ServerPathManager.IsServerAvailable(serverName);
-        }
-    }
-
-    /// <summary>
-    /// Utility class for creating server managers with error handling
-    /// </summary>
-    public static class ServerManagerFactory
-    {
-        /// <summary>
-        /// Safely creates a server manager with proper error handling
-        /// </summary>
-        public static T CreateServerManager<T>(string serverName) where T : class
-        {
-            try
-            {
-                if (!ServerPathManager.IsServerAvailable(serverName))
-                {
-                    throw new InvalidOperationException(string.Format("Server '{0}' is not available. Check if the executable exists.", serverName));
-                }
-
-                return ServerManagerPathExtensions.CreateFromPaths<T>(serverName);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(string.Format("Failed to create server manager for '{0}': {1}", serverName, ex.Message), ex);
-            }
-        }
-
-        /// <summary>
-        /// Gets a list of servers that can be successfully created
-        /// </summary>
-        public static List<string> GetCreatableServers()
-        {
-            return ServerPathManager.GetServerNames()
-                .Where(ServerPathManager.IsServerAvailable)
-                .ToList();
-        }
-    }
+    }    
 }

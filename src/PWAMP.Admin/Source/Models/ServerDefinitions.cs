@@ -11,7 +11,7 @@ namespace Frostybee.Pwamp.Models
     /// </summary>
     public static class ServerDefinitions
     {
-        public static readonly ServerDefinition Apache = new ServerDefinition(
+        public static readonly ServerDefinitionInfo Apache = new ServerDefinitionInfo(
             name: "Apache",
             directory: "apache",
             executableName: "httpd.exe",
@@ -23,7 +23,7 @@ namespace Frostybee.Pwamp.Models
             }
         );
 
-        public static readonly ServerDefinition MariaDB = new ServerDefinition(
+        public static readonly ServerDefinitionInfo MariaDB = new ServerDefinitionInfo(
             name: "MariaDB",
             directory: "mariadb",
             executableName: "mysqld.exe",
@@ -45,15 +45,15 @@ namespace Frostybee.Pwamp.Models
         /// <summary>
         /// Gets all defined servers.
         /// </summary>
-        public static ServerDefinition[] GetAll()
+        public static ServerDefinitionInfo[] GetAll()
         {
-            return new ServerDefinition[] { Apache, MariaDB };
+            return new ServerDefinitionInfo[] { Apache, MariaDB };
         }
 
         /// <summary>
         /// Gets a server definition by name.
         /// </summary>
-        public static ServerDefinition GetByName(string name)
+        public static ServerDefinitionInfo GetByName(string name)
         {
             return GetAll().FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }

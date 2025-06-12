@@ -9,7 +9,7 @@ namespace Frostybee.Pwamp.Models
     /// <summary>
     /// Defines the static configuration for a server type.
     /// </summary>
-    public class ServerDefinition
+    public class ServerDefinitionInfo
     {
         public string Name { get; set; }
         public string Directory { get; set; }
@@ -17,7 +17,7 @@ namespace Frostybee.Pwamp.Models
         public string ConfigFile { get; set; }
         public Dictionary<string, string> SpecialDirectories { get; set; }
 
-        public ServerDefinition(string name, string directory, string executableName, string configFile = null, Dictionary<string, string> specialDirectories = null)
+        public ServerDefinitionInfo(string name, string directory, string executableName, string configFile = null, Dictionary<string, string> specialDirectories = null)
         {
             Name = name;
             Directory = directory;

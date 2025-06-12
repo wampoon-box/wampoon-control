@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Frostybee.PwampAdmin.Helpers;
-using Frostybee.PwampAdmin.Helpers;
 using Frostybee.PwampAdmin.Enums;
 
 namespace Frostybee.PwampAdmin
@@ -138,8 +137,6 @@ namespace Frostybee.PwampAdmin
                     if (result != DialogResult.Yes)
                     {
                         e.Cancel = true;
-
-                        
                     }
                     else 
                     {

@@ -78,7 +78,7 @@ namespace Frostybee.PwampAdmin.Helpers
         /// <summary>
         /// Gets the executable path for a server using its definition.
         /// </summary>
-        public static string GetExecutablePath(ServerDefinition serverDefinition)
+        public static string GetExecutablePath(ServerDefinitionInfo serverDefinition)
         {
             return serverDefinition != null ? GetExecutablePath(serverDefinition.Name) : null;
         }
@@ -86,7 +86,7 @@ namespace Frostybee.PwampAdmin.Helpers
         /// <summary>
         /// Gets the configuration path for a server using its definition.
         /// </summary>
-        public static string GetConfigPath(ServerDefinition serverDefinition)
+        public static string GetConfigPath(ServerDefinitionInfo serverDefinition)
         {
             return serverDefinition != null ? GetConfigPath(serverDefinition.Name) : null;
         }
@@ -94,7 +94,7 @@ namespace Frostybee.PwampAdmin.Helpers
         /// <summary>
         /// Gets a special path for a server using its definition.
         /// </summary>
-        public static string GetSpecialPath(ServerDefinition serverDefinition, string pathType)
+        public static string GetSpecialPath(ServerDefinitionInfo serverDefinition, string pathType)
         {
             return serverDefinition != null ? GetSpecialPath(serverDefinition.Name, pathType) : null;
         }
@@ -102,7 +102,7 @@ namespace Frostybee.PwampAdmin.Helpers
         /// <summary>
         /// Opens the configuration file for a server using its definition.
         /// </summary>
-        public static bool OpenConfigFile(ServerDefinition serverDefinition)
+        public static bool OpenConfigFile(ServerDefinitionInfo serverDefinition)
         {
             return serverDefinition != null && OpenConfigFile(serverDefinition.Name);
         }
@@ -110,7 +110,7 @@ namespace Frostybee.PwampAdmin.Helpers
         /// <summary>
         /// Checks if the configuration file can be opened for a server using its definition.
         /// </summary>
-        public static bool CanOpenConfigFile(ServerDefinition serverDefinition)
+        public static bool CanOpenConfigFile(ServerDefinitionInfo serverDefinition)
         {
             return serverDefinition != null && CanOpenConfigFile(serverDefinition.Name);
         }

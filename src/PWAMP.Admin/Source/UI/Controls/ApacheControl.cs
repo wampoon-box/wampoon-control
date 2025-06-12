@@ -1,4 +1,5 @@
-﻿using Frostybee.PwampAdmin.Controllers;
+﻿using Frostybee.Pwamp.Models;
+using Frostybee.PwampAdmin.Controllers;
 using Frostybee.PwampAdmin.Enums;
 using Frostybee.PwampAdmin.Helpers;
 using Frostybee.PwampAdmin.Helpers;
@@ -16,13 +17,7 @@ namespace Frostybee.PwampAdmin.Controls
 {
     internal partial class ApacheControl : ServerControlBase, IDisposable
     {
-        ApacheManager _apacheManager;
-                
-        //FIXME: Make these path dynamic or configurable based on the startup location of the current assembly.
-        private string apacheHttpdPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\bin\httpd.exe"; // CHANGE THIS
-
-        private string configPath = @"D:\Dev\my-repos\pwamp\pwamp-bundle\apps\apache\conf\httpd.conf"; // CHANGE THIS
-
+        private ApacheManager _apacheManager;
         public ApacheControl()
         {
             ServiceName = "Apache";
@@ -34,7 +29,8 @@ namespace Frostybee.PwampAdmin.Controls
         public void InitializeModule()
         {
             lblServerTitle.Text = DisplayName;
-            _apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+            _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);
+            //_apacheManager = new ApacheManager(apacheHttpdPath, configPath);
             _apacheManager.ErrorOccurred += LogError;
             _apacheManager.StatusChanged += LogMessage;
             ServerManager = _apacheManager;
