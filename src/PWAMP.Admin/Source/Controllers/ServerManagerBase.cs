@@ -17,6 +17,7 @@ namespace Frostybee.PwampAdmin.Controllers
         protected Process _serverProcess;
         protected string _executablePath;
         protected string _configPath;
+        private bool _disposed = false;
         public event EventHandler<string> StatusChanged;
         public event EventHandler<string> ErrorOccurred;
         public int? ProcessId => _serverProcess?.Id;
@@ -86,16 +87,16 @@ namespace Frostybee.PwampAdmin.Controllers
 
                 if (CanMonitorOutput)
                 {
-                    //ConfigOutputMonitoring();                    
+                    ConfigOutputMonitoring();                    
                 }
 
                 _serverProcess.Start();
 
                 if (CanMonitorOutput)
                 {
-                    LogMessage($"Congigure monitoring output...");
-                    //_serverProcess.BeginOutputReadLine();
-                    //  _serverProcess.BeginErrorReadLine();
+                    LogMessage($"Configure monitoring output...");
+                    _serverProcess.BeginOutputReadLine();
+                    _serverProcess.BeginErrorReadLine();
                 }
 
                 await Task.Delay(GetStartupDelay());
@@ -210,11 +211,30 @@ namespace Frostybee.PwampAdmin.Controllers
 
         public virtual void Dispose()
         {
+            if (_disposed)
+                return;
+
             if (IsRunning)
             {
-                Task.Run(async () => await StopAsync()).Wait(5000);
+                try
+                {
+                    StopAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                }
+                catch (Exception ex)
+                {
+                    LogError($"Error during disposal: {ex.Message}");
+                }
             }
-            _serverProcess?.Dispose();
+
+            if (_serverProcess != null)
+            {
+                _serverProcess.OutputDataReceived -= OnOutputDataReceived;
+                _serverProcess.ErrorDataReceived -= OnErrorDataReceived;
+                _serverProcess.Dispose();
+                _serverProcess = null;
+            }
+
+            _disposed = true;
         }
     }
 }

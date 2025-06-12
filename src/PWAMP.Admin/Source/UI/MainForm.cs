@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Frostybee.PwampAdmin.Helpers;
@@ -12,7 +13,11 @@ namespace Frostybee.PwampAdmin
 {
     public partial class MainForm : Form
     {
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool DestroyIcon(IntPtr hIcon);
+        
         public static MainForm Instance { get; private set; }
+        private IntPtr _iconHandle = IntPtr.Zero;
 
         public MainForm()
         {
@@ -23,7 +28,7 @@ namespace Frostybee.PwampAdmin
             
             MinimumSize = new Size(850, 790);
             StartPosition = FormStartPosition.Manual;
-             CenterToScreen();
+            CenterToScreen();
             SizeGripStyle = SizeGripStyle.Show;
 
             FormClosing += MainForm_FormClosing;
@@ -48,11 +53,8 @@ namespace Frostybee.PwampAdmin
                 using (MemoryStream ms = new MemoryStream(pwamp_icon))
                 using (Bitmap bitmap = new Bitmap(ms))
                 {
-                    IntPtr hIcon = bitmap.GetHicon();
-                    this.Icon = Icon.FromHandle(hIcon);
-
-                    // Optional: Clean up the handle when form closes
-                    // DestroyIcon(hIcon); // Requires [DllImport("user32.dll")]
+                    _iconHandle = bitmap.GetHicon();
+                    this.Icon = Icon.FromHandle(_iconHandle);
                 }
             }
             catch (Exception)
@@ -120,7 +122,7 @@ namespace Frostybee.PwampAdmin
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-         try
+            try
             {
                 // Clean up managers on application exit.
                 bool hasRunningServices = (_apacheModule != null && _apacheModule.IsRunning()) ||
@@ -134,16 +136,22 @@ namespace Frostybee.PwampAdmin
                         MessageBoxButtons.YesNoCancel,
                         MessageBoxIcon.Question);
 
-                    if (result != DialogResult.Yes)
+                    if (result == DialogResult.Cancel || result == DialogResult.No)
                     {
                         e.Cancel = true;
                     }
-                    else 
+                    else if (result == DialogResult.Yes)
                     {
                         e.Cancel = true;
                         StopRunningService();
                     }
-                    // If result == DialogResult.No, let the form close normally.
+                }
+                
+                // Clean up icon handle
+                if (_iconHandle != IntPtr.Zero)
+                {
+                    DestroyIcon(_iconHandle);
+                    _iconHandle = IntPtr.Zero;
                 }
             }
             catch (Exception ex)

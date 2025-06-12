@@ -26,7 +26,7 @@ namespace Frostybee.Pwamp.Models
         public static readonly ServerDefinitionInfo MariaDB = new ServerDefinitionInfo(
             name: "MariaDB",
             directory: "mariadb",
-            executableName: "mysqld.exe",
+            executableName: "mariadbd.exe",
             configFile: "my.ini",
             specialDirectories: new Dictionary<string, string>
             {

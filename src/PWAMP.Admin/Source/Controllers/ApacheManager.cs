@@ -43,8 +43,8 @@ namespace Frostybee.PwampAdmin.Controllers
                 // UseShellExecute = false is important for having a direct process handle
                 // and potentially for console control, though for GenerateConsoleCtrlEvent,
                 // we primarily need the process ID to attach to its console (if it has one).
-                UseShellExecute = false, // Set to true on purpose to allow setting WindowStyle to hidden.
-                //Arguments = GetStartArguments(),
+                UseShellExecute = false,
+                Arguments = GetStartArguments(),
                 //IMPORTANT:
                 // CreateNoWindow = true, // This would hide the Apache console window.
                 //
@@ -82,68 +82,57 @@ namespace Frostybee.PwampAdmin.Controllers
                     // The 0 means it's sent to all processes attached to the console that share
                     // the same CTRL+C signal handler (which httpd.exe running in console mode should).
                     bool ctrlCSent = NativeApi.GenerateConsoleCtrlEvent(NativeApi.CtrlTypes.CTRL_C_EVENT, 0);
-                    if (ctrlCSent)
-                    {
-
-                        // Wait for a moment for Apache to shut down
-                        // You might need to adjust the timeout.
-                        _serverProcess.WaitForExit(5000);
-                        //var shutdownCompleted = await Task.Run(() => _serverProcess.WaitForExit(5000));
-                        await Task.Delay(3000);
-                        if (_serverProcess.HasExited)
-                        {
-                            LogMessage("stopped successfully (Ctrl+C sent).");
-                            return true;
-                        }
-                        else
-                        {
-                            LogError("Ctrl+C signal sent, but Apache has not exited yet. It might be shutting down or requires manual intervention.");
-                        }
-                    }
-                    else
+                    if (!ctrlCSent)
                     {
                         LogError($"Failed to send Ctrl+C signal. Error code: {Marshal.GetLastWin32Error()}");
-                        //TODO: Force shutdown if Ctrl+C fails.
                         return false;
                     }
 
-                    // Re-enable Ctrl-C handling for our process if it was disabled.
-                    NativeApi.SetConsoleCtrlHandler(null, false);
+                    // Wait for a moment for Apache to shut down
+                    // You might need to adjust the timeout.
+                    _serverProcess.WaitForExit(5000);
+                    //var shutdownCompleted = await Task.Run(() => _serverProcess.WaitForExit(5000));
+                    await Task.Delay(3000);
+                    if (_serverProcess.HasExited)
+                    {
+                        LogMessage("stopped successfully (Ctrl+C sent).");
+                        return true;
+                    }
+                    else
+                    {
+                        LogError("Ctrl+C signal sent, but Apache has not exited yet. It might be shutting down or requires manual intervention.");
+                        return false;
+                    }
 
-                    // Detach from the console.
-                    NativeApi.FreeConsole();
                 }
                 else
                 {
                     // If Apache was started with CreateNoWindow = true, or if it's a GUI app,
                     // or if it's running as a service, AttachConsole will fail.
-                    MessageBox.Show($"Could not attach to Apache's console. Error code: {Marshal.GetLastWin32Error()}. " +
-                                    "Ensure Apache was started as a console application from this tool.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    LogError($"Could not attach to Apache's console. Error code: {Marshal.GetLastWin32Error()}. " +
+                                    "Ensure Apache was started as a console application from this tool.");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error stopping Apache: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogError("Error stopping Apache: " + ex.Message);
+                return false;
             }
             finally
             {
-                if (!IsRunning)
+                try
                 {
-                    //FIXME: dispose and create a new process instance?
-                    // Or just stop the current process and dispose it upon closing the application?s
-                    _serverProcess.Dispose();
-                    _serverProcess = null;
+                    // Re-enable Ctrl-C handling for our process if it was disabled.
+                    NativeApi.SetConsoleCtrlHandler(null, false);
+                    
+                    // Detach from the console.
+                    NativeApi.FreeConsole();
                 }
-                //else if (IsRunning) // Still running
-                //{
-                //    // Keep stop button enabled if it didn't exit
-                //    btnStopApache.Enabled = true;
-                //}
-                //else // Process was null
-                //{
-                //    btnStartApache.Enabled = true;
-                //    btnStopApache.Enabled = false;
-                //}
+                catch (Exception ex)
+                {
+                    LogError($"Error cleaning up console resources: {ex.Message}");
+                }
             }
             return false;
         }
