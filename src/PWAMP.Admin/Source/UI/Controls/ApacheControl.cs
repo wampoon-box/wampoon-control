@@ -2,7 +2,6 @@
 using Frostybee.PwampAdmin.Controllers;
 using Frostybee.PwampAdmin.Enums;
 using Frostybee.PwampAdmin.Helpers;
-using Frostybee.PwampAdmin.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,25 +17,38 @@ namespace Frostybee.PwampAdmin.Controls
     internal partial class ApacheControl : ServerControlBase, IDisposable
     {
         private ApacheManager _apacheManager;
+        private readonly AppBootstrap _appBootstrap;
         public ApacheControl()
         {
             ServiceName = "Apache";
             DisplayName = "Apache HTTP Server";
             PortNumber = 80; // Default HTTP port, change if needed.
             lblServerIcon.Text = "🌐";
+            _appBootstrap = new AppBootstrap();
         }
 
         public void InitializeModule()
         {
-            lblServerTitle.Text = DisplayName;
-            _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);
-            //_apacheManager = new ApacheManager(apacheHttpdPath, configPath);
-            _apacheManager.ErrorOccurred += LogError;
-            _apacheManager.StatusChanged += LogMessage;
-            ServerManager = _apacheManager;
-            
+            try
+            {
+                lblServerTitle.Text = DisplayName;
+                // We need to update the Apache and phpMyAdmin paths to ensure they are properly set up in case
+                // the application has been moved to a different directory/drive.
+                _appBootstrap.UpdateApacheConfig();
+
+                _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);
+                //_apacheManager = new ApacheManager(apacheHttpdPath, configPath);
+                _apacheManager.ErrorOccurred += LogError;
+                _apacheManager.StatusChanged += LogMessage;
+                ServerManager = _apacheManager;
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"An error occurred while initializing the Apache module: {ex.Message}", LogType.Error);
+            }
+
             ValidateServerConfig();
-            
+
         }
 
         private void ValidateServerConfig()

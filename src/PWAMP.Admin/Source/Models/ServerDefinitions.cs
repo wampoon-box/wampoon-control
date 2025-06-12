@@ -18,7 +18,7 @@ namespace Frostybee.Pwamp.Models
             configFile: "conf/httpd.conf",
             specialDirectories: new Dictionary<string, string>
             {
-            { "DocumentRoot", "htdocs" },
+            { "DocumentRoot", "..\\htdocs" },
             { "Logs", "logs" }
             }
         );

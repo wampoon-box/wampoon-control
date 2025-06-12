@@ -22,10 +22,9 @@ namespace Frostybee.PwampAdmin.Controllers
 
         public AppBootstrap()
         {
-            ConfigureApache();
         }
 
-        private void ConfigureApache()
+        public void UpdateApacheConfig()
         {
             // Get the directory where the application executable is located.
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
@@ -40,6 +39,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
 
             // Validate that we have a valid directory.
+            if (string.IsNullOrEmpty(_currentDirectory))
             {
                 throw new InvalidOperationException("Unable to determine application directory");
             }
@@ -53,24 +53,31 @@ namespace Frostybee.PwampAdmin.Controllers
             {
                 _apacheDirectory = Path.Combine(_currentDirectory, "apps", "apache");
             }
+            
+            _documentRoot = Path.Combine(_currentDirectory, "htdocs");
 
-            if (string.IsNullOrEmpty(_documentRoot))
-            {
-                _documentRoot = Path.Combine(_currentDirectory, "htdocs");
-            }
+            //if (string.IsNullOrEmpty(_documentRoot))
+            //{
+            //    _documentRoot = Path.Combine(_currentDirectory, "htdocs");
+            //    _documentRoot = Path.Combine(_currentDirectory, "htdocs");
+            //    _documentRoot = Path.GetFullPath(_documentRoot);
+            //}
 
             // Set up PhpMyAdmin path (assuming it's in apps/phpmyadmin).
             _phpMyAdminDirectory = Path.Combine(_currentDirectory, "apps", "phpmyadmin");
 
             _customConfigPath = Path.Combine(_apacheDirectory, "conf", "custom_path.conf");
             _httpdAliasConfigPath = Path.Combine(_apacheDirectory, "conf", "httpd-alias.conf");
+
+            CreateCustomConfiguration();
+            UpdateHttpdAliasConfiguration();
         }
 
         /// <summary>
         /// Creates the custom Apache configuration file with path definitions.
         /// </summary>
         /// <returns>True if the configuration file was created successfully, false otherwise.</returns>
-        public bool CreateCustomConfiguration()
+        private bool CreateCustomConfiguration()
         {
             try
             {
@@ -126,52 +133,6 @@ namespace Frostybee.PwampAdmin.Controllers
         /// Checks if the httpd-alias.conf file exists.
         /// </summary>
         public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
-
-        /// <summary>
-        /// Updates only the httpd-alias.conf file without affecting other configurations.
-        /// </summary>
-        /// <returns>True if the file was updated successfully, false otherwise.</returns>
-        public bool UpdateHttpdAliasConfigurationOnly()
-        {
-            return UpdateHttpdAliasConfiguration();
-        }
-
-        /// <summary>
-        /// Gets the current PMAROOT path from the httpd-alias.conf file.
-        /// </summary>
-        /// <returns>The current PMAROOT path, or null if not found.</returns>
-        public string GetCurrentPmaRootPath()
-        {
-            try
-            {
-                if (!File.Exists(_httpdAliasConfigPath))
-                {
-                    return null;
-                }
-
-                var lines = File.ReadAllLines(_httpdAliasConfigPath);
-                foreach (var line in lines)
-                {
-                    var trimmedLine = line.Trim();
-                    if (trimmedLine.StartsWith("Define PMAROOT", StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Extract the path from the Define statement
-                        var parts = trimmedLine.Split(new char[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length >= 2)
-                        {
-                            return parts[1]; // The path is between quotes
-                        }
-                    }
-                }
-
-                return null;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error reading PMAROOT path: {ex.Message}");
-                return null;
-            }
-        }
 
         /// <summary>
         /// Updates the httpd-alias.conf file to use the correct PMAROOT path.
