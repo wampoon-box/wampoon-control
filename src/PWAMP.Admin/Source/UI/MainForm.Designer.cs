@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp
+namespace Frostybee.PwampAdmin
 {
     partial class MainForm
     {
@@ -43,8 +43,8 @@ namespace Frostybee.Pwamp
             this.headerPanel = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
             this.subtitleLabel = new System.Windows.Forms.Label();
-            this._mySqlModule = new Frostybee.Pwamp.Controls.MySqlControl();
-            this._apacheModule = new Frostybee.Pwamp.Controls.ApacheControl();
+            this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
+            this._apacheModule = new Frostybee.PwampAdmin.Controls.ApacheControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.grpHelpers = new System.Windows.Forms.GroupBox();

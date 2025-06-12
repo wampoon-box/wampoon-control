@@ -1,4 +1,4 @@
-﻿using Frostybee.Pwamp.Helpers;
+﻿using Frostybee.PwampAdmin.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp.Controllers
+namespace Frostybee.PwampAdmin.Controllers
 {
     internal class ApacheManager : ServerManagerBase
     {
@@ -89,7 +89,7 @@ namespace Frostybee.Pwamp.Controllers
                         // You might need to adjust the timeout.
                         _serverProcess.WaitForExit(5000);
                         //var shutdownCompleted = await Task.Run(() => _serverProcess.WaitForExit(5000));
-                        await Task.Delay(500);
+                        await Task.Delay(3000);
                         if (_serverProcess.HasExited)
                         {
                             LogMessage("stopped successfully (Ctrl+C sent).");

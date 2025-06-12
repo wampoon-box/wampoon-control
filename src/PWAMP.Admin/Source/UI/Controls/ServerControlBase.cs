@@ -1,6 +1,6 @@
-﻿using Frostybee.Pwamp.Controllers;
-using Frostybee.Pwamp.Enums;
-using Frostybee.Pwamp.Helpers;
+﻿using Frostybee.PwampAdmin.Controllers;
+using Frostybee.PwampAdmin.Enums;
+using Frostybee.PwampAdmin.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Frostybee.Pwamp.MainForm;
+using static Frostybee.PwampAdmin.MainForm;
 
-namespace Frostybee.Pwamp.Controls
+namespace Frostybee.PwampAdmin.Controls
 {
     public partial class ServerControlBase : UserControl
     {        
@@ -111,16 +111,16 @@ namespace Frostybee.Pwamp.Controls
             switch (status)
             {
                 case ServerStatus.Stopped:
-                    UpdateControlStyle(Color.Red, Color.DarkRed, Color.FromArgb(255, 200, 200));
+                    ApplyControlStyle(Color.Red, Color.DarkRed, Color.WhiteSmoke);
                     break;
                 case ServerStatus.Running:
-                    UpdateControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200)); 
+                    ApplyControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200)); 
                     break;
                 case ServerStatus.Stopping:
-                    UpdateControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
+                    ApplyControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
                     break;
                 case ServerStatus.Starting:
-                    UpdateControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
+                    ApplyControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
                     break;
                 case ServerStatus.Error:
 
@@ -128,7 +128,7 @@ namespace Frostybee.Pwamp.Controls
             }
         }
        
-        private void UpdateControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
+        private void ApplyControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
         {
             pcbServerStatus.BackColor = statusColor;
             lblStatus.ForeColor = lblForeColor;

@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Frostybee.Helpers;
-using Frostybee.Models;
+using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.Models;
 
 namespace Frostybee.Forms
 {

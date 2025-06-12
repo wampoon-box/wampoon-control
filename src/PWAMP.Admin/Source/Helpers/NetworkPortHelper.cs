@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Frostybee.Pwamp.Source.Helpers
+namespace Frostybee.PwampAdmin.Helpers
 {
     internal class NetworkPortHelper
     {

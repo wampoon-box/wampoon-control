@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5EE00C4C-1062-4353-8170-E119B1F4F48E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Frostybee.Pwamp</RootNamespace>
+    <RootNamespace>Frostybee.PwampAdmin</RootNamespace>
     <AssemblyName>PwampAdmin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -58,19 +58,26 @@
     <Compile Include="Source\Controllers\ApacheManager.cs" />
     <Compile Include="Source\Controllers\MySQLManager.cs" />
     <Compile Include="Source\Controllers\ServerManagerBase.cs" />
+    <Compile Include="Source\Controllers\ServerPathManager.cs" />
     <Compile Include="Source\Enums\Enums.cs" />
-    <Compile Include="Source\Helpers\LogMessageHelper.cs" />
+    <Compile Include="Source\Helpers\ServerConfigHelper.cs" />
+    <Compile Include="Source\Helpers\ServerHelper.cs" />
+    <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />
-    <Compile Include="Source\UI\MySqlControl.cs">
+    <Compile Include="Source\Models\ServerConfigInfo.cs" />
+    <Compile Include="Source\Models\ServerDefinition.cs" />
+    <Compile Include="Source\Models\ServerDefinitions.cs" />
+    <Compile Include="Source\Models\ServerPathInfo.cs" />
+    <Compile Include="Source\UI\Controls\MySqlControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\UI\ApacheControl.cs">
+    <Compile Include="Source\UI\Controls\ApacheControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\UI\ServerControlBase.cs">
+    <Compile Include="Source\UI\Controls\ServerControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\UI\ServerControlBase.Designer.cs">
+    <Compile Include="Source\UI\Controls\ServerControlBase.Designer.cs">
       <DependentUpon>ServerControlBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\UI\SettingsForm.cs">
@@ -81,10 +88,10 @@
     </Compile>
     <Compile Include="Source\Helpers\SystemHelper.cs" />
     <Compile Include="Source\Helpers\NativeApi.cs" />
-    <Compile Include="Source\MainForm.cs">
+    <Compile Include="Source\UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\MainForm.Designer.cs">
+    <Compile Include="Source\UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Models\Settings.cs" />
@@ -100,16 +107,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Source\MainForm.resx">
+    <EmbeddedResource Include="Source\UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\UI\ApacheControl.resx">
+    <EmbeddedResource Include="Source\UI\Controls\ApacheControl.resx">
       <DependentUpon>ApacheControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\UI\MySqlControl.resx">
+    <EmbeddedResource Include="Source\UI\Controls\MySqlControl.resx">
       <DependentUpon>MySqlControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\UI\ServerControlBase.resx">
+    <EmbeddedResource Include="Source\UI\Controls\ServerControlBase.resx">
       <DependentUpon>ServerControlBase.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Notes.md" />

@@ -1,4 +1,4 @@
-﻿using Frostybee.Pwamp.Enums;
+﻿using Frostybee.PwampAdmin.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Frostybee.Pwamp.Helpers
+namespace Frostybee.PwampAdmin.Helpers
 {
     
-    internal class LogMessageHelper
+    internal class UiHelper
     {
         internal static Color GetLogColor(LogType logType)
         {

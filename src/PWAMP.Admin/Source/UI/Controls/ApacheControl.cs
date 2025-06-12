@@ -1,7 +1,7 @@
-﻿using Frostybee.Pwamp.Controllers;
-using Frostybee.Pwamp.Enums;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Source.Helpers;
+﻿using Frostybee.PwampAdmin.Controllers;
+using Frostybee.PwampAdmin.Enums;
+using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Frostybee.Pwamp.MainForm;
+using static Frostybee.PwampAdmin.MainForm;
 
-namespace Frostybee.Pwamp.Controls
+namespace Frostybee.PwampAdmin.Controls
 {
     internal partial class ApacheControl : ServerControlBase, IDisposable
     {

@@ -5,12 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Source.Helpers;
-using Frostybee.Helpers;
-using Frostybee.Pwamp.Enums;
+using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.Enums;
 
-namespace Frostybee.Pwamp
+namespace Frostybee.PwampAdmin
 {
     public partial class MainForm : Form
     {
@@ -88,7 +87,7 @@ namespace Frostybee.Pwamp
         {
             if (_logTextBox == null) return;
 
-            Color textColor = LogMessageHelper.GetLogColor(logType);
+            Color textColor = UiHelper.GetLogColor(logType);
 
             _logTextBox.SelectionStart = _logTextBox.TextLength;
             _logTextBox.SelectionLength = 0;

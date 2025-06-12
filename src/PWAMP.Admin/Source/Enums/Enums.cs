@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Frostybee.Pwamp.Enums
+namespace Frostybee.PwampAdmin.Enums
 {
     public enum ServerStatus
     {

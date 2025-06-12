@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Frostybee.Models
+namespace Frostybee.PwampAdmin.Models
 {
     public class Settings
     {
