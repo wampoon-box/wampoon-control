@@ -18,7 +18,8 @@ namespace Frostybee.PwampAdmin.Controls
     {        
         protected string ServiceName { get; set; }
         protected string DisplayName { get; set; }
-        protected int PortNumber { get; set; }
+        protected int PortNumber { get; set; } 
+        protected int ProcessId { get; set; } 
         internal ServerManagerBase ServerManager { get; set; }
 
         public ServerControlBase()

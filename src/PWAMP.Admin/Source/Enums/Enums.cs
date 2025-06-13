@@ -19,6 +19,7 @@ namespace Frostybee.PwampAdmin.Enums
         Default,
         Info,
         Error,
+        Warning,
         Debug,
         DebugDetails
     }

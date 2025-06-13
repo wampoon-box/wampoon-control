@@ -28,15 +28,22 @@ namespace Frostybee.PwampAdmin.Controls
         }
         public void InitializeModule()
         {
-            lblServerTitle.Text = DisplayName;
-            
-            _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLManager>(ServerDefinitions.MariaDB.Name);            
-            ServerManager = _mysqlManager;
+            try
+            {
+                lblServerTitle.Text = DisplayName;
+                
+                _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLManager>(ServerDefinitions.MariaDB.Name);            
+                ServerManager = _mysqlManager;
 
-            _mysqlManager.ErrorOccurred += LogError;
-            _mysqlManager.StatusChanged += LogMessage;
+                _mysqlManager.ErrorOccurred += LogError;
+                _mysqlManager.StatusChanged += LogMessage;
 
-            LogMessage($"Initializing server settings... ", LogType.Info);
+                LogMessage($"Initializing server settings... ", LogType.Info);
+            }
+            catch (Exception ex)
+            {
+                LogMessage(ex.Message, LogType.Error);
+            }
         }
 
         private void LogMessage(object sender, string message)
@@ -72,6 +79,65 @@ namespace Frostybee.PwampAdmin.Controls
         internal bool IsRunning()
         {
             return _mysqlManager != null && _mysqlManager.IsRunning;
+        }
+
+        private bool CheckPort(int port, bool showDialog = true)
+        {
+            if (NetworkPortHelper.IsPortInUse(port))
+            {
+                if (showDialog)
+                {
+                    MessageBox.Show($"Port {port} is in use. MySQL server cannot be started.", "Port In Use",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return false;
+            }
+            return true;
+        }
+
+        protected override async void BtnStart_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckPort(PortNumber, false))
+                {
+                    LogMessage($"Port {PortNumber} is in use. Cannot start {ServiceName}.", LogType.Warning);
+                    MessageBox.Show($"Port {PortNumber} is in use. Please close the application using this port and try again.", 
+                                  "Port In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (ServerManager == null)
+                {
+                    LogMessage("Server manager is not initialized. Attempting to reinitialize...", LogType.Warning);
+                    
+                    try
+                    {
+                        _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLManager>(ServerDefinitions.MariaDB.Name);
+                        _mysqlManager.ErrorOccurred += LogError;
+                        _mysqlManager.StatusChanged += LogMessage;
+                        ServerManager = _mysqlManager;
+                        LogMessage("Server manager reinitialized successfully.", LogType.Info);
+                    }
+                    catch (Exception initEx)
+                    {
+                        LogMessage($"Failed to reinitialize server manager: {initEx.Message}", LogType.Error);
+                        MessageBox.Show($"Cannot start {ServiceName}: Server manager initialization failed.\n\n{initEx.Message}", 
+                                      "Initialization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
+                base.BtnStart_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error starting {ServiceName}: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error starting {ServiceName}: {ex.Message}", "Startup Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnStart.Enabled = true;
+                UpdateStatus(ServerStatus.Stopped);
+            }
         }        
     }
 }

@@ -33,9 +33,9 @@
             this.lblServerTitle = new System.Windows.Forms.Label();
             this.pcbServerStatus = new System.Windows.Forms.PictureBox();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnRestart = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.pnlControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).BeginInit();
             this.SuspendLayout();
@@ -50,9 +50,10 @@
             this.pnlControls.Controls.Add(this.btnStart);
             this.pnlControls.Controls.Add(this.btnStop);
             this.pnlControls.Controls.Add(this.btnRestart);
-            this.pnlControls.Location = new System.Drawing.Point(3, 3);
+            this.pnlControls.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlControls.Location = new System.Drawing.Point(0, 0);
             this.pnlControls.Name = "pnlControls";
-            this.pnlControls.Size = new System.Drawing.Size(356, 139);
+            this.pnlControls.Size = new System.Drawing.Size(361, 145);
             this.pnlControls.TabIndex = 2;
             // 
             // lblServerIcon
@@ -72,9 +73,9 @@
             this.lblServerTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.lblServerTitle.Location = new System.Drawing.Point(68, 10);
             this.lblServerTitle.Name = "lblServerTitle";
-            this.lblServerTitle.Size = new System.Drawing.Size(140, 25);
+            this.lblServerTitle.Size = new System.Drawing.Size(127, 25);
             this.lblServerTitle.TabIndex = 1;
-            this.lblServerTitle.Text = "Apache Server";
+            this.lblServerTitle.Text = "Server Name";
             // 
             // pcbServerStatus
             // 
@@ -95,20 +96,6 @@
             this.lblStatus.Size = new System.Drawing.Size(66, 19);
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "Stopped";
-            // 
-            // btnStart
-            // 
-            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(96)))));
-            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnStart.ForeColor = System.Drawing.Color.White;
-            this.btnStart.Location = new System.Drawing.Point(20, 90);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(100, 35);
-            this.btnStart.TabIndex = 4;
-            this.btnStart.Text = "▶️ Start";
-            this.btnStart.UseVisualStyleBackColor = false;
             // 
             // btnStop
             // 
@@ -139,13 +126,28 @@
             this.btnRestart.Text = "🔄 Restart";
             this.btnRestart.UseVisualStyleBackColor = false;
             // 
+            // btnStart
+            // 
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(96)))));
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStart.ForeColor = System.Drawing.Color.White;
+            this.btnStart.Location = new System.Drawing.Point(20, 90);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(100, 35);
+            this.btnStart.TabIndex = 4;
+            this.btnStart.Text = "▶️ Start";
+            this.btnStart.UseVisualStyleBackColor = false;
+            // 
             // ServerControlBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.pnlControls);
             this.Name = "ServerControlBase";
-            this.Size = new System.Drawing.Size(368, 159);
+            this.Size = new System.Drawing.Size(361, 145);
             this.pnlControls.ResumeLayout(false);
             this.pnlControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).EndInit();

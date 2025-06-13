@@ -86,13 +86,18 @@ namespace Frostybee.PwampAdmin.Controls
             //AddLog(LanguageManager._("Checking for required tools..."), LogType.Debug);
         }
 
-        private void CheckPort(int port)
+        private bool CheckPort(int port, bool showDialog = true)
         {
             if (NetworkPortHelper.IsPortInUse(port))
             {
-                MessageBox.Show($"Port {port} is in use.", "Port Status",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (showDialog)
+                {
+                    MessageBox.Show($"Port {port} is in use. Apache server cannot be started.", "Port In Use",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return false;
             }
+            return true;
         }
 
         private void LogMessage(object sender, string message)
@@ -128,6 +133,52 @@ namespace Frostybee.PwampAdmin.Controls
         internal bool IsRunning()
         {
             return _apacheManager != null && _apacheManager.IsRunning;
+        }
+
+        protected override async void BtnStart_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckPort(PortNumber, false))
+                {
+                    LogMessage($"Port {PortNumber} is in use. Cannot start {ServiceName}.", LogType.Warning);
+                    MessageBox.Show($"Port {PortNumber} is in use. Please close the application using this port and try again.",
+                                  "Port In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (ServerManager == null)
+                {
+                    LogMessage("Server manager is not initialized. Attempting to reinitialize...", LogType.Debug);
+                    
+                    try
+                    {
+                        _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);
+                        _apacheManager.ErrorOccurred += LogError;
+                        _apacheManager.StatusChanged += LogMessage;
+                        ServerManager = _apacheManager;
+                        LogMessage("Server manager reinitialized successfully.", LogType.Info);
+                    }
+                    catch (Exception initEx)
+                    {
+                        LogMessage($"Failed to reinitialize server manager: {initEx.Message}", LogType.Error);
+                        MessageBox.Show($"Cannot start {ServiceName}: Server manager initialization failed.\n\n{initEx.Message}", 
+                                      "Initialization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                              
+
+                base.BtnStart_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error starting {ServiceName}: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error starting {ServiceName}: {ex.Message}", "Startup Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnStart.Enabled = true;
+                UpdateStatus(ServerStatus.Stopped);
+            }
         }
 
         #region Apache Configuration Methods (merged from AppBootstrap)
@@ -359,6 +410,7 @@ namespace Frostybee.PwampAdmin.Controls
         public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
 
         #endregion
+
 
     }
 }
