@@ -19,7 +19,6 @@ namespace Frostybee.PwampAdmin.Controls
     {
         private ApacheManager _apacheManager;
         // Apache and phpMyAdmin-related paths.
-        private string _currentDirectory;
         private string _apacheDirectory;
         private string _documentRoot;
         private string _customConfigPath;
@@ -188,50 +187,26 @@ namespace Frostybee.PwampAdmin.Controls
         /// </summary>
         public void UpdateApacheConfig()
         {
-            // Get the directory where the application executable is located.
-            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            if (string.IsNullOrEmpty(assemblyLocation))
-            {
-                // Fallback to current directory if assembly location is not available.
-                _currentDirectory = Directory.GetCurrentDirectory();
-            }
-            else
-            {
-                _currentDirectory = Path.GetDirectoryName(assemblyLocation);
-            }
-
-            // Validate that we have a valid directory.
-            if (string.IsNullOrEmpty(_currentDirectory))
-            {
-                throw new InvalidOperationException("Unable to determine application directory");
-            }
-
-            // Use ServerPathManager to get Apache paths.
             _apacheDirectory = ServerPathManager.GetServerBaseDirectory("Apache");
-
-            // If ServerPathManager doesn't return paths, fall back to manual construction.
             if (string.IsNullOrEmpty(_apacheDirectory))
             {
-                _apacheDirectory = Path.Combine(_currentDirectory, "apps", "apache");
+                throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
             }
-            
-            _documentRoot = Path.Combine(_currentDirectory, "htdocs");
-
-            // Set up PhpMyAdmin path (assuming it's in apps/phpmyadmin).
-            _phpMyAdminDirectory = Path.Combine(_currentDirectory, "apps", "phpmyadmin");
+            // Set up document root and PhpMyAdmin paths.            
+            _phpMyAdminDirectory = ServerPathManager.GetServerBaseDirectory(ServerDefinitions.phpMyAdmin.Name) ?? 
+                                   Path.Combine(ServerPathManager.ApplicationDirectory, "apps", ServerDefinitions.phpMyAdmin.Name);
 
             _customConfigPath = Path.Combine(_apacheDirectory, "conf", "custom_path.conf");
             _httpdAliasConfigPath = Path.Combine(_apacheDirectory, "conf", "httpd-alias.conf");
 
-            CreateCustomConfiguration();
-            UpdateHttpdAliasConfiguration();
+            ApplyCustomConfiguration();
         }
 
         /// <summary>
         /// Creates the custom Apache configuration file with path definitions.
         /// </summary>
         /// <returns>True if the configuration file was created successfully, false otherwise.</returns>
-        private bool CreateCustomConfiguration()
+        private bool ApplyCustomConfiguration()
         {
             try
             {
@@ -256,7 +231,7 @@ namespace Frostybee.PwampAdmin.Controls
                 // Create the custom configuration content.
                 var configContent = new StringBuilder();
                 configContent.AppendLine(string.Format("Define SRVROOT \"{0}\"", _apacheDirectory));
-                configContent.AppendLine(string.Format("Define DOCROOT \"{0}\"", _documentRoot));
+                configContent.AppendLine(string.Format("Define DOCROOT \"{0}\"", ServerPathManager.ApacheDocumentRoot));
 
                 // Write the configuration to the file.
                 File.WriteAllText(_customConfigPath, configContent.ToString(), Encoding.UTF8);
@@ -285,6 +260,12 @@ namespace Frostybee.PwampAdmin.Controls
         {
             try
             {
+                if (!Directory.Exists(_phpMyAdminDirectory))
+                {
+                    LogMessage("phpAdmin folder is not found...", LogType.Error);
+                    return false;
+                }
+
                 if (!File.Exists(_httpdAliasConfigPath))
                 {
                     LogMessage(string.Format("httpd-alias.conf file not found: {0}", _httpdAliasConfigPath), LogType.Error);
@@ -295,23 +276,23 @@ namespace Frostybee.PwampAdmin.Controls
                 var lines = File.ReadAllLines(_httpdAliasConfigPath);
                 bool updated = false;
 
-                // Update the first line if it contains the PMAROOT Define statement
+                // Update the first line if it contains the PMAROOT Define statement.
                 for (int i = 0; i < lines.Length; i++)
                 {
                     var line = lines[i].Trim();
                     if (line.StartsWith("Define PMAROOT", StringComparison.OrdinalIgnoreCase))
                     {
-                        // Replace the hardcoded path with the relative path
+                        // Replace the hardcoded path with the relative path.
                         lines[i] = string.Format("Define PMAROOT \"{0}\"", _phpMyAdminDirectory);
                         updated = true;
                         LogMessage(string.Format("Updated PMAROOT path to: {0}", _phpMyAdminDirectory), LogType.Info);
-                        break; // Only update the first occurrence
+                        break; // Only update the first occurrence.
                     }
                 }
 
                 if (updated)
                 {
-                    // Write the updated content back to the file
+                    // Write the updated content back to the file.
                     File.WriteAllLines(_httpdAliasConfigPath, lines, Encoding.UTF8);
                     return true;
                 }
@@ -336,21 +317,21 @@ namespace Frostybee.PwampAdmin.Controls
         {
             try
             {
-                // Use ServerPathManager to check if Apache is available
+                // Use ServerPathManager to check if Apache is available.
                 if (!ServerPathManager.IsServerAvailable("Apache"))
                 {
                     LogMessage("Apache is not available according to ServerPathManager", LogType.Error);
                     return false;
                 }
 
-                // Check if Apache directory exists
+                // Check if Apache directory exists.
                 if (!Directory.Exists(_apacheDirectory))
                 {
                     LogMessage(string.Format("Apache directory not found: {0}", _apacheDirectory), LogType.Error);
                     return false;
                 }
 
-                // Use ServerPathManager to get and validate Apache executable
+                // Use ServerPathManager to get and validate Apache executable.
                 var apacheExecutablePath = ServerPathManager.GetExecutablePath("Apache");
                 if (string.IsNullOrEmpty(apacheExecutablePath) || !File.Exists(apacheExecutablePath))
                 {
@@ -358,7 +339,7 @@ namespace Frostybee.PwampAdmin.Controls
                     return false;
                 }
 
-                // Use ServerPathManager to get and validate Apache configuration
+                // Use ServerPathManager to get and validate Apache configuration.
                 var apacheConfigPath = ServerPathManager.GetConfigPath("Apache");
                 if (string.IsNullOrEmpty(apacheConfigPath) || !File.Exists(apacheConfigPath))
                 {
@@ -366,7 +347,7 @@ namespace Frostybee.PwampAdmin.Controls
                     return false;
                 }
 
-                // Check if document root directory exists, create if it doesn't
+                // Check if document root directory exists, create if it doesn't.
                 if (!Directory.Exists(_documentRoot))
                 {
                     try
@@ -376,7 +357,7 @@ namespace Frostybee.PwampAdmin.Controls
                     }
                     catch (IOException ioEx)
                     {
-                        // Directory might have been created by another thread, check again
+                        // Directory might have been created by another thread, check again.
                         if (!Directory.Exists(_documentRoot))
                         {
                             LogMessage(string.Format("Failed to create document root directory: {0}", ioEx.Message), LogType.Error);

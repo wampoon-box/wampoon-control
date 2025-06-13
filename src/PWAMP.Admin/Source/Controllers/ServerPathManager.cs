@@ -17,6 +17,9 @@ namespace Frostybee.PwampAdmin.Controllers
         private static readonly string _applicationDirectory;
         private static readonly string _appsDirectory;
         private static readonly Dictionary<string, ServerPathInfo> _serverPaths;
+        public static string ApplicationDirectory => _applicationDirectory;
+        public static string AppsDirectory => _appsDirectory;
+        public static string ApacheDocumentRoot => Path.Combine(_applicationDirectory, "htdocs");
 
         static ServerPathManager()
         {

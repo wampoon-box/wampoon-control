@@ -35,6 +35,13 @@ namespace Frostybee.Pwamp.Models
             }
         );
 
+        public static readonly ServerDefinitionInfo phpMyAdmin = new ServerDefinitionInfo(
+            name: "phpMyAdmin",
+            directory: "phpmyadmin",
+            executableName: "na",
+            configFile: "config.inc.php"            
+        );
+
         // Add more server definitions here as needed
         // public static readonly ServerDefinition PHP = new ServerDefinition(
         //     name: "PHP",
@@ -47,7 +54,7 @@ namespace Frostybee.Pwamp.Models
         /// </summary>
         public static ServerDefinitionInfo[] GetAll()
         {
-            return new ServerDefinitionInfo[] { Apache, MariaDB };
+            return new ServerDefinitionInfo[] { Apache, MariaDB , phpMyAdmin};
         }
 
         /// <summary>
