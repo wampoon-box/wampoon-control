@@ -142,12 +142,13 @@ namespace Frostybee.PwampAdmin
                     }
                     else if (result == DialogResult.Yes)
                     {
+                        // Cancel the close to allow async stopping.
                         e.Cancel = true;
-                        StopRunningService();
+                        StopRunningServicesAsync();
                     }
                 }
-                
-                // Clean up icon handle
+
+                // Clean up icon handle.
                 if (_iconHandle != IntPtr.Zero)
                 {
                     DestroyIcon(_iconHandle);
@@ -161,41 +162,32 @@ namespace Frostybee.PwampAdmin
             }            
         }
         
-        private void StopRunningService()
+        private async void StopRunningServicesAsync()
         {
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    await _apacheModule?.StopServer();
-                    await _mySqlModule?.StopServer();
+                // Stop servers asynchronously
+                await _apacheModule?.StopServer();
+                await _mySqlModule?.StopServer();
 
-                    // Fix: Check if form is still valid before invoking
-                    if (!this.IsDisposed && this.IsHandleCreated)
-                    {
-                        this.Invoke(new Action(() =>
-                        {
-                            if (!this.IsDisposed)
-                                this.Close();
-                        }));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle errors in the async operation.
-                    System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
+                // Dispose modules after stopping.
+                _apacheModule?.Dispose();
+                _mySqlModule?.Dispose();
 
-                    // Still try to close the form if possible.
-                    if (!this.IsDisposed && this.IsHandleCreated)
-                    {
-                        this.Invoke(new Action(() =>
-                        {
-                            if (!this.IsDisposed)
-                                this.Close();
-                        }));
-                    }
-                }
-            });
+                // Close the form after stopping is complete.
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
+                
+                // Still dispose modules even if stopping failed.
+                _apacheModule?.Dispose();
+                _mySqlModule?.Dispose();
+
+                // Still try to close the form.
+                this.Close();
+            }
         }
 
         private async void BtnStopAllServers_Click(object sender, EventArgs e)

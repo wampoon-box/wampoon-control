@@ -119,14 +119,19 @@ namespace Frostybee.PwampAdmin.Controls
         //    }
         //}
 
-        internal Task Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (_apacheManager != null)
+            if (disposing)
             {
-                _apacheManager.Dispose();
-                _apacheManager = null;
+                if (_apacheManager != null)
+                {
+                    _apacheManager.ErrorOccurred -= LogError;
+                    _apacheManager.StatusChanged -= LogMessage;
+                    _apacheManager.Dispose();
+                    _apacheManager = null;
+                }
             }
-            return Task.CompletedTask;
+            base.Dispose(disposing);
         }
 
         internal bool IsRunning()

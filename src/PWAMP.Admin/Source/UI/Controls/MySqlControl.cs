@@ -66,14 +66,19 @@ namespace Frostybee.PwampAdmin.Controls
         //    }
         //}
 
-        internal Task Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (_mysqlManager != null)
+            if (disposing)
             {
-                _mysqlManager.Dispose();
-                _mysqlManager = null;
+                if (_mysqlManager != null)
+                {
+                    _mysqlManager.ErrorOccurred -= LogError;
+                    _mysqlManager.StatusChanged -= LogMessage;
+                    _mysqlManager.Dispose();
+                    _mysqlManager = null;
+                }
             }
-            return Task.CompletedTask;
+            base.Dispose(disposing);
         }
 
         internal bool IsRunning()
