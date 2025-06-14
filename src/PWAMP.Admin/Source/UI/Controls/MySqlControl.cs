@@ -55,6 +55,7 @@ namespace Frostybee.PwampAdmin.Controls
         private void LogError(object sender, string message)
         {
             LogMessage(message, LogType.Error);
+            MainForm.Instance?.AddErrorLog("MySQL", message);
         }
          
         //public virtual void Dispose()

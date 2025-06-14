@@ -84,6 +84,44 @@ namespace Frostybee.PwampAdmin
             AddLog("System", log, logType);
         }
 
+        public void AddErrorLog(string module, string log)
+        {
+            if (_errorLogTextBox == null) return;
+
+            var timestamp = DateTime.Now.ToString("HH:mm:ss");
+            var logEntry = $"[{timestamp}] [{module}] {log}";
+
+            if (_errorLogTextBox.InvokeRequired)
+            {
+                _errorLogTextBox.Invoke(new Action(() => AddErrorLogInternal(logEntry)));
+            }
+            else
+            {
+                AddErrorLogInternal(logEntry);
+            }
+        }
+
+        private void AddErrorLogInternal(string logEntry)
+        {
+            if (_errorLogTextBox == null) return;
+
+            _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
+            _errorLogTextBox.SelectionLength = 0;
+            _errorLogTextBox.SelectionColor = Color.Red;
+            _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
+            _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
+            _errorLogTextBox.ScrollToCaret();
+
+            // Limit log size
+            if (_errorLogTextBox.Lines.Length > 1000)
+            {
+                var lines = _errorLogTextBox.Lines;
+                var newLines = new string[500];
+                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
+                _errorLogTextBox.Lines = newLines;
+            }
+        }
+
         private void AddLogInternal(string logEntry, LogType logType)
         {
             if (_logTextBox == null) return;
