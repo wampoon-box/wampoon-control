@@ -38,18 +38,18 @@ namespace Frostybee.PwampAdmin
             this._logTextBox = new System.Windows.Forms.RichTextBox();
             this.errorTab = new System.Windows.Forms.TabPage();
             this.accessTab = new System.Windows.Forms.TabPage();
-            this.exportLogsBtn = new System.Windows.Forms.Button();
+            this.btnExportLogs = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
             this.subtitleLabel = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
+            this._apacheModule = new Frostybee.PwampAdmin.Controls.ApacheControl();
             this.grpHelpers = new System.Windows.Forms.GroupBox();
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
-            this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
-            this._apacheModule = new Frostybee.PwampAdmin.Controls.ApacheControl();
             this.logsPanel.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
@@ -65,7 +65,7 @@ namespace Frostybee.PwampAdmin
             this.logsPanel.BackColor = System.Drawing.Color.White;
             this.logsPanel.Controls.Add(this.logsHeaderLabel);
             this.logsPanel.Controls.Add(this.logTabControl);
-            this.logsPanel.Controls.Add(this.exportLogsBtn);
+            this.logsPanel.Controls.Add(this.btnExportLogs);
             this.logsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logsPanel.Location = new System.Drawing.Point(0, 0);
             this.logsPanel.Name = "logsPanel";
@@ -117,7 +117,7 @@ namespace Frostybee.PwampAdmin
             this._logTextBox.BackColor = System.Drawing.Color.White;
             this._logTextBox.Font = new System.Drawing.Font("Consolas", 10F);
             this._logTextBox.ForeColor = System.Drawing.Color.Black;
-            this._logTextBox.Location = new System.Drawing.Point(3, 3);
+            this._logTextBox.Location = new System.Drawing.Point(13, 3);
             this._logTextBox.Name = "_logTextBox";
             this._logTextBox.ReadOnly = true;
             this._logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
@@ -145,20 +145,21 @@ namespace Frostybee.PwampAdmin
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
             // 
-            // exportLogsBtn
+            // btnExportLogs
             // 
-            this.exportLogsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.exportLogsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
-            this.exportLogsBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.exportLogsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exportLogsBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.exportLogsBtn.ForeColor = System.Drawing.Color.White;
-            this.exportLogsBtn.Location = new System.Drawing.Point(20, 328);
-            this.exportLogsBtn.Name = "exportLogsBtn";
-            this.exportLogsBtn.Size = new System.Drawing.Size(80, 30);
-            this.exportLogsBtn.TabIndex = 4;
-            this.exportLogsBtn.Text = "💾 Export";
-            this.exportLogsBtn.UseVisualStyleBackColor = false;
+            this.btnExportLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnExportLogs.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExportLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportLogs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnExportLogs.ForeColor = System.Drawing.Color.White;
+            this.btnExportLogs.Location = new System.Drawing.Point(20, 328);
+            this.btnExportLogs.Name = "btnExportLogs";
+            this.btnExportLogs.Size = new System.Drawing.Size(80, 30);
+            this.btnExportLogs.TabIndex = 4;
+            this.btnExportLogs.Text = "💾 Export";
+            this.btnExportLogs.UseVisualStyleBackColor = false;
+            this.btnExportLogs.Click += new System.EventHandler(this.BtnExportLogs_Click);
             // 
             // panel1
             // 
@@ -219,6 +220,22 @@ namespace Frostybee.PwampAdmin
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             // 
+            // _mySqlModule
+            // 
+            this._mySqlModule.BackColor = System.Drawing.SystemColors.Control;
+            this._mySqlModule.Location = new System.Drawing.Point(422, 27);
+            this._mySqlModule.Name = "_mySqlModule";
+            this._mySqlModule.Size = new System.Drawing.Size(392, 169);
+            this._mySqlModule.TabIndex = 7;
+            // 
+            // _apacheModule
+            // 
+            this._apacheModule.BackColor = System.Drawing.SystemColors.Control;
+            this._apacheModule.Location = new System.Drawing.Point(6, 27);
+            this._apacheModule.Name = "_apacheModule";
+            this._apacheModule.Size = new System.Drawing.Size(398, 169);
+            this._apacheModule.TabIndex = 4;
+            // 
             // grpHelpers
             // 
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
@@ -258,22 +275,6 @@ namespace Frostybee.PwampAdmin
             this.btnOpenExplorer.UseVisualStyleBackColor = false;
             this.btnOpenExplorer.Click += new System.EventHandler(this.BtnOpenExplorer_Click);
             // 
-            // _mySqlModule
-            // 
-            this._mySqlModule.BackColor = System.Drawing.SystemColors.Control;
-            this._mySqlModule.Location = new System.Drawing.Point(422, 27);
-            this._mySqlModule.Name = "_mySqlModule";
-            this._mySqlModule.Size = new System.Drawing.Size(392, 169);
-            this._mySqlModule.TabIndex = 7;
-            // 
-            // _apacheModule
-            // 
-            this._apacheModule.BackColor = System.Drawing.SystemColors.Control;
-            this._apacheModule.Location = new System.Drawing.Point(6, 27);
-            this._apacheModule.Name = "_apacheModule";
-            this._apacheModule.Size = new System.Drawing.Size(398, 169);
-            this._apacheModule.TabIndex = 4;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -311,7 +312,7 @@ namespace Frostybee.PwampAdmin
         private RichTextBox _logTextBox;
         private TabPage errorTab;
         private TabPage accessTab;
-        private Button exportLogsBtn;
+        private Button btnExportLogs;
         private Panel panel1;
         private Controls.MySqlControl _mySqlModule;
         private Panel headerPanel;

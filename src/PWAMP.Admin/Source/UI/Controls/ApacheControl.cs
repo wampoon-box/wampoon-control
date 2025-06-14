@@ -20,7 +20,6 @@ namespace Frostybee.PwampAdmin.Controls
         private ApacheManager _apacheManager;
         // Apache and phpMyAdmin-related paths.
         private string _apacheDirectory;
-        private string _documentRoot;
         private string _customConfigPath;
         private string _phpMyAdminDirectory;
         private string _httpdAliasConfigPath;
@@ -353,17 +352,17 @@ namespace Frostybee.PwampAdmin.Controls
                 }
 
                 // Check if document root directory exists, create if it doesn't.
-                if (!Directory.Exists(_documentRoot))
+                if (!Directory.Exists(ServerPathManager.ApacheDocumentRoot))
                 {
                     try
                     {
-                        Directory.CreateDirectory(_documentRoot);
-                        LogMessage(string.Format("Created document root directory: {0}", _documentRoot), LogType.Info);
+                        Directory.CreateDirectory(ServerPathManager.ApacheDocumentRoot);
+                        LogMessage(string.Format("Created document root directory: {0}", ServerPathManager.ApacheDocumentRoot), LogType.Info);
                     }
                     catch (IOException ioEx)
                     {
                         // Directory might have been created by another thread, check again.
-                        if (!Directory.Exists(_documentRoot))
+                        if (!Directory.Exists(ServerPathManager.ApacheDocumentRoot))
                         {
                             LogMessage(string.Format("Failed to create document root directory: {0}", ioEx.Message), LogType.Error);
                             return false;

@@ -196,5 +196,31 @@ namespace Frostybee.PwampAdmin
             await _apacheModule?.StopServer();
             await _mySqlModule?.StopServer();
         }
+
+        private void BtnExportLogs_Click(object sender, EventArgs e)
+        {
+            using (var saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                //saveDialog.FileName = $"{currentLogTab}_logs_{DateTime.Now:yyyy-MM-dd}.txt";
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        //File.WriteAllText(saveDialog.FileName, logs[currentLogTab].ToString());
+                        AddLog("output", $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Logs exported: {Path.GetFileName(saveDialog.FileName)}");
+                        MessageBox.Show("Logs exported successfully!", "Export Complete",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error exporting logs: {ex.Message}", "Export Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+        }
     }
 }
