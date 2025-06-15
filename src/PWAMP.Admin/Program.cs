@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Frostybee.PwampAdmin.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Frostybee.PwampAdmin
             // Set up global exception handlers before running the application.
             SetupGlobalExceptionHandlers();
 
+            throw new InvalidOperationException("This is a test exception to verify global exception handling.");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
@@ -87,14 +89,12 @@ namespace Frostybee.PwampAdmin
         {
             try
             {
-                string logPath = Path.Combine(Application.StartupPath, "ErrorLog.txt");
-                string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {source}\n" +
+                string logEntry = $"[{source}\n" +
                                  $"Exception: {ex.GetType().Name}\n" +
                                  $"Message: {ex.Message}\n" +
                                  $"Stack Trace:\n{ex.StackTrace}\n" +
                                  new string('-', 80) + "\n";
-
-                File.AppendAllText(logPath, logEntry);
+                ErrorLogHelper.LogErrorMessage(logEntry);
             }
             catch
             {

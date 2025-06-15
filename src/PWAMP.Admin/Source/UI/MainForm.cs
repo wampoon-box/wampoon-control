@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Frostybee.PwampAdmin.Helpers;
 using Frostybee.PwampAdmin.Enums;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 
 namespace Frostybee.PwampAdmin
 {
@@ -154,6 +155,7 @@ namespace Frostybee.PwampAdmin
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 AddLog($"Error opening file explorer: {ex.Message}", LogType.Error);
             }
         }
@@ -195,6 +197,7 @@ namespace Frostybee.PwampAdmin
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 // Log error but don't prevent closing.
                 System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
             }            
@@ -217,6 +220,7 @@ namespace Frostybee.PwampAdmin
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
                 
                 // Still dispose modules even if stopping failed.
@@ -253,6 +257,7 @@ namespace Frostybee.PwampAdmin
                     }
                     catch (Exception ex)
                     {
+                        ErrorLogHelper.LogExceptionInfo(ex);
                         MessageBox.Show($"Error exporting logs: {ex.Message}", "Export Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }

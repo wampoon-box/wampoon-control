@@ -1,4 +1,4 @@
-﻿using Frostybee.PwampAdmin.Helpers;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +8,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
+using Frostybee.PwampAdmin.Helpers;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
@@ -116,6 +118,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             catch (Exception ex)
             {
+                LogExceptionInfo(ex);
                 LogError("Error stopping Apache: " + ex.Message);
                 return false;
             }
@@ -131,6 +134,7 @@ namespace Frostybee.PwampAdmin.Controllers
                 }
                 catch (Exception ex)
                 {
+                    LogExceptionInfo(ex);
                     LogError($"Error cleaning up console resources: {ex.Message}");
                 }
             }

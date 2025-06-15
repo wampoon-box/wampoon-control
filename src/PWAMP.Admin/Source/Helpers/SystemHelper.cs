@@ -2,6 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using Frostybee.PwampAdmin.Helpers;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 
 namespace Frostybee.PwampAdmin.Helpers
 {
@@ -35,6 +37,7 @@ namespace Frostybee.PwampAdmin.Helpers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 MessageBox.Show($"Could not open URL: {uri}\n\nError: {ex.Message}",
                     "Browser Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

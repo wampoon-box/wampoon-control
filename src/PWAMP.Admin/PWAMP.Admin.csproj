@@ -61,7 +61,7 @@
     <Compile Include="Source\Controllers\ServerManagerFactory.cs" />
     <Compile Include="Source\Controllers\ServerPathManager.cs" />
     <Compile Include="Source\Enums\Enums.cs" />
-    <Compile Include="Source\Helpers\AppLogger.cs" />
+    <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
     <Compile Include="Source\Helpers\ServerConfigHelper.cs" />
     <Compile Include="Source\Helpers\ServerHelper.cs" />
     <Compile Include="Source\Helpers\UiHelper.cs" />

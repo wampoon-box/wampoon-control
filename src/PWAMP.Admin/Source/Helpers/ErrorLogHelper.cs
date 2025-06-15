@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 namespace Frostybee.PwampAdmin.Helpers
 {
 
-    internal static class Logger
+    internal static class ErrorLogHelper
     {
         private static readonly object _lock = new object();
-        private static readonly string LogDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
-        private static readonly string LogFilePath = Path.Combine(LogDirectory, "error.log");
+        private static readonly string _logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+        private static readonly string _logFilePath = Path.Combine(_logDirectory, "error.log");
 
-        static Logger()
+        static ErrorLogHelper()
         {
             try
             {
-                if (!Directory.Exists(LogDirectory))
+                if (!Directory.Exists(_logDirectory))
                 {
-                    Directory.CreateDirectory(LogDirectory);
+                    Directory.CreateDirectory(_logDirectory);
                 }
             }
             catch
@@ -29,13 +29,13 @@ namespace Frostybee.PwampAdmin.Helpers
             }
         }
 
-        internal static void LogError(Exception ex)
+        internal static void LogExceptionInfo(Exception ex)
         {
             var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {ex.Message}{Environment.NewLine}{ex.StackTrace}{Environment.NewLine}{Environment.NewLine}";
             WriteToFile(logEntry);
         }
 
-        internal static void LogError(string message)
+        internal static void LogErrorMessage(string message)
         {
             var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}{Environment.NewLine}";
             WriteToFile(logEntry);
@@ -47,13 +47,18 @@ namespace Frostybee.PwampAdmin.Helpers
             {
                 lock (_lock)
                 {
+                    if (!Directory.Exists(_logDirectory))
+                    {
+                        Directory.CreateDirectory(_logDirectory);
+                    }
+
                     // Check if rotation is needed.
-                    if (ShouldRotateLog())
+                    if (IsRotateRequired())
                     {
                         RotateLogFile();
                     }
 
-                    using (var stream = new FileStream(LogFilePath, FileMode.Append, FileAccess.Write, FileShare.Read))
+                    using (var stream = new FileStream(_logFilePath, FileMode.Append, FileAccess.Write, FileShare.Read))
                     using (var writer = new StreamWriter(stream))
                     {
                         writer.Write(message);
@@ -66,14 +71,14 @@ namespace Frostybee.PwampAdmin.Helpers
             }
         }
 
-        private static bool ShouldRotateLog()
+        private static bool IsRotateRequired()
         {
             try
             {
-                if (!File.Exists(LogFilePath))
+                if (!File.Exists(_logFilePath))
                     return false;
 
-                var fileInfo = new FileInfo(LogFilePath);
+                var fileInfo = new FileInfo(_logFilePath);
                 var fileAge = DateTime.Now - fileInfo.CreationTime;
                 // 2 months (approximately).
                 return fileAge.TotalDays >= 60; 
@@ -90,9 +95,9 @@ namespace Frostybee.PwampAdmin.Helpers
             {
                 var timestamp = DateTime.Now.ToString("yyyyMM");
                 var rotatedFileName = $"error_{timestamp}.log";
-                var rotatedFilePath = Path.Combine(LogDirectory, rotatedFileName);
+                var rotatedFilePath = Path.Combine(_logDirectory, rotatedFileName);
 
-                File.Move(LogFilePath, rotatedFilePath);
+                File.Move(_logFilePath, rotatedFilePath);
             }
             catch
             {

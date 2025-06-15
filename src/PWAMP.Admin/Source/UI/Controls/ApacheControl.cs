@@ -2,6 +2,7 @@
 using Frostybee.PwampAdmin.Controllers;
 using Frostybee.PwampAdmin.Enums;
 using Frostybee.PwampAdmin.Helpers;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -48,6 +49,7 @@ namespace Frostybee.PwampAdmin.Controls
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogMessage(ex.Message, LogType.Error);
             }
 
@@ -164,6 +166,7 @@ namespace Frostybee.PwampAdmin.Controls
                     }
                     catch (Exception initEx)
                     {
+                        ErrorLogHelper.LogExceptionInfo(initEx);
                         LogMessage($"Failed to reinitialize server manager: {initEx.Message}", LogType.Error);
                         MessageBox.Show($"Cannot start {ServiceName}: Server manager initialization failed.\n\n{initEx.Message}", 
                                       "Initialization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -176,6 +179,7 @@ namespace Frostybee.PwampAdmin.Controls
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogMessage($"Error starting {ServiceName}: {ex.Message}", LogType.Error);
                 MessageBox.Show($"Error starting {ServiceName}: {ex.Message}", "Startup Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -251,6 +255,7 @@ namespace Frostybee.PwampAdmin.Controls
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogMessage(string.Format("Error creating custom Apache configuration: {0}", ex.Message), LogType.Error);
                 return false;
             }
@@ -308,6 +313,7 @@ namespace Frostybee.PwampAdmin.Controls
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogMessage(string.Format("Error updating httpd-alias.conf: {0}", ex.Message), LogType.Error);
                 return false;
             }
@@ -370,6 +376,7 @@ namespace Frostybee.PwampAdmin.Controls
                     }
                     catch (Exception ex)
                     {
+                        ErrorLogHelper.LogExceptionInfo(ex);
                         LogMessage(string.Format("Failed to create document root directory: {0}", ex.Message), LogType.Error);
                         return false;
                     }
@@ -379,6 +386,7 @@ namespace Frostybee.PwampAdmin.Controls
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogMessage(string.Format("Error validating Apache environment: {0}", ex.Message), LogType.Error);
                 return false;
             }
