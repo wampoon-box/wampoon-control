@@ -45,7 +45,7 @@ namespace Frostybee.PwampAdmin.Controls
                 _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);                
                 _apacheManager.ErrorOccurred += LogError;
                 _apacheManager.StatusChanged += LogMessage;
-                ServerManager = _apacheManager;
+                ServerManager = _apacheManager;                
             }
             catch (Exception ex)
             {

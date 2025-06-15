@@ -38,12 +38,20 @@ namespace Frostybee.PwampAdmin
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SetFromIcon();
-            // Attempt to initialize the service modules.
-            _apacheModule.InitializeModule();
-            _mySqlModule.InitializeModule();
+            try
+            {
+                SetFromIcon();
+                // Attempt to initialize the service modules.
+                _apacheModule.InitializeModule();
+                _mySqlModule.InitializeModule();
 
-            AddLog("Application initialized successfully", LogType.Info);            
+                AddLog("Application initialized successfully", LogType.Info);
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error during application initialization: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred during application initialization", this);
+            }
         }
                 
         private void SetFromIcon()
@@ -155,8 +163,8 @@ namespace Frostybee.PwampAdmin
             }
             catch (Exception ex)
             {
-                ErrorLogHelper.LogExceptionInfo(ex);
                 AddLog($"Error opening file explorer: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening file explorer", this);
             }
         }
 
@@ -257,9 +265,8 @@ namespace Frostybee.PwampAdmin
                     }
                     catch (Exception ex)
                     {
-                        ErrorLogHelper.LogExceptionInfo(ex);
-                        MessageBox.Show($"Error exporting logs: {ex.Message}", "Export Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        AddLog($"Error exporting logs: {ex.Message}", LogType.Error);
+                        ErrorLogHelper.ShowErrorReport(ex, "Error occurred while exporting logs", this);
                     }
                 }
             }

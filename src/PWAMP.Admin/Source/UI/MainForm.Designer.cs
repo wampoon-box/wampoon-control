@@ -54,6 +54,7 @@ namespace Frostybee.PwampAdmin
             this.logsPanel.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
+            this.errorTab.SuspendLayout();
             this.panel1.SuspendLayout();
             this.headerPanel.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -146,11 +147,11 @@ namespace Frostybee.PwampAdmin
             this._errorLogTextBox.BackColor = System.Drawing.Color.White;
             this._errorLogTextBox.Font = new System.Drawing.Font("Consolas", 10F);
             this._errorLogTextBox.ForeColor = System.Drawing.Color.Red;
-            this._errorLogTextBox.Location = new System.Drawing.Point(13, 3);
+            this._errorLogTextBox.Location = new System.Drawing.Point(16, 6);
             this._errorLogTextBox.Name = "_errorLogTextBox";
             this._errorLogTextBox.ReadOnly = true;
             this._errorLogTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._errorLogTextBox.Size = new System.Drawing.Size(777, 238);
+            this._errorLogTextBox.Size = new System.Drawing.Size(1354, 376);
             this._errorLogTextBox.TabIndex = 0;
             this._errorLogTextBox.Text = "";
             // 
@@ -306,12 +307,14 @@ namespace Frostybee.PwampAdmin
             this.Controls.Add(this.panel1);
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "MainForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PWAMP Control Panel";
             this.logsPanel.ResumeLayout(false);
             this.logsPanel.PerformLayout();
             this.logTabControl.ResumeLayout(false);
             this.outputTab.ResumeLayout(false);
+            this.errorTab.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();

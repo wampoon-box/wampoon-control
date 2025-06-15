@@ -19,8 +19,7 @@ namespace Frostybee.PwampAdmin
         {
             // Set up global exception handlers before running the application.
             SetupGlobalExceptionHandlers();
-
-            throw new InvalidOperationException("This is a test exception to verify global exception handling.");
+            //throw new InvalidOperationException("This is a test exception to verify global exception handling.");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
@@ -43,16 +42,26 @@ namespace Frostybee.PwampAdmin
         // Handles exceptions on the UI thread.
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            LogException(e.Exception, "UI Thread Exception");
-
-            DialogResult result = MessageBox.Show(
-                $"An unexpected error occurred:\n\n{e.Exception.Message}\n\nDo you want to continue?",
-                "Application Error",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Error);
-
-            if (result == DialogResult.No)
+            try
             {
+                ErrorLogHelper.ShowErrorReport(e.Exception, "UI Thread Exception");
+                
+                DialogResult result = MessageBox.Show(
+                    "An unexpected error occurred. Do you want to continue running the application?",
+                    "Application Error",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                {
+                    Application.Exit();
+                }
+            }
+            catch
+            {
+                // Fallback if error reporting fails
+                MessageBox.Show($"A critical error occurred: {e.Exception.Message}", "Fatal Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
@@ -61,10 +70,17 @@ namespace Frostybee.PwampAdmin
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception ex = (Exception)e.ExceptionObject;
-            LogException(ex, "Non-UI Thread Exception");
-
-            string message = $"A fatal error occurred:\n\n{ex.Message}\n\nThe application will now close.";
-            MessageBox.Show(message, "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            
+            try
+            {
+                ErrorLogHelper.ShowErrorReport(ex, "Non-UI Thread Exception - Application will close");
+            }
+            catch
+            {
+                // Fallback if error reporting fails
+                MessageBox.Show($"A fatal error occurred: {ex.Message}\n\nThe application will now close.", 
+                    "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
 
             // Application is terminating, perform cleanup if needed.
             Environment.Exit(1);
@@ -73,34 +89,20 @@ namespace Frostybee.PwampAdmin
         // Handles unobserved Task exceptions.
         private static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            LogException(e.Exception, "Unobserved Task Exception");
-
             // Mark as observed to prevent application termination.
             e.SetObserved();
 
-            MessageBox.Show(
-                $"An error occurred in a background task:\n\n{e.Exception.GetBaseException().Message}",
-                "Background Task Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
-        }
-
-        private static void LogException(Exception ex, string source)
-        {
             try
             {
-                string logEntry = $"[{source}\n" +
-                                 $"Exception: {ex.GetType().Name}\n" +
-                                 $"Message: {ex.Message}\n" +
-                                 $"Stack Trace:\n{ex.StackTrace}\n" +
-                                 new string('-', 80) + "\n";
-                ErrorLogHelper.LogErrorMessage(logEntry);
+                ErrorLogHelper.ShowErrorReport(e.Exception.GetBaseException(), "Unobserved Task Exception");
             }
             catch
             {
-                // If logging fails, we don't want to throw another exception.
+                // Fallback if error reporting fails
+                MessageBox.Show($"An error occurred in a background task: {e.Exception.GetBaseException().Message}",
+                    "Background Task Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
+        }       
     }
 }
 

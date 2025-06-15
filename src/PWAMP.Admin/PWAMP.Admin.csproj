@@ -61,6 +61,7 @@
     <Compile Include="Source\Controllers\ServerManagerFactory.cs" />
     <Compile Include="Source\Controllers\ServerPathManager.cs" />
     <Compile Include="Source\Enums\Enums.cs" />
+    <Compile Include="Source\Helpers\AppConstants.cs" />
     <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
     <Compile Include="Source\Helpers\ServerConfigHelper.cs" />
     <Compile Include="Source\Helpers\ServerHelper.cs" />
@@ -88,6 +89,12 @@
     <Compile Include="Source\UI\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Source\UI\ErrorReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Source\UI\ErrorReportForm.Designer.cs">
+      <DependentUpon>ErrorReportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Source\Helpers\SystemHelper.cs" />
     <Compile Include="Source\Helpers\NativeApi.cs" />
     <Compile Include="Source\UI\MainForm.cs">
@@ -109,6 +116,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Source\UI\ErrorReportForm.resx">
+      <DependentUpon>ErrorReportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Source\UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
