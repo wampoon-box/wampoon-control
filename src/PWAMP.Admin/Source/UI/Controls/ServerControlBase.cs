@@ -1,6 +1,7 @@
 ﻿using Frostybee.PwampAdmin.Controllers;
 using Frostybee.PwampAdmin.Enums;
 using Frostybee.PwampAdmin.Helpers;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,6 +70,7 @@ namespace Frostybee.PwampAdmin.Controls
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 MessageBox.Show($"Error stopping {ServiceName}: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnStop.Enabled = true;
@@ -97,6 +99,7 @@ namespace Frostybee.PwampAdmin.Controls
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 MessageBox.Show($"Error starting {ServiceName}: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnStart.Enabled = true;

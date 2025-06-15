@@ -1,6 +1,8 @@
 ﻿using Frostybee.Pwamp.Models;
 using Frostybee.PwampAdmin.Controllers;
 using System;
+using Frostybee.PwampAdmin.Helpers;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,6 +47,7 @@ namespace Frostybee.PwampAdmin.Helpers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 if (showMessages)
                 {
                     System.Windows.Forms.MessageBox.Show(string.Format("Error opening {0} configuration file: {1}", serverName, ex.Message), "Error",
@@ -86,6 +89,7 @@ namespace Frostybee.PwampAdmin.Helpers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 if (showMessages)
                 {
                     System.Windows.Forms.MessageBox.Show(string.Format("Error opening {0}: {1}", fileDescription, ex.Message), "Error",

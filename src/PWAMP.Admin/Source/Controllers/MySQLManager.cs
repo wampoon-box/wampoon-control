@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Frostybee.PwampAdmin.Helpers;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
@@ -92,6 +93,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogError($"failed to stop: {ex.Message}");
                 return false;
             }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Frostybee.PwampAdmin.Helpers;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
@@ -56,6 +58,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 throw new InvalidOperationException(string.Format("Failed to create server manager for '{0}': {1}", serverName, ex.Message), ex);
             }
         }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Frostybee.PwampAdmin.Helpers;
 using Frostybee.PwampAdmin.Enums;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 
 namespace Frostybee.PwampAdmin
 {
@@ -37,12 +38,20 @@ namespace Frostybee.PwampAdmin
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SetFromIcon();
-            // Attempt to initialize the service modules.
-            _apacheModule.InitializeModule();
-            _mySqlModule.InitializeModule();
+            try
+            {
+                SetFromIcon();
+                // Attempt to initialize the service modules.
+                _apacheModule.InitializeModule();
+                _mySqlModule.InitializeModule();
 
-            AddLog("Application initialized successfully", LogType.Info);            
+                AddLog("Application initialized successfully", LogType.Info);
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error during application initialization: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred during application initialization", this);
+            }
         }
                 
         private void SetFromIcon()
@@ -84,6 +93,44 @@ namespace Frostybee.PwampAdmin
             AddLog("System", log, logType);
         }
 
+        public void AddErrorLog(string module, string log)
+        {
+            if (_errorLogTextBox == null) return;
+
+            var timestamp = DateTime.Now.ToString("HH:mm:ss");
+            var logEntry = $"[{timestamp}] [{module}] {log}";
+
+            if (_errorLogTextBox.InvokeRequired)
+            {
+                _errorLogTextBox.Invoke(new Action(() => AddErrorLogInternal(logEntry)));
+            }
+            else
+            {
+                AddErrorLogInternal(logEntry);
+            }
+        }
+
+        private void AddErrorLogInternal(string logEntry)
+        {
+            if (_errorLogTextBox == null) return;
+
+            _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
+            _errorLogTextBox.SelectionLength = 0;
+            _errorLogTextBox.SelectionColor = Color.Red;
+            _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
+            _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
+            _errorLogTextBox.ScrollToCaret();
+
+            // Limit log size
+            if (_errorLogTextBox.Lines.Length > 1000)
+            {
+                var lines = _errorLogTextBox.Lines;
+                var newLines = new string[500];
+                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
+                _errorLogTextBox.Lines = newLines;
+            }
+        }
+
         private void AddLogInternal(string logEntry, LogType logType)
         {
             if (_logTextBox == null) return;
@@ -117,6 +164,7 @@ namespace Frostybee.PwampAdmin
             catch (Exception ex)
             {
                 AddLog($"Error opening file explorer: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening file explorer", this);
             }
         }
 
@@ -157,6 +205,7 @@ namespace Frostybee.PwampAdmin
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 // Log error but don't prevent closing.
                 System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
             }            
@@ -179,6 +228,7 @@ namespace Frostybee.PwampAdmin
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
                 
                 // Still dispose modules even if stopping failed.
@@ -215,8 +265,8 @@ namespace Frostybee.PwampAdmin
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Error exporting logs: {ex.Message}", "Export Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        AddLog($"Error exporting logs: {ex.Message}", LogType.Error);
+                        ErrorLogHelper.ShowErrorReport(ex, "Error occurred while exporting logs", this);
                     }
                 }
             }

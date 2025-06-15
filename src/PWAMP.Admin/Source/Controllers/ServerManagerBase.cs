@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Frostybee.PwampAdmin.Helpers;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
@@ -116,6 +117,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogError($"failed to start: {ex.Message}");
                 return false;
             }
@@ -172,6 +174,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogError($"failed to stop: {ex.Message}");
                 return false;
             }
@@ -204,6 +207,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogHelper.LogExceptionInfo(ex);
                 LogError($"failed to stop forcefully: {ex.Message}");
                 return false;
             }
@@ -222,6 +226,7 @@ namespace Frostybee.PwampAdmin.Controllers
                 }
                 catch (Exception ex)
                 {
+                    ErrorLogHelper.LogExceptionInfo(ex);
                     LogError($"Error during disposal: {ex.Message}");
                 }
             }
