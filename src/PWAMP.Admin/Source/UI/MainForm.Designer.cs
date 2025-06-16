@@ -49,6 +49,7 @@ namespace Frostybee.PwampAdmin.UI
             this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
             this._apacheModule = new Frostybee.PwampAdmin.Controls.ApacheControl();
             this.grpHelpers = new System.Windows.Forms.GroupBox();
+            this.btnQuit = new System.Windows.Forms.Button();
             this.btnStartAllServers = new System.Windows.Forms.Button();
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
@@ -260,6 +261,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // grpHelpers
             // 
+            this.grpHelpers.Controls.Add(this.btnQuit);
             this.grpHelpers.Controls.Add(this.btnStartAllServers);
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
@@ -270,6 +272,20 @@ namespace Frostybee.PwampAdmin.UI
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "Helpers";
+            // 
+            // btnQuit
+            // 
+            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.btnQuit.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnQuit.ForeColor = System.Drawing.Color.White;
+            this.btnQuit.Location = new System.Drawing.Point(713, 19);
+            this.btnQuit.Name = "btnQuit";
+            this.btnQuit.Size = new System.Drawing.Size(94, 37);
+            this.btnQuit.TabIndex = 4;
+            this.btnQuit.Text = "Quit";
+            this.btnQuit.UseVisualStyleBackColor = false;
+            this.btnQuit.Click += new System.EventHandler(this.BtnQuit_Click);
             // 
             // btnStartAllServers
             // 
@@ -380,5 +396,6 @@ namespace Frostybee.PwampAdmin.UI
         private Button btnStartAllServers;
         private Button btnStopAllServers;
         private Button btnAbout;
+        private Button btnQuit;
     }
 }

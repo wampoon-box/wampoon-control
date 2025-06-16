@@ -20,7 +20,6 @@ namespace Frostybee.PwampAdmin.UI
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
         private NotifyIcon _notifyIcon;
-        private bool _isStoppingServices = false;
 
         public MainForm()
         {
@@ -250,7 +249,7 @@ namespace Frostybee.PwampAdmin.UI
                     RestoreFromTray();
                 }
                 // Clean up managers on application exit.
-                bool hasRunningServices = !_isStoppingServices && 
+                bool hasRunningServices = 
                                          ((_apacheModule != null && _apacheModule.IsRunning()) ||
                                           (_mySqlModule != null && _mySqlModule.IsRunning()));
 
@@ -265,12 +264,12 @@ namespace Frostybee.PwampAdmin.UI
                     if (result == DialogResult.Cancel || result == DialogResult.No)
                     {
                         e.Cancel = true;
+                        return;
                     }
                     else if (result == DialogResult.Yes)
                     {
                         // Cancel the close to allow async stopping.
-                        e.Cancel = true;
-                        _isStoppingServices = true;
+                        e.Cancel = true;                     
                         StopRunningServicesAsync();
                     }
                 }
@@ -309,8 +308,8 @@ namespace Frostybee.PwampAdmin.UI
                 _apacheModule?.Dispose();
                 _mySqlModule?.Dispose();
 
-                // Close the form after stopping is complete.
-                this.Close();
+                // Exit the application after stopping is complete.
+                Application.Exit();
             }
             catch (Exception ex)
             {
@@ -321,22 +320,26 @@ namespace Frostybee.PwampAdmin.UI
                 _apacheModule?.Dispose();
                 _mySqlModule?.Dispose();
 
-                // Still try to close the form.
-                this.Close();
+                // Still try to exit the application.
+                Application.Exit();
             }
         }
 
         private async void BtnStartAllServers_Click(object sender, EventArgs e)
         {
+            btnStopAllServers.Enabled = false;
             await _apacheModule?.StartServer();
             await _mySqlModule?.StartServer();
+            btnStopAllServers.Enabled = true;
         }
 
         private async void BtnStopAllServers_Click(object sender, EventArgs e)
         {
+            btnStartAllServers.Enabled = false;
             //TODO: Enable the button if both servers are running.
             await _apacheModule?.StopServer();
             await _mySqlModule?.StopServer();
+            btnStartAllServers.Enabled = true;
         }
 
         private void BtnExportLogs_Click(object sender, EventArgs e)
@@ -379,6 +382,18 @@ namespace Frostybee.PwampAdmin.UI
                 AddLog($"Error opening About dialog: {ex.Message}", LogType.Error);
                 ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening About dialog", this);
             }
+        }
+
+        private void BtnQuit_Click(object sender, EventArgs e)
+        {
+            var exitEventArgs = new FormClosingEventArgs(CloseReason.ApplicationExitCall, false);
+            MainForm_FormClosing(this, exitEventArgs);
+
+            if (!exitEventArgs.Cancel)
+            {
+                Application.Exit();
+            }
+
         }
     }
 }
