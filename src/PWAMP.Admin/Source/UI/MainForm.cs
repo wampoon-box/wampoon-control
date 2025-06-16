@@ -20,6 +20,7 @@ namespace Frostybee.PwampAdmin.UI
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
         private NotifyIcon _notifyIcon;
+        private bool _isStoppingServices = false;
 
         public MainForm()
         {
@@ -117,8 +118,22 @@ namespace Frostybee.PwampAdmin.UI
 
         private void ExitApplication()
         {
-            _notifyIcon.Visible = false;
-            Application.Exit();
+            // Bring form to front so user can see any confirmation dialogs
+            if (WindowState == FormWindowState.Minimized || !Visible)
+            {
+                Show();
+                WindowState = FormWindowState.Normal;
+                BringToFront();
+                Activate();
+            }
+            
+            var exitEventArgs = new FormClosingEventArgs(CloseReason.ApplicationExitCall, false);
+            MainForm_FormClosing(this, exitEventArgs);
+            
+            if (!exitEventArgs.Cancel)
+            {
+                Application.Exit();
+            }
         }
 
         public void AddLog(string module, string log, LogType logType = LogType.Default)
@@ -227,7 +242,7 @@ namespace Frostybee.PwampAdmin.UI
                     e.Cancel = true;
                     Hide();
                     _notifyIcon.Visible = true;
-                    _notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
+                    //_notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
                     return;
                 }
                 if (WindowState != FormWindowState.Normal)
@@ -235,8 +250,9 @@ namespace Frostybee.PwampAdmin.UI
                     RestoreFromTray();
                 }
                 // Clean up managers on application exit.
-                bool hasRunningServices = (_apacheModule != null && _apacheModule.IsRunning()) ||
-                                         (_mySqlModule != null && _mySqlModule.IsRunning());
+                bool hasRunningServices = !_isStoppingServices && 
+                                         ((_apacheModule != null && _apacheModule.IsRunning()) ||
+                                          (_mySqlModule != null && _mySqlModule.IsRunning()));
 
                 if (hasRunningServices)
                 {
@@ -254,6 +270,7 @@ namespace Frostybee.PwampAdmin.UI
                     {
                         // Cancel the close to allow async stopping.
                         e.Cancel = true;
+                        _isStoppingServices = true;
                         StopRunningServicesAsync();
                     }
                 }
