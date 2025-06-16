@@ -1,16 +1,16 @@
-﻿using Frostybee.Pwamp.Models;
-using Frostybee.PwampAdmin.Controllers;
-using Frostybee.PwampAdmin.Enums;
-using Frostybee.PwampAdmin.Helpers;
-using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Frostybee.PwampAdmin.MainForm;
+using Frostybee.PwampAdmin.UI;
+using Frostybee.Pwamp.Models;
+using Frostybee.PwampAdmin.Controllers;
+using Frostybee.PwampAdmin.Enums;
+using Frostybee.PwampAdmin.Helpers;
+using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 
 namespace Frostybee.PwampAdmin.Controls
 {

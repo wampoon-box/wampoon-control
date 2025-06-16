@@ -10,7 +10,7 @@ using Frostybee.PwampAdmin.Helpers;
 using Frostybee.PwampAdmin.Enums;
 using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 
-namespace Frostybee.PwampAdmin
+namespace Frostybee.PwampAdmin.UI
 {
     public partial class MainForm : Form
     {
@@ -271,6 +271,22 @@ namespace Frostybee.PwampAdmin
                 }
             }
 
+        }
+
+        private void BtnAbout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var aboutForm = new AboutForm())
+                {
+                    aboutForm.ShowDialog(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error opening About dialog: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening About dialog", this);
+            }
         }
     }
 }

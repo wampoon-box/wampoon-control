@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using Frostybee.PwampAdmin.Helpers;
 
-namespace Frostybee.PwampAdmin
+namespace Frostybee.PwampAdmin.UI
 {
     public partial class ErrorReportForm : Form
     {
@@ -14,7 +14,7 @@ namespace Frostybee.PwampAdmin
         
         public ErrorReportForm(Exception exception, string additionalInfo = "")
         {
-            _exception = exception ?? throw new ArgumentNullException(nameof(exception));
+            _exception = exception;
             _additionalInfo = additionalInfo;
             
             InitializeComponent();
