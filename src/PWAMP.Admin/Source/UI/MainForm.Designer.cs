@@ -49,6 +49,7 @@ namespace Frostybee.PwampAdmin.UI
             this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
             this._apacheModule = new Frostybee.PwampAdmin.Controls.ApacheControl();
             this.grpHelpers = new System.Windows.Forms.GroupBox();
+            this.btnStartAllServers = new System.Windows.Forms.Button();
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.btnAbout = new System.Windows.Forms.Button();
@@ -259,6 +260,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // grpHelpers
             // 
+            this.grpHelpers.Controls.Add(this.btnStartAllServers);
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Controls.Add(this.btnAbout);
@@ -269,16 +271,30 @@ namespace Frostybee.PwampAdmin.UI
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "Helpers";
             // 
+            // btnStartAllServers
+            // 
+            this.btnStartAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnStartAllServers.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
+            this.btnStartAllServers.Location = new System.Drawing.Point(120, 19);
+            this.btnStartAllServers.Name = "btnStartAllServers";
+            this.btnStartAllServers.Size = new System.Drawing.Size(94, 37);
+            this.btnStartAllServers.TabIndex = 1;
+            this.btnStartAllServers.Text = "Start All";
+            this.btnStartAllServers.UseVisualStyleBackColor = false;
+            this.btnStartAllServers.Click += new System.EventHandler(this.BtnStartAllServers_Click);
+            // 
             // btnStopAllServers
             // 
             this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStopAllServers.Location = new System.Drawing.Point(120, 19);
+            this.btnStopAllServers.Location = new System.Drawing.Point(220, 19);
             this.btnStopAllServers.Name = "btnStopAllServers";
             this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
-            this.btnStopAllServers.TabIndex = 1;
+            this.btnStopAllServers.TabIndex = 2;
             this.btnStopAllServers.Text = "Stop All";
             this.btnStopAllServers.UseVisualStyleBackColor = false;
             this.btnStopAllServers.Click += new System.EventHandler(this.BtnStopAllServers_Click);
@@ -303,10 +319,10 @@ namespace Frostybee.PwampAdmin.UI
             this.btnAbout.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
-            this.btnAbout.Location = new System.Drawing.Point(234, 19);
+            this.btnAbout.Location = new System.Drawing.Point(334, 19);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(94, 37);
-            this.btnAbout.TabIndex = 2;
+            this.btnAbout.TabIndex = 3;
             this.btnAbout.Text = "About";
             this.btnAbout.UseVisualStyleBackColor = false;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
@@ -361,6 +377,7 @@ namespace Frostybee.PwampAdmin.UI
         private GroupBox groupBox1;
         private GroupBox grpHelpers;
         private Button btnOpenExplorer;
+        private Button btnStartAllServers;
         private Button btnStopAllServers;
         private Button btnAbout;
     }

@@ -240,6 +240,12 @@ namespace Frostybee.PwampAdmin.UI
             }
         }
 
+        private async void BtnStartAllServers_Click(object sender, EventArgs e)
+        {
+            await _apacheModule?.StartServer();
+            await _mySqlModule?.StartServer();
+        }
+
         private async void BtnStopAllServers_Click(object sender, EventArgs e)
         {
             //TODO: Enable the button if both servers are running.
