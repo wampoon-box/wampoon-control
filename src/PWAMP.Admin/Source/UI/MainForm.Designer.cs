@@ -169,7 +169,7 @@ namespace Frostybee.PwampAdmin.UI
             // btnExportLogs
             // 
             this.btnExportLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnExportLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
             this.btnExportLogs.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExportLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportLogs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -271,10 +271,10 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // btnStopAllServers
             // 
-            this.btnStopAllServers.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnStopAllServers.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
             this.btnStopAllServers.Location = new System.Drawing.Point(120, 19);
             this.btnStopAllServers.Name = "btnStopAllServers";
             this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
@@ -285,10 +285,10 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // btnOpenExplorer
             // 
-            this.btnOpenExplorer.BackColor = System.Drawing.Color.LightGreen;
+            this.btnOpenExplorer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
             this.btnOpenExplorer.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnOpenExplorer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnOpenExplorer.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btnOpenExplorer.ForeColor = System.Drawing.Color.White;
             this.btnOpenExplorer.Location = new System.Drawing.Point(6, 19);
             this.btnOpenExplorer.Name = "btnOpenExplorer";
             this.btnOpenExplorer.Size = new System.Drawing.Size(94, 37);
@@ -299,10 +299,10 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // btnAbout
             // 
-            this.btnAbout.BackColor = System.Drawing.Color.LightBlue;
+            this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
             this.btnAbout.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnAbout.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btnAbout.ForeColor = System.Drawing.Color.White;
             this.btnAbout.Location = new System.Drawing.Point(234, 19);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(94, 37);
