@@ -19,6 +19,7 @@ namespace Frostybee.PwampAdmin.UI
         
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
+        private NotifyIcon _notifyIcon;
 
         public MainForm()
         {
@@ -33,7 +34,9 @@ namespace Frostybee.PwampAdmin.UI
             SizeGripStyle = SizeGripStyle.Show;
 
             FormClosing += MainForm_FormClosing;
-            Load += MainForm_Load;            
+            Load += MainForm_Load;
+            
+            InitializeNotifyIcon();            
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -69,6 +72,53 @@ namespace Frostybee.PwampAdmin.UI
             catch (Exception)
             {
             }
+        }
+
+        private void InitializeNotifyIcon()
+        {
+            _notifyIcon = new NotifyIcon();
+            _notifyIcon.Text = "PWAMP Control Panel";
+            _notifyIcon.Visible = false;
+            
+            try
+            {
+                byte[] pwamp_icon = Properties.Resources.pwamp_icon;
+                using (MemoryStream ms = new MemoryStream(pwamp_icon))
+                using (Bitmap bitmap = new Bitmap(ms))
+                {
+                    _notifyIcon.Icon = Icon.FromHandle(bitmap.GetHicon());
+                }
+            }
+            catch (Exception)
+            {
+                _notifyIcon.Icon = SystemIcons.Application;
+            }
+            
+            _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+            
+            var contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add("Restore", null, (s, e) => RestoreFromTray());
+            contextMenu.Items.Add("Exit", null, (s, e) => ExitApplication());
+            _notifyIcon.ContextMenuStrip = contextMenu;
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            RestoreFromTray();
+        }
+
+        private void RestoreFromTray()
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+            _notifyIcon.Visible = false;
+            BringToFront();
+        }
+
+        private void ExitApplication()
+        {
+            _notifyIcon.Visible = false;
+            Application.Exit();
         }
 
         public void AddLog(string module, string log, LogType logType = LogType.Default)
@@ -172,6 +222,18 @@ namespace Frostybee.PwampAdmin.UI
         {
             try
             {
+                if (e.CloseReason == CloseReason.UserClosing)
+                {
+                    e.Cancel = true;
+                    Hide();
+                    _notifyIcon.Visible = true;
+                    _notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
+                    return;
+                }
+                if (WindowState != FormWindowState.Normal)
+                {
+                    RestoreFromTray();
+                }
                 // Clean up managers on application exit.
                 bool hasRunningServices = (_apacheModule != null && _apacheModule.IsRunning()) ||
                                          (_mySqlModule != null && _mySqlModule.IsRunning());
@@ -201,6 +263,13 @@ namespace Frostybee.PwampAdmin.UI
                 {
                     DestroyIcon(_iconHandle);
                     _iconHandle = IntPtr.Zero;
+                }
+
+                // Clean up notify icon.
+                if (_notifyIcon != null)
+                {
+                    _notifyIcon.Visible = false;
+                    _notifyIcon.Dispose();
                 }
             }
             catch (Exception ex)
