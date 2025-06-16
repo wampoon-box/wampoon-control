@@ -1,4 +1,4 @@
-namespace Frostybee.PwampAdmin
+namespace Frostybee.PwampAdmin.UI
 {
     partial class ErrorReportForm
     {
@@ -154,10 +154,11 @@ namespace Frostybee.PwampAdmin
             // 
             this.copyToClipboardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.copyToClipboardButton.BackColor = System.Drawing.Color.Green;
+            this.copyToClipboardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.copyToClipboardButton.ForeColor = System.Drawing.Color.White;
             this.copyToClipboardButton.Location = new System.Drawing.Point(15, 510);
             this.copyToClipboardButton.Name = "copyToClipboardButton";
-            this.copyToClipboardButton.Size = new System.Drawing.Size(120, 30);
+            this.copyToClipboardButton.Size = new System.Drawing.Size(131, 30);
             this.copyToClipboardButton.TabIndex = 10;
             this.copyToClipboardButton.Text = "Copy to Clipboard";
             this.copyToClipboardButton.UseVisualStyleBackColor = false;
@@ -168,10 +169,11 @@ namespace Frostybee.PwampAdmin
             this.reportIssueButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.reportIssueButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(192)))));
             this.reportIssueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.reportIssueButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.reportIssueButton.ForeColor = System.Drawing.Color.White;
-            this.reportIssueButton.Location = new System.Drawing.Point(150, 510);
+            this.reportIssueButton.Location = new System.Drawing.Point(164, 510);
             this.reportIssueButton.Name = "reportIssueButton";
-            this.reportIssueButton.Size = new System.Drawing.Size(120, 30);
+            this.reportIssueButton.Size = new System.Drawing.Size(143, 30);
             this.reportIssueButton.TabIndex = 11;
             this.reportIssueButton.Text = "Report on GitHub";
             this.reportIssueButton.UseVisualStyleBackColor = false;

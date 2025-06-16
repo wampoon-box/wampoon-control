@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Frostybee.PwampAdmin.Helpers;
 using Frostybee.PwampAdmin.Models;
 
-namespace Frostybee.Forms
+namespace Frostybee.Forms.UI
 {
     public partial class SettingsForm : Form
     {

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Frostybee.PwampAdmin
+namespace Frostybee.PwampAdmin.UI
 {
     partial class MainForm
     {
@@ -51,6 +51,7 @@ namespace Frostybee.PwampAdmin
             this.grpHelpers = new System.Windows.Forms.GroupBox();
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.logsPanel.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
@@ -260,6 +261,7 @@ namespace Frostybee.PwampAdmin
             // 
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
+            this.grpHelpers.Controls.Add(this.btnAbout);
             this.grpHelpers.Location = new System.Drawing.Point(12, 362);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Size = new System.Drawing.Size(814, 62);
@@ -294,6 +296,20 @@ namespace Frostybee.PwampAdmin
             this.btnOpenExplorer.Text = "Explorer";
             this.btnOpenExplorer.UseVisualStyleBackColor = false;
             this.btnOpenExplorer.Click += new System.EventHandler(this.BtnOpenExplorer_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.BackColor = System.Drawing.Color.LightBlue;
+            this.btnAbout.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnAbout.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btnAbout.Location = new System.Drawing.Point(234, 19);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(94, 37);
+            this.btnAbout.TabIndex = 2;
+            this.btnAbout.Text = "About";
+            this.btnAbout.UseVisualStyleBackColor = false;
+            this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
             // 
             // MainForm
             // 
@@ -346,5 +362,6 @@ namespace Frostybee.PwampAdmin
         private GroupBox grpHelpers;
         private Button btnOpenExplorer;
         private Button btnStopAllServers;
+        private Button btnAbout;
     }
 }
