@@ -16,7 +16,7 @@ namespace Frostybee.PwampAdmin.Controls
 {
     internal partial class MySqlControl : ServerControlBase, IDisposable
     {
-        private MySQLManager _mysqlManager;
+        private MySQLServerManager _mysqlManager;
 
         public MySqlControl()
         {
@@ -25,15 +25,17 @@ namespace Frostybee.PwampAdmin.Controls
             // Default MySQL port, change if needed.
             PortNumber = 3306; 
             lblServerIcon.Text = "🗄️"; 
-            
+            btnServerAdmin.Text = "phpMyAdmin";
+
         }
         public void InitializeModule()
         {
             try
             {
                 lblServerTitle.Text = DisplayName;
-                
-                _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLManager>(ServerDefinitions.MariaDB.Name);            
+                // Default admin URL, might need to adjust it to make it use the actual port number.
+                ServerAdminUri = $"http://localhost/phpmyadmin"; 
+                _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLServerManager>(ServerDefinitions.MariaDB.Name);            
                 ServerManager = _mysqlManager;
 
                 _mysqlManager.ErrorOccurred += LogError;
@@ -60,30 +62,6 @@ namespace Frostybee.PwampAdmin.Controls
             MainForm.Instance?.AddErrorLog("MySQL", message);
         }
          
-        //public virtual void Dispose()
-        //{
-        //    if (_mysqlManager != null)
-        //    {
-        //        _mysqlManager.Dispose();
-        //        _mysqlManager = null;
-        //    }
-        //}
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_mysqlManager != null)
-                {
-                    _mysqlManager.ErrorOccurred -= LogError;
-                    _mysqlManager.StatusChanged -= LogMessage;
-                    _mysqlManager.Dispose();
-                    _mysqlManager = null;
-                }
-            }
-            base.Dispose(disposing);
-        }
-
         internal bool IsRunning()
         {
             return _mysqlManager != null && _mysqlManager.IsRunning;
@@ -121,7 +99,7 @@ namespace Frostybee.PwampAdmin.Controls
                     
                     try
                     {
-                        _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLManager>(ServerDefinitions.MariaDB.Name);
+                        _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLServerManager>(ServerDefinitions.MariaDB.Name);
                         _mysqlManager.ErrorOccurred += LogError;
                         _mysqlManager.StatusChanged += LogMessage;
                         ServerManager = _mysqlManager;
@@ -148,6 +126,20 @@ namespace Frostybee.PwampAdmin.Controls
                 btnStart.Enabled = true;
                 UpdateStatus(ServerStatus.Stopped);
             }
-        }        
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_mysqlManager != null)
+                {
+                    _mysqlManager.ErrorOccurred -= LogError;
+                    _mysqlManager.StatusChanged -= LogMessage;
+                    _mysqlManager.Dispose();
+                    _mysqlManager = null;
+                }
+            }
+            base.Dispose(disposing);
+        }
     }
 }

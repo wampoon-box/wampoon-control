@@ -35,9 +35,9 @@ namespace Frostybee.PwampAdmin.UI
             this.logsHeaderLabel = new System.Windows.Forms.Label();
             this.logTabControl = new System.Windows.Forms.TabControl();
             this.outputTab = new System.Windows.Forms.TabPage();
-            this._logTextBox = new System.Windows.Forms.RichTextBox();
+            this._rtxtActionsLog = new System.Windows.Forms.RichTextBox();
             this.errorTab = new System.Windows.Forms.TabPage();
-            this._errorLogTextBox = new System.Windows.Forms.RichTextBox();
+            this._rtxtErrorLog = new System.Windows.Forms.RichTextBox();
             this.accessTab = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.headerPanel = new System.Windows.Forms.Panel();
@@ -104,7 +104,7 @@ namespace Frostybee.PwampAdmin.UI
             // outputTab
             // 
             this.outputTab.BackColor = System.Drawing.Color.White;
-            this.outputTab.Controls.Add(this._logTextBox);
+            this.outputTab.Controls.Add(this._rtxtActionsLog);
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
@@ -114,24 +114,24 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // _logTextBox
             // 
-            this._logTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this._rtxtActionsLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._logTextBox.BackColor = System.Drawing.Color.White;
-            this._logTextBox.Font = new System.Drawing.Font("Consolas", 10F);
-            this._logTextBox.ForeColor = System.Drawing.Color.Black;
-            this._logTextBox.Location = new System.Drawing.Point(13, 0);
-            this._logTextBox.Name = "_logTextBox";
-            this._logTextBox.ReadOnly = true;
-            this._logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._logTextBox.Size = new System.Drawing.Size(777, 238);
-            this._logTextBox.TabIndex = 0;
-            this._logTextBox.Text = "";
+            this._rtxtActionsLog.BackColor = System.Drawing.Color.White;
+            this._rtxtActionsLog.Font = new System.Drawing.Font("Consolas", 10F);
+            this._rtxtActionsLog.ForeColor = System.Drawing.Color.Black;
+            this._rtxtActionsLog.Location = new System.Drawing.Point(13, 0);
+            this._rtxtActionsLog.Name = "_logTextBox";
+            this._rtxtActionsLog.ReadOnly = true;
+            this._rtxtActionsLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this._rtxtActionsLog.Size = new System.Drawing.Size(777, 238);
+            this._rtxtActionsLog.TabIndex = 0;
+            this._rtxtActionsLog.Text = "";
             // 
             // errorTab
             // 
             this.errorTab.BackColor = System.Drawing.Color.White;
-            this.errorTab.Controls.Add(this._errorLogTextBox);
+            this.errorTab.Controls.Add(this._rtxtErrorLog);
             this.errorTab.Location = new System.Drawing.Point(4, 24);
             this.errorTab.Name = "errorTab";
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
@@ -142,17 +142,17 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // _errorLogTextBox
             // 
-            this._errorLogTextBox.BackColor = System.Drawing.Color.White;
-            this._errorLogTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._errorLogTextBox.Font = new System.Drawing.Font("Consolas", 10F);
-            this._errorLogTextBox.ForeColor = System.Drawing.Color.Red;
-            this._errorLogTextBox.Location = new System.Drawing.Point(3, 3);
-            this._errorLogTextBox.Name = "_errorLogTextBox";
-            this._errorLogTextBox.ReadOnly = true;
-            this._errorLogTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._errorLogTextBox.Size = new System.Drawing.Size(777, 238);
-            this._errorLogTextBox.TabIndex = 0;
-            this._errorLogTextBox.Text = "";
+            this._rtxtErrorLog.BackColor = System.Drawing.Color.White;
+            this._rtxtErrorLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._rtxtErrorLog.Font = new System.Drawing.Font("Consolas", 10F);
+            this._rtxtErrorLog.ForeColor = System.Drawing.Color.Red;
+            this._rtxtErrorLog.Location = new System.Drawing.Point(3, 3);
+            this._rtxtErrorLog.Name = "_errorLogTextBox";
+            this._rtxtErrorLog.ReadOnly = true;
+            this._rtxtErrorLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this._rtxtErrorLog.Size = new System.Drawing.Size(777, 238);
+            this._rtxtErrorLog.TabIndex = 0;
+            this._rtxtErrorLog.Text = "";
             // 
             // accessTab
             // 
@@ -360,9 +360,9 @@ namespace Frostybee.PwampAdmin.UI
         private Label logsHeaderLabel;
         private TabControl logTabControl;
         private TabPage outputTab;
-        private RichTextBox _logTextBox;
+        private RichTextBox _rtxtActionsLog;
         private TabPage errorTab;
-        private RichTextBox _errorLogTextBox;
+        private RichTextBox _rtxtErrorLog;
         private TabPage accessTab;
         private Panel panel1;
         private Controls.MySqlControl _mySqlModule;

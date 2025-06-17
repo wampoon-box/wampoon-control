@@ -137,18 +137,18 @@ namespace Frostybee.PwampAdmin.UI
 
         public void AddLog(string module, string log, LogType logType = LogType.Default)
         {
-            if (_logTextBox == null) return;
+            if (_rtxtActionsLog == null) return;
 
             var timestamp = DateTime.Now.ToString("HH:mm:ss");
             var logEntry = $"[{timestamp}] [{module}] {log}";
 
-            if (_logTextBox.InvokeRequired)
+            if (_rtxtActionsLog.InvokeRequired)
             {
-                _logTextBox.Invoke(new Action(() => AddLogInternal(logEntry, logType)));
+                _rtxtActionsLog.Invoke(new Action(() => AddMySqlLogInternal(_rtxtActionsLog, logEntry, logType)));
             }
             else
             {
-                AddLogInternal(logEntry, logType);
+                AddMySqlLogInternal(_rtxtActionsLog, logEntry, logType);
             }
         }
 
@@ -159,14 +159,14 @@ namespace Frostybee.PwampAdmin.UI
 
         public void AddErrorLog(string module, string log)
         {
-            if (_errorLogTextBox == null) return;
+            if (_rtxtErrorLog == null) return;
 
             var timestamp = DateTime.Now.ToString("HH:mm:ss");
             var logEntry = $"[{timestamp}] [{module}] {log}";
 
-            if (_errorLogTextBox.InvokeRequired)
+            if (_rtxtErrorLog.InvokeRequired)
             {
-                _errorLogTextBox.Invoke(new Action(() => AddErrorLogInternal(logEntry)));
+                _rtxtErrorLog.Invoke(new Action(() => AddErrorLogInternal(logEntry)));
             }
             else
             {
@@ -176,87 +176,63 @@ namespace Frostybee.PwampAdmin.UI
 
         public void AddMySqlLog(string log, LogType logType = LogType.Default)
         {
-            if (_errorLogTextBox == null) return;
+            if (_rtxtErrorLog == null) return;
 
-            var timestamp = DateTime.Now.ToString("HH:mm:ss");
-            var logEntry = $"[{timestamp}] [MySQL] {log}";
+            var logEntry = $"[MySQL] {log}";
 
-            if (_errorLogTextBox.InvokeRequired)
+            if (_rtxtErrorLog.InvokeRequired)
             {
-                _errorLogTextBox.Invoke(new Action(() => AddMySqlLogInternal(logEntry, logType)));
+                _rtxtErrorLog.Invoke(new Action(() => AddMySqlLogInternal(_rtxtErrorLog, logEntry, logType)));
             }
             else
             {
-                AddMySqlLogInternal(logEntry, logType);
+                AddMySqlLogInternal(_rtxtErrorLog, logEntry, logType);
             }
         }
 
         private void AddErrorLogInternal(string logEntry)
         {
-            if (_errorLogTextBox == null) return;
+            if (_rtxtErrorLog == null) return;
 
-            _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
-            _errorLogTextBox.SelectionLength = 0;
-            _errorLogTextBox.SelectionColor = Color.Red;
-            _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
-            _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
-            _errorLogTextBox.ScrollToCaret();
+            _rtxtErrorLog.SelectionStart = _rtxtErrorLog.TextLength;
+            _rtxtErrorLog.SelectionLength = 0;
+            _rtxtErrorLog.SelectionColor = Color.Red;
+            _rtxtErrorLog.AppendText(logEntry + Environment.NewLine);
+            _rtxtErrorLog.SelectionColor = _rtxtErrorLog.ForeColor;
+            _rtxtErrorLog.ScrollToCaret();
 
             // Limit log size
-            if (_errorLogTextBox.Lines.Length > 1000)
+            if (_rtxtErrorLog.Lines.Length > 1000)
             {
-                var lines = _errorLogTextBox.Lines;
+                var lines = _rtxtErrorLog.Lines;
                 var newLines = new string[500];
                 Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
-                _errorLogTextBox.Lines = newLines;
+                _rtxtErrorLog.Lines = newLines;
             }
         }
 
-        private void AddMySqlLogInternal(string logEntry, LogType logType)
+        private void AddMySqlLogInternal(RichTextBox txtLogControl, string logEntry, LogType logType)
         {
-            if (_errorLogTextBox == null) return;
+            if (txtLogControl == null) return;
 
             Color textColor = UiHelper.GetLogColor(logType);
 
-            _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
-            _errorLogTextBox.SelectionLength = 0;
-            _errorLogTextBox.SelectionColor = textColor;
-            _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
-            _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
-            _errorLogTextBox.ScrollToCaret();
+            txtLogControl.SelectionStart = txtLogControl.TextLength;
+            txtLogControl.SelectionLength = 0;
+            txtLogControl.SelectionColor = textColor;
+            txtLogControl.AppendText(logEntry + Environment.NewLine);
+            txtLogControl.SelectionColor = txtLogControl.ForeColor;
+            txtLogControl.ScrollToCaret();
 
-            // Limit log size
-            if (_errorLogTextBox.Lines.Length > 1000)
+            // Limit log size.
+            if (txtLogControl.Lines.Length > 1000)
             {
-                var lines = _errorLogTextBox.Lines;
+                var lines = txtLogControl.Lines;
                 var newLines = new string[500];
                 Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
-                _errorLogTextBox.Lines = newLines;
-            }
-        }
-
-        private void AddLogInternal(string logEntry, LogType logType)
-        {
-            if (_logTextBox == null) return;
-
-            Color textColor = UiHelper.GetLogColor(logType);
-
-            _logTextBox.SelectionStart = _logTextBox.TextLength;
-            _logTextBox.SelectionLength = 0;
-            _logTextBox.SelectionColor = textColor;
-            _logTextBox.AppendText(logEntry + Environment.NewLine);
-            _logTextBox.SelectionColor = _logTextBox.ForeColor;
-            _logTextBox.ScrollToCaret();
-
-            // Limit log size
-            if (_logTextBox.Lines.Length > 1000)
-            {
-                var lines = _logTextBox.Lines;
-                var newLines = new string[500];
-                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
-                _logTextBox.Lines = newLines;
-            }
-        }
+                txtLogControl.Lines = newLines;
+            }            
+        }        
 
         private void BtnOpenExplorer_Click(object sender, EventArgs e)
         {

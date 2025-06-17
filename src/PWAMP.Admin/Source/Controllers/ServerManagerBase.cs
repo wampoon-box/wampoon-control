@@ -72,13 +72,13 @@ namespace Frostybee.PwampAdmin.Controllers
             {
                 if (IsRunning)
                 {
-                    LogMessage($"is already running!");
+                    LogMessage($"Is already running!");
                     return true;
                 }
 
                 if (!File.Exists(_executablePath))
                 {
-                    LogError($"executable not found: {_executablePath}");
+                    LogError($"Executable not found: {_executablePath}");
                     return false;
                 }
 
@@ -99,7 +99,7 @@ namespace Frostybee.PwampAdmin.Controllers
 
                 if (CanMonitorOutput)
                 {
-                    LogMessage($"Configure output monitoring...");
+                    LogMessage($"Configuring output monitoring...");
                     _serverProcess.BeginOutputReadLine();
                     _serverProcess.BeginErrorReadLine();
                 }
@@ -108,21 +108,21 @@ namespace Frostybee.PwampAdmin.Controllers
 
                 if (!IsRunning)
                 {
-                    LogError($"failed to start, please try again! Exit code: {_serverProcess.ExitCode}");
+                    LogError($"Failed to start, please try again! Exit code: {_serverProcess.ExitCode}");
                     return false;
                 }
                 _serverProcess.Exited += (sender, e) =>
                 {
-                    LogError($"has exited with code: {_serverProcess.ExitCode}");
+                    LogError($"Has exited with code: {_serverProcess.ExitCode}");
                 };
                 //TODO: Pass the process ID to the main form.
-                LogMessage($"started successfully (PID: {_serverProcess.Id})");
+                LogMessage($"Started successfully (PID: {_serverProcess.Id})");
                 return true;
             }
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
-                LogError($"failed to start: {ex.Message}");
+                LogError($"Failed to start: {ex.Message}");
                 return false;
             }
         }
@@ -139,11 +139,11 @@ namespace Frostybee.PwampAdmin.Controllers
             {
                 if (IsMySqlServer)
                 {
-                    MainForm.Instance?.AddMySqlLog($"[ERR] {e.Data}", LogType.Error);
+                    MainForm.Instance?.AddMySqlLog($"{e.Data}", LogType.Error);
                 }
                 else
                 {
-                    LogError($"[ERR] {e.Data}");
+                    LogError($"{e.Data}");
                 }
             }
         }
@@ -154,11 +154,11 @@ namespace Frostybee.PwampAdmin.Controllers
             {
                 if (IsMySqlServer)
                 {
-                    MainForm.Instance?.AddMySqlLog($"[OUT] {e.Data}", LogType.Info);
+                    MainForm.Instance?.AddMySqlLog($"{e.Data}", LogType.Info);
                 }
                 else
                 {
-                    LogMessage($"[OUT] {e.Data}");
+                    LogMessage($"{e.Data}");
                 }
             }
         }
@@ -167,13 +167,13 @@ namespace Frostybee.PwampAdmin.Controllers
         {
             if (!IsRunning)
             {
-                LogMessage($"is not running.");
+                LogMessage($"Is not running.");
                 return true;
             }
 
             try
             {
-                LogMessage($"trying to stop gracefully...");
+                LogMessage($"Trying to stop gracefully...");
 
                 //FIXME:
                 //TODO: log the amount of seconds the user has to wait for the graceful shutdown to complete.
@@ -181,7 +181,7 @@ namespace Frostybee.PwampAdmin.Controllers
                 //-- 1) First off, we attempt a graceful process shutdown.
                 if (await PerformGracefulShutdown())
                 {
-                    LogMessage($"stopped gracefully!");
+                    LogMessage($"Stopped gracefully!");
                     return true;
                 }
                 else
@@ -193,7 +193,7 @@ namespace Frostybee.PwampAdmin.Controllers
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
-                LogError($"failed to stop: {ex.Message}");
+                LogError($"Failed to stop: {ex.Message}");
                 return false;
             }
         }
@@ -202,7 +202,7 @@ namespace Frostybee.PwampAdmin.Controllers
         {
             if (!IsRunning)
             {
-                LogMessage($"is not running.");
+                LogMessage($"Is not running.");
                 return true;
             }
             try
@@ -214,19 +214,19 @@ namespace Frostybee.PwampAdmin.Controllers
 
                 if (exited)
                 {
-                    LogMessage($"forcefully stopped...");
+                    LogMessage($"Forcefully stopped...");
                     return true;
                 }
                 else
                 {
-                    LogMessage("failed to forcefully stop. Please try to terminate the process using the Task Manager...");
+                    LogMessage("Failed to forcefully stop. Please try to terminate the process using the Task Manager...");
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
-                LogError($"failed to stop forcefully: {ex.Message}");
+                LogError($"Failed to stop forcefully: {ex.Message}");
                 return false;
             }
         }

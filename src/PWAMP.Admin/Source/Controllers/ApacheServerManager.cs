@@ -13,13 +13,13 @@ using Frostybee.PwampAdmin.Helpers;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
-    internal class ApacheManager : ServerManagerBase
+    internal class ApacheServerManager : ServerManagerBase
     {
         public override string ServerName { get; set; } = "Apache";
         protected override bool CanMonitorOutput { get; set; } = false;
         
 
-        public ApacheManager(string executablePath, string configPath = null)
+        public ApacheServerManager(string executablePath, string configPath = null)
             : base(executablePath, configPath)
         {
         }
@@ -67,7 +67,7 @@ namespace Frostybee.PwampAdmin.Controllers
         {
             if (!IsRunning)
             {
-                LogError("process is not running or has already exited.");
+                LogError("Process is not running or has already exited.");
                 return false;
             }
 
@@ -97,7 +97,7 @@ namespace Frostybee.PwampAdmin.Controllers
                     await Task.Delay(3000);
                     if (_serverProcess.HasExited)
                     {
-                        LogMessage("stopped successfully (Ctrl+C sent).");
+                        LogMessage("Stopped successfully (Ctrl+C sent).");
                         return true;
                     }
                     else

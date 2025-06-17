@@ -17,7 +17,7 @@ namespace Frostybee.PwampAdmin.Controls
 {
     internal partial class ApacheControl : ServerControlBase, IDisposable
     {
-        private ApacheManager _apacheManager;
+        private ApacheServerManager _apacheManager;
         // Apache and phpMyAdmin-related paths.
         private string _apacheDirectory;
         private string _customConfigPath;
@@ -29,7 +29,8 @@ namespace Frostybee.PwampAdmin.Controls
             ServiceName = "Apache";
             DisplayName = "Apache HTTP Server";
             PortNumber = 80; // Default HTTP port, change if needed.
-            lblServerIcon.Text = "🌐";
+            lblServerIcon.Text = "🌐";            
+            btnServerAdmin.Text = "localhost";
         }
 
         public void InitializeModule()
@@ -41,10 +42,13 @@ namespace Frostybee.PwampAdmin.Controls
                 // the application has been moved to a different directory/drive.
                 UpdateApacheConfig();
 
-                _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);                
+                _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);                
                 _apacheManager.ErrorOccurred += LogError;
                 _apacheManager.StatusChanged += LogMessage;
-                ServerManager = _apacheManager;                
+                ServerManager = _apacheManager;
+                //TODO: Default admin URI for Apache. Might need to add the port number. 
+                //ServerAdminUri = $"http://localhost:{PortNumber}/"; 
+                ServerAdminUri = $"http://localhost";
             }
             catch (Exception ex)
             {
@@ -119,20 +123,7 @@ namespace Frostybee.PwampAdmin.Controls
         //    }
         //}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_apacheManager != null)
-                {
-                    _apacheManager.ErrorOccurred -= LogError;
-                    _apacheManager.StatusChanged -= LogMessage;
-                    _apacheManager.Dispose();
-                    _apacheManager = null;
-                }
-            }
-            base.Dispose(disposing);
-        }
+       
 
         internal bool IsRunning()
         {
@@ -157,7 +148,7 @@ namespace Frostybee.PwampAdmin.Controls
                     
                     try
                     {
-                        _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);
+                        _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);
                         _apacheManager.ErrorOccurred += LogError;
                         _apacheManager.StatusChanged += LogMessage;
                         ServerManager = _apacheManager;
@@ -403,6 +394,19 @@ namespace Frostybee.PwampAdmin.Controls
 
         #endregion
 
-
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_apacheManager != null)
+                {
+                    _apacheManager.ErrorOccurred -= LogError;
+                    _apacheManager.StatusChanged -= LogMessage;
+                    _apacheManager.Dispose();
+                    _apacheManager = null;
+                }
+            }
+            base.Dispose(disposing);
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace Frostybee.PwampAdmin.Helpers
             WriteToFile(logEntry);
         }
 
-        internal static void LogErrorMessage(string message)
+        internal static void LogExceptionInfo(string message)
         {
             var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}{Environment.NewLine}";
             WriteToFile(logEntry);

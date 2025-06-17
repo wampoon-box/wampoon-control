@@ -12,11 +12,12 @@ using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
 namespace Frostybee.PwampAdmin.Controls
 {
     public partial class ServerControlBase : UserControl
-    {        
+    {
         protected string ServiceName { get; set; }
         protected string DisplayName { get; set; }
-        protected int PortNumber { get; set; } 
-        protected int ProcessId { get; set; } 
+        protected string ServerAdminUri { get; set; }
+        protected int PortNumber { get; set; }
+        protected int ProcessId { get; set; }
         internal ServerManagerBase ServerManager { get; set; }
 
         public ServerControlBase()
@@ -29,12 +30,20 @@ namespace Frostybee.PwampAdmin.Controls
         {
             btnStart.Click += BtnStart_Click;
             btnStop.Click += BtnStop_Click;
-            btnRestart.Click += BtnRestart_Click;
+            btnServerAdmin.Click += BtnOpenAdmin_Click;
         }
 
-        protected async virtual void BtnRestart_Click(object sender, EventArgs e)
+        protected async virtual void BtnOpenAdmin_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                SystemHelper.OpenUrl(ServerAdminUri);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Failed to open admin interface for {ServiceName}. Please check the URL: {ServerAdminUri}.", LogType.Error);
+            }
         }
 
         protected async virtual void BtnStop_Click(object sender, EventArgs e)
@@ -120,7 +129,7 @@ namespace Frostybee.PwampAdmin.Controls
                     ApplyControlStyle(Color.Red, Color.DarkRed, Color.WhiteSmoke);
                     break;
                 case ServerStatus.Running:
-                    ApplyControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200)); 
+                    ApplyControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200));
                     break;
                 case ServerStatus.Stopping:
                     ApplyControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
@@ -133,7 +142,7 @@ namespace Frostybee.PwampAdmin.Controls
                     break;
             }
         }
-       
+
         private void ApplyControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
         {
             pcbServerStatus.BackColor = statusColor;

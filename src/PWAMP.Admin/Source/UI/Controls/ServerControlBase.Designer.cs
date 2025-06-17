@@ -35,7 +35,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.btnRestart = new System.Windows.Forms.Button();
+            this.btnServerAdmin = new System.Windows.Forms.Button();
             this.pnlControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +50,7 @@
             this.pnlControls.Controls.Add(this.lblStatus);
             this.pnlControls.Controls.Add(this.btnStart);
             this.pnlControls.Controls.Add(this.btnStop);
-            this.pnlControls.Controls.Add(this.btnRestart);
+            this.pnlControls.Controls.Add(this.btnServerAdmin);
             this.pnlControls.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlControls.Location = new System.Drawing.Point(0, 0);
             this.pnlControls.Name = "pnlControls";
@@ -128,19 +128,19 @@
             this.btnStop.Text = "⏹️ Stop";
             this.btnStop.UseVisualStyleBackColor = false;
             // 
-            // btnRestart
+            // btnServerAdmin
             // 
-            this.btnRestart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
-            this.btnRestart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRestart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRestart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnRestart.ForeColor = System.Drawing.Color.White;
-            this.btnRestart.Location = new System.Drawing.Point(240, 90);
-            this.btnRestart.Name = "btnRestart";
-            this.btnRestart.Size = new System.Drawing.Size(100, 35);
-            this.btnRestart.TabIndex = 6;
-            this.btnRestart.Text = "🔄 Restart";
-            this.btnRestart.UseVisualStyleBackColor = false;
+            this.btnServerAdmin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.btnServerAdmin.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnServerAdmin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnServerAdmin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnServerAdmin.ForeColor = System.Drawing.Color.White;
+            this.btnServerAdmin.Location = new System.Drawing.Point(240, 90);
+            this.btnServerAdmin.Name = "btnServerAdmin";
+            this.btnServerAdmin.Size = new System.Drawing.Size(100, 35);
+            this.btnServerAdmin.TabIndex = 6;
+            this.btnServerAdmin.Text = "Admin";
+            this.btnServerAdmin.UseVisualStyleBackColor = false;
             // 
             // ServerControlBase
             // 
@@ -166,6 +166,6 @@
         protected System.Windows.Forms.Label lblStatus;
         protected System.Windows.Forms.Button btnStart;
         protected System.Windows.Forms.Button btnStop;
-        protected System.Windows.Forms.Button btnRestart;
+        protected System.Windows.Forms.Button btnServerAdmin;
     }
 }
