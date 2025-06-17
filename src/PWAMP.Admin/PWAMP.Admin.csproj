@@ -151,10 +151,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Assets\quit-48.png" />
+    <None Include="Assets\start-24.png" />
+    <Content Include="Assets\start-48.png" />
+    <Content Include="Assets\stop-64.png" />
     <Content Include="full_size_app_icon.ico" />
     <Content Include="pwamp-icon.ico" />
   </ItemGroup>

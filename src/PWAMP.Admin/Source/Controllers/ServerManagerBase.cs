@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.UI;
+using Frostybee.PwampAdmin.Enums;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
@@ -29,6 +31,8 @@ namespace Frostybee.PwampAdmin.Controllers
         /// </summary>
         protected abstract bool CanMonitorOutput { get; set; }
         public bool IsRunning => _serverProcess != null && !_serverProcess.HasExited;
+        
+        protected bool IsMySqlServer => ServerName.Contains("MySQL") || ServerName.Contains("MariaDB");
 
         internal ServerManagerBase(string executablePath, string configPath = null)
         {
@@ -133,7 +137,14 @@ namespace Frostybee.PwampAdmin.Controllers
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
-                LogError($"[ERR] {e.Data}");
+                if (IsMySqlServer)
+                {
+                    MainForm.Instance?.AddMySqlLog($"[ERR] {e.Data}", LogType.Error);
+                }
+                else
+                {
+                    LogError($"[ERR] {e.Data}");
+                }
             }
         }
 
@@ -141,7 +152,14 @@ namespace Frostybee.PwampAdmin.Controllers
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
-                LogMessage($"[OUT] {e.Data}");
+                if (IsMySqlServer)
+                {
+                    MainForm.Instance?.AddMySqlLog($"[OUT] {e.Data}", LogType.Info);
+                }
+                else
+                {
+                    LogMessage($"[OUT] {e.Data}");
+                }
             }
         }
 

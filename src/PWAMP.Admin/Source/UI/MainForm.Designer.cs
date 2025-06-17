@@ -137,22 +137,20 @@ namespace Frostybee.PwampAdmin.UI
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
             this.errorTab.Size = new System.Drawing.Size(783, 244);
             this.errorTab.TabIndex = 1;
-            this.errorTab.Text = "Error Logs";
+            this.errorTab.Text = "MySQL Logs";
             this.errorTab.UseVisualStyleBackColor = true;
             // 
             // _errorLogTextBox
             // 
-            this._errorLogTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this._errorLogTextBox.BackColor = System.Drawing.Color.White;
+            this._errorLogTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this._errorLogTextBox.Font = new System.Drawing.Font("Consolas", 10F);
             this._errorLogTextBox.ForeColor = System.Drawing.Color.Red;
-            this._errorLogTextBox.Location = new System.Drawing.Point(16, 6);
+            this._errorLogTextBox.Location = new System.Drawing.Point(3, 3);
             this._errorLogTextBox.Name = "_errorLogTextBox";
             this._errorLogTextBox.ReadOnly = true;
             this._errorLogTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._errorLogTextBox.Size = new System.Drawing.Size(1354, 376);
+            this._errorLogTextBox.Size = new System.Drawing.Size(777, 238);
             this._errorLogTextBox.TabIndex = 0;
             this._errorLogTextBox.Text = "";
             // 

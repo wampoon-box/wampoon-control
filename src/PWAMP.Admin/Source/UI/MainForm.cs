@@ -174,6 +174,23 @@ namespace Frostybee.PwampAdmin.UI
             }
         }
 
+        public void AddMySqlLog(string log, LogType logType = LogType.Default)
+        {
+            if (_errorLogTextBox == null) return;
+
+            var timestamp = DateTime.Now.ToString("HH:mm:ss");
+            var logEntry = $"[{timestamp}] [MySQL] {log}";
+
+            if (_errorLogTextBox.InvokeRequired)
+            {
+                _errorLogTextBox.Invoke(new Action(() => AddMySqlLogInternal(logEntry, logType)));
+            }
+            else
+            {
+                AddMySqlLogInternal(logEntry, logType);
+            }
+        }
+
         private void AddErrorLogInternal(string logEntry)
         {
             if (_errorLogTextBox == null) return;
@@ -181,6 +198,29 @@ namespace Frostybee.PwampAdmin.UI
             _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
             _errorLogTextBox.SelectionLength = 0;
             _errorLogTextBox.SelectionColor = Color.Red;
+            _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
+            _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
+            _errorLogTextBox.ScrollToCaret();
+
+            // Limit log size
+            if (_errorLogTextBox.Lines.Length > 1000)
+            {
+                var lines = _errorLogTextBox.Lines;
+                var newLines = new string[500];
+                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
+                _errorLogTextBox.Lines = newLines;
+            }
+        }
+
+        private void AddMySqlLogInternal(string logEntry, LogType logType)
+        {
+            if (_errorLogTextBox == null) return;
+
+            Color textColor = UiHelper.GetLogColor(logType);
+
+            _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
+            _errorLogTextBox.SelectionLength = 0;
+            _errorLogTextBox.SelectionColor = textColor;
             _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
             _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
             _errorLogTextBox.ScrollToCaret();
