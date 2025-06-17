@@ -16,7 +16,7 @@ namespace Frostybee.PwampAdmin.UI
     {
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool DestroyIcon(IntPtr hIcon);
-        
+
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
         private NotifyIcon _notifyIcon;
@@ -25,9 +25,9 @@ namespace Frostybee.PwampAdmin.UI
         {
             Text = "PWAMP Control Panel";
             InitializeComponent();
-            
+
             Instance = this;
-            
+
             MinimumSize = new Size(850, 790);
             StartPosition = FormStartPosition.Manual;
             CenterToScreen();
@@ -35,8 +35,8 @@ namespace Frostybee.PwampAdmin.UI
 
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
-            
-            InitializeNotifyIcon();            
+
+            InitializeNotifyIcon();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace Frostybee.PwampAdmin.UI
                 ErrorLogHelper.ShowErrorReport(ex, "Error occurred during application initialization", this);
             }
         }
-                
+
         private void SetFromIcon()
         {
             try
@@ -79,7 +79,7 @@ namespace Frostybee.PwampAdmin.UI
             _notifyIcon = new NotifyIcon();
             _notifyIcon.Text = "PWAMP Control Panel";
             _notifyIcon.Visible = false;
-            
+
             try
             {
                 byte[] pwamp_icon = Properties.Resources.pwamp_icon;
@@ -93,9 +93,9 @@ namespace Frostybee.PwampAdmin.UI
             {
                 _notifyIcon.Icon = SystemIcons.Application;
             }
-            
+
             _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
-            
+
             var contextMenu = new ContextMenuStrip();
             contextMenu.Items.Add("Restore", null, (s, e) => RestoreFromTray());
             contextMenu.Items.Add("Exit", null, (s, e) => ExitApplication());
@@ -125,10 +125,10 @@ namespace Frostybee.PwampAdmin.UI
                 BringToFront();
                 Activate();
             }
-            
+
             var exitEventArgs = new FormClosingEventArgs(CloseReason.ApplicationExitCall, false);
             MainForm_FormClosing(this, exitEventArgs);
-            
+
             if (!exitEventArgs.Cancel)
             {
                 Application.Exit();
@@ -276,20 +276,20 @@ namespace Frostybee.PwampAdmin.UI
         {
             try
             {
-                //if (e.CloseReason == CloseReason.UserClosing)
-                //{
-                //    e.Cancel = true;
-                //    Hide();
-                //    _notifyIcon.Visible = true;
-                //    //_notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
-                //    return;
-                //}
+                if (e.CloseReason == CloseReason.UserClosing)
+                {
+                    e.Cancel = true;
+                    Hide();
+                    _notifyIcon.Visible = true;
+                    //_notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
+                    return;
+                }
                 if (WindowState != FormWindowState.Normal)
                 {
                     RestoreFromTray();
                 }
                 // Clean up managers on application exit.
-                bool hasRunningServices = 
+                bool hasRunningServices =
                                          ((_apacheModule != null && _apacheModule.IsRunning()) ||
                                           (_mySqlModule != null && _mySqlModule.IsRunning()));
 
@@ -309,7 +309,7 @@ namespace Frostybee.PwampAdmin.UI
                     else if (result == DialogResult.Yes)
                     {
                         // Cancel the close to allow async stopping.
-                        e.Cancel = true;                     
+                        e.Cancel = true;
                         StopRunningServicesAsync();
                     }
                 }
@@ -333,9 +333,9 @@ namespace Frostybee.PwampAdmin.UI
                 ErrorLogHelper.LogExceptionInfo(ex);
                 // Log error but don't prevent closing.
                 System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
-            }            
+            }
         }
-        
+
         private async void StopRunningServicesAsync()
         {
             try
@@ -355,7 +355,7 @@ namespace Frostybee.PwampAdmin.UI
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
                 System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
-                
+
                 // Still dispose modules even if stopping failed.
                 _apacheModule?.Dispose();
                 _mySqlModule?.Dispose();
@@ -435,5 +435,36 @@ namespace Frostybee.PwampAdmin.UI
             }
 
         }
+
+
+        protected override void WndProc(ref Message m)
+        {
+            // Process the message sent from the Main method to activate the existing instance.
+            // Check for our custom message.
+            if (m.Msg == Program.WM_SHOW_RUNNING_INSTANCE)
+            {
+                ShowToFront();
+                return;
+            }
+
+            base.WndProc(ref m);
+        }
+        private void ShowToFront()
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                WindowState = FormWindowState.Normal;
+            }
+
+            // Bring to front and activate.
+            BringToFront();
+            Activate();
+            RestoreFromTray();
+            // Alternative approach if the above doesn't work reliably:
+            TopMost = true;
+            TopMost = false;
+        }
+
+
     }
 }

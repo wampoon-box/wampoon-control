@@ -82,9 +82,9 @@ namespace Frostybee.PwampAdmin.UI
             this.logsHeaderLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.logsHeaderLabel.Location = new System.Drawing.Point(20, 15);
             this.logsHeaderLabel.Name = "logsHeaderLabel";
-            this.logsHeaderLabel.Size = new System.Drawing.Size(145, 25);
+            this.logsHeaderLabel.Size = new System.Drawing.Size(140, 25);
             this.logsHeaderLabel.TabIndex = 0;
-            this.logsHeaderLabel.Text = "📋 System Logs";
+            this.logsHeaderLabel.Text = "📋 Server Logs";
             // 
             // logTabControl
             // 
@@ -120,7 +120,7 @@ namespace Frostybee.PwampAdmin.UI
             this._logTextBox.BackColor = System.Drawing.Color.White;
             this._logTextBox.Font = new System.Drawing.Font("Consolas", 10F);
             this._logTextBox.ForeColor = System.Drawing.Color.Black;
-            this._logTextBox.Location = new System.Drawing.Point(13, 3);
+            this._logTextBox.Location = new System.Drawing.Point(13, 0);
             this._logTextBox.Name = "_logTextBox";
             this._logTextBox.ReadOnly = true;
             this._logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
@@ -246,6 +246,7 @@ namespace Frostybee.PwampAdmin.UI
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Controls.Add(this.btnAbout);
+            this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.grpHelpers.Location = new System.Drawing.Point(12, 362);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Size = new System.Drawing.Size(814, 62);

@@ -82,7 +82,7 @@ namespace Frostybee.PwampAdmin.Controllers
                     return false;
                 }
 
-                LogMessage($"is being started..");
+                LogMessage($"Starting...");
 
                 //_serverProcess = await Task.Run(() => StartProcessInNewGroup(_executablePath, arguments));
                 _serverProcess = new Process()
@@ -99,7 +99,7 @@ namespace Frostybee.PwampAdmin.Controllers
 
                 if (CanMonitorOutput)
                 {
-                    LogMessage($"Configure monitoring output...");
+                    LogMessage($"Configure output monitoring...");
                     _serverProcess.BeginOutputReadLine();
                     _serverProcess.BeginErrorReadLine();
                 }
@@ -207,7 +207,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             try
             {
-                LogMessage($"is being forcefully stopped..");
+                LogMessage($"Stopping it forcefully...");
                 _serverProcess.Kill();
                 //_serverProcess.WaitForExit();
                 bool exited = await Task.Run(() => _serverProcess.WaitForExit(5000));
