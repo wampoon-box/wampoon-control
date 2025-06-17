@@ -64,7 +64,7 @@ namespace Frostybee.PwampAdmin.Controllers
                     return false;
                 }
 
-                LogMessage($"is being stopped..");
+                LogMessage($"Stopping..");
 
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {

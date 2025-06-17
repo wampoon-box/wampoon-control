@@ -39,7 +39,6 @@ namespace Frostybee.PwampAdmin.UI
             this.errorTab = new System.Windows.Forms.TabPage();
             this._errorLogTextBox = new System.Windows.Forms.RichTextBox();
             this.accessTab = new System.Windows.Forms.TabPage();
-            this.btnExportLogs = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
@@ -49,6 +48,8 @@ namespace Frostybee.PwampAdmin.UI
             this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
             this._apacheModule = new Frostybee.PwampAdmin.Controls.ApacheControl();
             this.grpHelpers = new System.Windows.Forms.GroupBox();
+            this.btnQuit = new System.Windows.Forms.Button();
+            this.btnStartAllServers = new System.Windows.Forms.Button();
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.btnAbout = new System.Windows.Forms.Button();
@@ -65,10 +66,9 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // logsPanel
             // 
-            this.logsPanel.BackColor = System.Drawing.Color.White;
+            this.logsPanel.BackColor = System.Drawing.SystemColors.Control;
             this.logsPanel.Controls.Add(this.logsHeaderLabel);
             this.logsPanel.Controls.Add(this.logTabControl);
-            this.logsPanel.Controls.Add(this.btnExportLogs);
             this.logsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logsPanel.Location = new System.Drawing.Point(0, 0);
             this.logsPanel.Name = "logsPanel";
@@ -82,9 +82,9 @@ namespace Frostybee.PwampAdmin.UI
             this.logsHeaderLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.logsHeaderLabel.Location = new System.Drawing.Point(20, 15);
             this.logsHeaderLabel.Name = "logsHeaderLabel";
-            this.logsHeaderLabel.Size = new System.Drawing.Size(145, 25);
+            this.logsHeaderLabel.Size = new System.Drawing.Size(140, 25);
             this.logsHeaderLabel.TabIndex = 0;
-            this.logsHeaderLabel.Text = "📋 System Logs";
+            this.logsHeaderLabel.Text = "📋 Server Logs";
             // 
             // logTabControl
             // 
@@ -120,7 +120,7 @@ namespace Frostybee.PwampAdmin.UI
             this._logTextBox.BackColor = System.Drawing.Color.White;
             this._logTextBox.Font = new System.Drawing.Font("Consolas", 10F);
             this._logTextBox.ForeColor = System.Drawing.Color.Black;
-            this._logTextBox.Location = new System.Drawing.Point(13, 3);
+            this._logTextBox.Location = new System.Drawing.Point(13, 0);
             this._logTextBox.Name = "_logTextBox";
             this._logTextBox.ReadOnly = true;
             this._logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
@@ -137,22 +137,20 @@ namespace Frostybee.PwampAdmin.UI
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
             this.errorTab.Size = new System.Drawing.Size(783, 244);
             this.errorTab.TabIndex = 1;
-            this.errorTab.Text = "Error Logs";
+            this.errorTab.Text = "MySQL Logs";
             this.errorTab.UseVisualStyleBackColor = true;
             // 
             // _errorLogTextBox
             // 
-            this._errorLogTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this._errorLogTextBox.BackColor = System.Drawing.Color.White;
+            this._errorLogTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this._errorLogTextBox.Font = new System.Drawing.Font("Consolas", 10F);
             this._errorLogTextBox.ForeColor = System.Drawing.Color.Red;
-            this._errorLogTextBox.Location = new System.Drawing.Point(16, 6);
+            this._errorLogTextBox.Location = new System.Drawing.Point(3, 3);
             this._errorLogTextBox.Name = "_errorLogTextBox";
             this._errorLogTextBox.ReadOnly = true;
             this._errorLogTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._errorLogTextBox.Size = new System.Drawing.Size(1354, 376);
+            this._errorLogTextBox.Size = new System.Drawing.Size(777, 238);
             this._errorLogTextBox.TabIndex = 0;
             this._errorLogTextBox.Text = "";
             // 
@@ -165,22 +163,6 @@ namespace Frostybee.PwampAdmin.UI
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
-            // 
-            // btnExportLogs
-            // 
-            this.btnExportLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnExportLogs.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExportLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExportLogs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnExportLogs.ForeColor = System.Drawing.Color.White;
-            this.btnExportLogs.Location = new System.Drawing.Point(20, 328);
-            this.btnExportLogs.Name = "btnExportLogs";
-            this.btnExportLogs.Size = new System.Drawing.Size(80, 30);
-            this.btnExportLogs.TabIndex = 4;
-            this.btnExportLogs.Text = "💾 Export";
-            this.btnExportLogs.UseVisualStyleBackColor = false;
-            this.btnExportLogs.Click += new System.EventHandler(this.BtnExportLogs_Click);
             // 
             // panel1
             // 
@@ -259,9 +241,12 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // grpHelpers
             // 
+            this.grpHelpers.Controls.Add(this.btnQuit);
+            this.grpHelpers.Controls.Add(this.btnStartAllServers);
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Controls.Add(this.btnAbout);
+            this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.grpHelpers.Location = new System.Drawing.Point(12, 362);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Size = new System.Drawing.Size(814, 62);
@@ -269,26 +254,54 @@ namespace Frostybee.PwampAdmin.UI
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "Helpers";
             // 
+            // btnQuit
+            // 
+            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.btnQuit.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnQuit.ForeColor = System.Drawing.Color.White;
+            this.btnQuit.Location = new System.Drawing.Point(713, 19);
+            this.btnQuit.Name = "btnQuit";
+            this.btnQuit.Size = new System.Drawing.Size(94, 37);
+            this.btnQuit.TabIndex = 4;
+            this.btnQuit.Text = "Quit";
+            this.btnQuit.UseVisualStyleBackColor = false;
+            this.btnQuit.Click += new System.EventHandler(this.BtnQuit_Click);
+            // 
+            // btnStartAllServers
+            // 
+            this.btnStartAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnStartAllServers.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
+            this.btnStartAllServers.Location = new System.Drawing.Point(120, 19);
+            this.btnStartAllServers.Name = "btnStartAllServers";
+            this.btnStartAllServers.Size = new System.Drawing.Size(94, 37);
+            this.btnStartAllServers.TabIndex = 1;
+            this.btnStartAllServers.Text = "Start All";
+            this.btnStartAllServers.UseVisualStyleBackColor = false;
+            this.btnStartAllServers.Click += new System.EventHandler(this.BtnStartAllServers_Click);
+            // 
             // btnStopAllServers
             // 
-            this.btnStopAllServers.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnStopAllServers.ForeColor = System.Drawing.Color.DarkBlue;
-            this.btnStopAllServers.Location = new System.Drawing.Point(120, 19);
+            this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
+            this.btnStopAllServers.Location = new System.Drawing.Point(220, 19);
             this.btnStopAllServers.Name = "btnStopAllServers";
             this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
-            this.btnStopAllServers.TabIndex = 1;
+            this.btnStopAllServers.TabIndex = 2;
             this.btnStopAllServers.Text = "Stop All";
             this.btnStopAllServers.UseVisualStyleBackColor = false;
             this.btnStopAllServers.Click += new System.EventHandler(this.BtnStopAllServers_Click);
             // 
             // btnOpenExplorer
             // 
-            this.btnOpenExplorer.BackColor = System.Drawing.Color.LightGreen;
+            this.btnOpenExplorer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
             this.btnOpenExplorer.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnOpenExplorer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnOpenExplorer.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btnOpenExplorer.ForeColor = System.Drawing.Color.White;
             this.btnOpenExplorer.Location = new System.Drawing.Point(6, 19);
             this.btnOpenExplorer.Name = "btnOpenExplorer";
             this.btnOpenExplorer.Size = new System.Drawing.Size(94, 37);
@@ -299,14 +312,14 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // btnAbout
             // 
-            this.btnAbout.BackColor = System.Drawing.Color.LightBlue;
+            this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
             this.btnAbout.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnAbout.ForeColor = System.Drawing.Color.DarkBlue;
-            this.btnAbout.Location = new System.Drawing.Point(234, 19);
+            this.btnAbout.ForeColor = System.Drawing.Color.White;
+            this.btnAbout.Location = new System.Drawing.Point(334, 19);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(94, 37);
-            this.btnAbout.TabIndex = 2;
+            this.btnAbout.TabIndex = 3;
             this.btnAbout.Text = "About";
             this.btnAbout.UseVisualStyleBackColor = false;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
@@ -315,7 +328,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(843, 833);
             this.Controls.Add(this.grpHelpers);
             this.Controls.Add(this.groupBox1);
@@ -351,7 +364,6 @@ namespace Frostybee.PwampAdmin.UI
         private TabPage errorTab;
         private RichTextBox _errorLogTextBox;
         private TabPage accessTab;
-        private Button btnExportLogs;
         private Panel panel1;
         private Controls.MySqlControl _mySqlModule;
         private Panel headerPanel;
@@ -361,7 +373,9 @@ namespace Frostybee.PwampAdmin.UI
         private GroupBox groupBox1;
         private GroupBox grpHelpers;
         private Button btnOpenExplorer;
+        private Button btnStartAllServers;
         private Button btnStopAllServers;
         private Button btnAbout;
+        private Button btnQuit;
     }
 }

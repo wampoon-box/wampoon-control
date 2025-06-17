@@ -83,7 +83,7 @@ namespace Frostybee.PwampAdmin.UI
             this.appNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.appNameLabel.Location = new System.Drawing.Point(15, 30);
             this.appNameLabel.Name = "appNameLabel";
-            this.appNameLabel.Size = new System.Drawing.Size(127, 30);
+            this.appNameLabel.Size = new System.Drawing.Size(172, 30);
             this.appNameLabel.TabIndex = 0;
             this.appNameLabel.Text = "PWAMP Admin";
             // 
@@ -94,7 +94,7 @@ namespace Frostybee.PwampAdmin.UI
             this.appVersionLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.appVersionLabel.Location = new System.Drawing.Point(15, 65);
             this.appVersionLabel.Name = "appVersionLabel";
-            this.appVersionLabel.Size = new System.Drawing.Size(86, 19);
+            this.appVersionLabel.Size = new System.Drawing.Size(88, 19);
             this.appVersionLabel.TabIndex = 1;
             this.appVersionLabel.Text = "Version 1.0.0";
             // 
@@ -105,7 +105,7 @@ namespace Frostybee.PwampAdmin.UI
             this.copyrightLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.copyrightLabel.Location = new System.Drawing.Point(15, 90);
             this.copyrightLabel.Name = "copyrightLabel";
-            this.copyrightLabel.Size = new System.Drawing.Size(162, 15);
+            this.copyrightLabel.Size = new System.Drawing.Size(161, 15);
             this.copyrightLabel.TabIndex = 2;
             this.copyrightLabel.Text = "Copyright © 2025 - frostybee";
             // 
@@ -117,7 +117,8 @@ namespace Frostybee.PwampAdmin.UI
             this.descriptionLabel.Name = "descriptionLabel";
             this.descriptionLabel.Size = new System.Drawing.Size(414, 50);
             this.descriptionLabel.TabIndex = 3;
-            this.descriptionLabel.Text = "A comprehensive control panel for managing Apache and MySQL servers in the PWAMP environment.";
+            this.descriptionLabel.Text = "A comprehensive control panel for managing Apache and MySQL servers in the PWAMP " +
+    "environment.";
             // 
             // linksGroupBox
             // 
@@ -207,13 +208,14 @@ namespace Frostybee.PwampAdmin.UI
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About PWAMP Admin";
+            this.Text = "About - PWAMP Admin";
             this.mainPanel.ResumeLayout(false);
             this.appInfoGroupBox.ResumeLayout(false);
             this.appInfoGroupBox.PerformLayout();
             this.linksGroupBox.ResumeLayout(false);
             this.buttonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion

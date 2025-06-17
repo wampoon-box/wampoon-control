@@ -1,30 +1,80 @@
-﻿using Frostybee.PwampAdmin.Helpers;
-using Frostybee.PwampAdmin.UI;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.UI;
 
 namespace Frostybee.PwampAdmin
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+
+        private static Mutex mutex = null;        
+
+        // Custom message identifier.
+        public static readonly int WM_SHOW_RUNNING_INSTANCE = NativeApi.RegisterWindowMessage("WM_SHOW_RUNNING_INSTANCE_PWAMP_Admin");
+
         [STAThread]
         static void Main()
         {
+            bool createdNew = false;
+            const string mutexName = "PWAMP_ADMIN_608CB914-44C3-4329-9E1F-3C44C9610BB9";
+
             // Set up global exception handlers before running the application.
             SetupGlobalExceptionHandlers();
-            //throw new InvalidOperationException("This is a test exception to verify global exception handling.");
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            
+            mutex = new Mutex(true, mutexName, out createdNew);
+
+            if (!createdNew)
+            {
+                // Another instance is running, send message to show it.
+                ShowFirstInstance();
+                return;
+            }
+
+            try
+            {
+                // No other instance is running, proceed with application startup.
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainForm());
+            }
+            finally
+            {
+                mutex?.ReleaseMutex();
+                mutex?.Dispose();
+            }
         }
+
+        private static void ShowFirstInstance()
+        {
+            NativeApi.EnumWindows((hWnd, lParam) =>
+            {
+                uint processId;
+                NativeApi.GetWindowThreadProcessId(hWnd, out processId);
+
+                // Check if this window belongs to our application.
+                if (processId != 0)
+                {
+                    try
+                    {
+                        var process = System.Diagnostics.Process.GetProcessById((int)processId);
+                        if (process.ProcessName.Equals(System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                            StringComparison.OrdinalIgnoreCase))
+                        {
+                            // We found the app's running process, send our custom message.
+                            NativeApi.PostMessage(hWnd, WM_SHOW_RUNNING_INSTANCE, IntPtr.Zero, IntPtr.Zero);
+                        }
+                    }
+                    catch { /* Ignore if process no longer exists */ }
+                }
+                // Continue enumeration.
+                return true; 
+            }, IntPtr.Zero);
+        }
+
+
         private static void SetupGlobalExceptionHandlers()
         {
             // Handle UI thread exceptions.
@@ -60,7 +110,7 @@ namespace Frostybee.PwampAdmin
             }
             catch
             {
-                // Fallback if error reporting fails
+                // Fallback if error reporting fails.
                 MessageBox.Show($"A critical error occurred: {e.Exception.Message}", "Fatal Error", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
@@ -78,7 +128,7 @@ namespace Frostybee.PwampAdmin
             }
             catch
             {
-                // Fallback if error reporting fails
+                // Fallback if error reporting fails.
                 MessageBox.Show($"A fatal error occurred: {ex.Message}\n\nThe application will now close.", 
                     "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
@@ -99,7 +149,7 @@ namespace Frostybee.PwampAdmin
             }
             catch
             {
-                // Fallback if error reporting fails
+                // Fallback if error reporting fails.
                 MessageBox.Show($"An error occurred in a background task: {e.Exception.GetBaseException().Message}",
                     "Background Task Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

@@ -33,16 +33,17 @@
             this.lblServerTitle = new System.Windows.Forms.Label();
             this.pcbServerStatus = new System.Windows.Forms.PictureBox();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnRestart = new System.Windows.Forms.Button();
-            this.btnStart = new System.Windows.Forms.Button();
             this.pnlControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlControls
             // 
-            this.pnlControls.BackColor = System.Drawing.Color.White;
+            this.pnlControls.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlControls.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlControls.Controls.Add(this.lblServerIcon);
             this.pnlControls.Controls.Add(this.lblServerTitle);
             this.pnlControls.Controls.Add(this.pcbServerStatus);
@@ -97,9 +98,24 @@
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "Stopped";
             // 
+            // btnStart
+            // 
+            this.btnStart.BackColor = System.Drawing.Color.Silver;
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStart.ForeColor = System.Drawing.Color.White;
+            this.btnStart.Image = global::Frostybee.PwampAdmin.Properties.Resources.start_24;
+            this.btnStart.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.btnStart.Location = new System.Drawing.Point(20, 90);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(100, 35);
+            this.btnStart.TabIndex = 4;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = false;
+            // 
             // btnStop
             // 
-            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(67)))), ((int)(((byte)(54)))));
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStop.Enabled = false;
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -114,7 +130,7 @@
             // 
             // btnRestart
             // 
-            this.btnRestart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(156)))), ((int)(((byte)(18)))));
+            this.btnRestart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
             this.btnRestart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRestart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRestart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -125,20 +141,6 @@
             this.btnRestart.TabIndex = 6;
             this.btnRestart.Text = "🔄 Restart";
             this.btnRestart.UseVisualStyleBackColor = false;
-            // 
-            // btnStart
-            // 
-            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(96)))));
-            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnStart.ForeColor = System.Drawing.Color.White;
-            this.btnStart.Location = new System.Drawing.Point(20, 90);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(100, 35);
-            this.btnStart.TabIndex = 4;
-            this.btnStart.Text = "▶️ Start";
-            this.btnStart.UseVisualStyleBackColor = false;
             // 
             // ServerControlBase
             // 

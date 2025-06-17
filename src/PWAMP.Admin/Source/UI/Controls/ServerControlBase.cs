@@ -76,6 +76,12 @@ namespace Frostybee.PwampAdmin.Controls
 
         protected async virtual void BtnStart_Click(object sender, EventArgs e)
         {
+            await StartServer();
+        }
+
+        public async Task StartServer()
+        {
+
             try
             {
                 btnStart.Enabled = false;

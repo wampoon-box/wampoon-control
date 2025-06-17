@@ -16,24 +16,27 @@ namespace Frostybee.PwampAdmin.UI
     {
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool DestroyIcon(IntPtr hIcon);
-        
+
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
+        private NotifyIcon _notifyIcon;
 
         public MainForm()
         {
             Text = "PWAMP Control Panel";
             InitializeComponent();
-            
+
             Instance = this;
-            
+
             MinimumSize = new Size(850, 790);
             StartPosition = FormStartPosition.Manual;
             CenterToScreen();
             SizeGripStyle = SizeGripStyle.Show;
 
             FormClosing += MainForm_FormClosing;
-            Load += MainForm_Load;            
+            Load += MainForm_Load;
+
+            InitializeNotifyIcon();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -53,7 +56,7 @@ namespace Frostybee.PwampAdmin.UI
                 ErrorLogHelper.ShowErrorReport(ex, "Error occurred during application initialization", this);
             }
         }
-                
+
         private void SetFromIcon()
         {
             try
@@ -68,6 +71,67 @@ namespace Frostybee.PwampAdmin.UI
             }
             catch (Exception)
             {
+            }
+        }
+
+        private void InitializeNotifyIcon()
+        {
+            _notifyIcon = new NotifyIcon();
+            _notifyIcon.Text = "PWAMP Control Panel";
+            _notifyIcon.Visible = false;
+
+            try
+            {
+                byte[] pwamp_icon = Properties.Resources.pwamp_icon;
+                using (MemoryStream ms = new MemoryStream(pwamp_icon))
+                using (Bitmap bitmap = new Bitmap(ms))
+                {
+                    _notifyIcon.Icon = Icon.FromHandle(bitmap.GetHicon());
+                }
+            }
+            catch (Exception)
+            {
+                _notifyIcon.Icon = SystemIcons.Application;
+            }
+
+            _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+
+            var contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add("Restore", null, (s, e) => RestoreFromTray());
+            contextMenu.Items.Add("Exit", null, (s, e) => ExitApplication());
+            _notifyIcon.ContextMenuStrip = contextMenu;
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            RestoreFromTray();
+        }
+
+        private void RestoreFromTray()
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+            _notifyIcon.Visible = false;
+            BringToFront();
+        }
+
+        private void ExitApplication()
+        {
+            // Bring form to front so user can see any confirmation dialogs
+            if (WindowState == FormWindowState.Minimized || !Visible)
+            {
+                Show();
+                WindowState = FormWindowState.Normal;
+                BringToFront();
+                Activate();
+            }
+
+            var exitEventArgs = new FormClosingEventArgs(CloseReason.ApplicationExitCall, false);
+            MainForm_FormClosing(this, exitEventArgs);
+
+            if (!exitEventArgs.Cancel)
+            {
+                Application.Exit();
             }
         }
 
@@ -110,6 +174,23 @@ namespace Frostybee.PwampAdmin.UI
             }
         }
 
+        public void AddMySqlLog(string log, LogType logType = LogType.Default)
+        {
+            if (_errorLogTextBox == null) return;
+
+            var timestamp = DateTime.Now.ToString("HH:mm:ss");
+            var logEntry = $"[{timestamp}] [MySQL] {log}";
+
+            if (_errorLogTextBox.InvokeRequired)
+            {
+                _errorLogTextBox.Invoke(new Action(() => AddMySqlLogInternal(logEntry, logType)));
+            }
+            else
+            {
+                AddMySqlLogInternal(logEntry, logType);
+            }
+        }
+
         private void AddErrorLogInternal(string logEntry)
         {
             if (_errorLogTextBox == null) return;
@@ -117,6 +198,29 @@ namespace Frostybee.PwampAdmin.UI
             _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
             _errorLogTextBox.SelectionLength = 0;
             _errorLogTextBox.SelectionColor = Color.Red;
+            _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
+            _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
+            _errorLogTextBox.ScrollToCaret();
+
+            // Limit log size
+            if (_errorLogTextBox.Lines.Length > 1000)
+            {
+                var lines = _errorLogTextBox.Lines;
+                var newLines = new string[500];
+                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
+                _errorLogTextBox.Lines = newLines;
+            }
+        }
+
+        private void AddMySqlLogInternal(string logEntry, LogType logType)
+        {
+            if (_errorLogTextBox == null) return;
+
+            Color textColor = UiHelper.GetLogColor(logType);
+
+            _errorLogTextBox.SelectionStart = _errorLogTextBox.TextLength;
+            _errorLogTextBox.SelectionLength = 0;
+            _errorLogTextBox.SelectionColor = textColor;
             _errorLogTextBox.AppendText(logEntry + Environment.NewLine);
             _errorLogTextBox.SelectionColor = _errorLogTextBox.ForeColor;
             _errorLogTextBox.ScrollToCaret();
@@ -172,9 +276,22 @@ namespace Frostybee.PwampAdmin.UI
         {
             try
             {
+                if (e.CloseReason == CloseReason.UserClosing)
+                {
+                    e.Cancel = true;
+                    Hide();
+                    _notifyIcon.Visible = true;
+                    //_notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
+                    return;
+                }
+                if (WindowState != FormWindowState.Normal)
+                {
+                    RestoreFromTray();
+                }
                 // Clean up managers on application exit.
-                bool hasRunningServices = (_apacheModule != null && _apacheModule.IsRunning()) ||
-                                         (_mySqlModule != null && _mySqlModule.IsRunning());
+                bool hasRunningServices =
+                                         ((_apacheModule != null && _apacheModule.IsRunning()) ||
+                                          (_mySqlModule != null && _mySqlModule.IsRunning()));
 
                 if (hasRunningServices)
                 {
@@ -187,6 +304,7 @@ namespace Frostybee.PwampAdmin.UI
                     if (result == DialogResult.Cancel || result == DialogResult.No)
                     {
                         e.Cancel = true;
+                        return;
                     }
                     else if (result == DialogResult.Yes)
                     {
@@ -202,15 +320,22 @@ namespace Frostybee.PwampAdmin.UI
                     DestroyIcon(_iconHandle);
                     _iconHandle = IntPtr.Zero;
                 }
+
+                // Clean up notify icon.
+                if (_notifyIcon != null)
+                {
+                    _notifyIcon.Visible = false;
+                    _notifyIcon.Dispose();
+                }
             }
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
                 // Log error but don't prevent closing.
                 System.Diagnostics.Debug.WriteLine($"Error during cleanup: {ex.Message}");
-            }            
+            }
         }
-        
+
         private async void StopRunningServicesAsync()
         {
             try
@@ -223,28 +348,38 @@ namespace Frostybee.PwampAdmin.UI
                 _apacheModule?.Dispose();
                 _mySqlModule?.Dispose();
 
-                // Close the form after stopping is complete.
-                this.Close();
+                // Exit the application after stopping is complete.
+                Application.Exit();
             }
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
                 System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
-                
+
                 // Still dispose modules even if stopping failed.
                 _apacheModule?.Dispose();
                 _mySqlModule?.Dispose();
 
-                // Still try to close the form.
-                this.Close();
+                // Still try to exit the application.
+                Application.Exit();
             }
+        }
+
+        private async void BtnStartAllServers_Click(object sender, EventArgs e)
+        {
+            btnStopAllServers.Enabled = false;
+            await _apacheModule?.StartServer();
+            await _mySqlModule?.StartServer();
+            btnStopAllServers.Enabled = true;
         }
 
         private async void BtnStopAllServers_Click(object sender, EventArgs e)
         {
+            btnStartAllServers.Enabled = false;
             //TODO: Enable the button if both servers are running.
             await _apacheModule?.StopServer();
             await _mySqlModule?.StopServer();
+            btnStartAllServers.Enabled = true;
         }
 
         private void BtnExportLogs_Click(object sender, EventArgs e)
@@ -288,5 +423,48 @@ namespace Frostybee.PwampAdmin.UI
                 ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening About dialog", this);
             }
         }
+
+        private void BtnQuit_Click(object sender, EventArgs e)
+        {
+            var exitEventArgs = new FormClosingEventArgs(CloseReason.ApplicationExitCall, false);
+            MainForm_FormClosing(this, exitEventArgs);
+
+            if (!exitEventArgs.Cancel)
+            {
+                Application.Exit();
+            }
+
+        }
+
+
+        protected override void WndProc(ref Message m)
+        {
+            // Process the message sent from the Main method to activate the existing instance.
+            // Check for our custom message.
+            if (m.Msg == Program.WM_SHOW_RUNNING_INSTANCE)
+            {
+                ShowToFront();
+                return;
+            }
+
+            base.WndProc(ref m);
+        }
+        private void ShowToFront()
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                WindowState = FormWindowState.Normal;
+            }
+
+            // Bring to front and activate.
+            BringToFront();
+            Activate();
+            RestoreFromTray();
+            // Alternative approach if the above doesn't work reliably:
+            TopMost = true;
+            TopMost = false;
+        }
+
+
     }
 }

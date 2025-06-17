@@ -35,5 +35,22 @@ namespace Frostybee.PwampAdmin.Helpers
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GenerateConsoleCtrlEvent(CtrlTypes dwCtrlEvent, uint dwProcessGroupId);
+        // Win32 API imports
+        [DllImport("user32.dll")]
+        internal static extern int RegisterWindowMessage(string message);
+
+        [DllImport("user32.dll")]
+        internal static extern bool PostMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam);
+
+        [DllImport("user32.dll")]
+        internal static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        internal static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder strText, int maxCount);
+
+        [DllImport("user32.dll")]
+        internal static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        internal delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
     }
 }

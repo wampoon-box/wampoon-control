@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.UI;
+using Frostybee.PwampAdmin.Enums;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
@@ -29,6 +31,8 @@ namespace Frostybee.PwampAdmin.Controllers
         /// </summary>
         protected abstract bool CanMonitorOutput { get; set; }
         public bool IsRunning => _serverProcess != null && !_serverProcess.HasExited;
+        
+        protected bool IsMySqlServer => ServerName.Contains("MySQL") || ServerName.Contains("MariaDB");
 
         internal ServerManagerBase(string executablePath, string configPath = null)
         {
@@ -78,7 +82,7 @@ namespace Frostybee.PwampAdmin.Controllers
                     return false;
                 }
 
-                LogMessage($"is being started..");
+                LogMessage($"Starting...");
 
                 //_serverProcess = await Task.Run(() => StartProcessInNewGroup(_executablePath, arguments));
                 _serverProcess = new Process()
@@ -95,7 +99,7 @@ namespace Frostybee.PwampAdmin.Controllers
 
                 if (CanMonitorOutput)
                 {
-                    LogMessage($"Configure monitoring output...");
+                    LogMessage($"Configure output monitoring...");
                     _serverProcess.BeginOutputReadLine();
                     _serverProcess.BeginErrorReadLine();
                 }
@@ -133,7 +137,14 @@ namespace Frostybee.PwampAdmin.Controllers
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
-                LogError($"[ERR] {e.Data}");
+                if (IsMySqlServer)
+                {
+                    MainForm.Instance?.AddMySqlLog($"[ERR] {e.Data}", LogType.Error);
+                }
+                else
+                {
+                    LogError($"[ERR] {e.Data}");
+                }
             }
         }
 
@@ -141,7 +152,14 @@ namespace Frostybee.PwampAdmin.Controllers
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
-                LogMessage($"[OUT] {e.Data}");
+                if (IsMySqlServer)
+                {
+                    MainForm.Instance?.AddMySqlLog($"[OUT] {e.Data}", LogType.Info);
+                }
+                else
+                {
+                    LogMessage($"[OUT] {e.Data}");
+                }
             }
         }
 
@@ -189,7 +207,7 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             try
             {
-                LogMessage($"is being forcefully stopped..");
+                LogMessage($"Stopping it forcefully...");
                 _serverProcess.Kill();
                 //_serverProcess.WaitForExit();
                 bool exited = await Task.Run(() => _serverProcess.WaitForExit(5000));
