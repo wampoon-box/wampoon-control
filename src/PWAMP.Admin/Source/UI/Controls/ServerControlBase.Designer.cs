@@ -42,7 +42,8 @@
             // 
             // pnlControls
             // 
-            this.pnlControls.BackColor = System.Drawing.Color.White;
+            this.pnlControls.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlControls.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlControls.Controls.Add(this.lblServerIcon);
             this.pnlControls.Controls.Add(this.lblServerTitle);
             this.pnlControls.Controls.Add(this.pcbServerStatus);

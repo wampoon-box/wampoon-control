@@ -276,14 +276,14 @@ namespace Frostybee.PwampAdmin.UI
         {
             try
             {
-                if (e.CloseReason == CloseReason.UserClosing)
-                {
-                    e.Cancel = true;
-                    Hide();
-                    _notifyIcon.Visible = true;
-                    //_notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
-                    return;
-                }
+                //if (e.CloseReason == CloseReason.UserClosing)
+                //{
+                //    e.Cancel = true;
+                //    Hide();
+                //    _notifyIcon.Visible = true;
+                //    //_notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
+                //    return;
+                //}
                 if (WindowState != FormWindowState.Normal)
                 {
                     RestoreFromTray();

@@ -66,7 +66,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // logsPanel
             // 
-            this.logsPanel.BackColor = System.Drawing.Color.White;
+            this.logsPanel.BackColor = System.Drawing.SystemColors.Control;
             this.logsPanel.Controls.Add(this.logsHeaderLabel);
             this.logsPanel.Controls.Add(this.logTabControl);
             this.logsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -327,7 +327,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(843, 833);
             this.Controls.Add(this.grpHelpers);
             this.Controls.Add(this.groupBox1);
