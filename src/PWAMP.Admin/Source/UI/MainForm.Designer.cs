@@ -39,7 +39,6 @@ namespace Frostybee.PwampAdmin.UI
             this.errorTab = new System.Windows.Forms.TabPage();
             this._errorLogTextBox = new System.Windows.Forms.RichTextBox();
             this.accessTab = new System.Windows.Forms.TabPage();
-            this.btnExportLogs = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
@@ -70,7 +69,6 @@ namespace Frostybee.PwampAdmin.UI
             this.logsPanel.BackColor = System.Drawing.Color.White;
             this.logsPanel.Controls.Add(this.logsHeaderLabel);
             this.logsPanel.Controls.Add(this.logTabControl);
-            this.logsPanel.Controls.Add(this.btnExportLogs);
             this.logsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logsPanel.Location = new System.Drawing.Point(0, 0);
             this.logsPanel.Name = "logsPanel";
@@ -167,22 +165,6 @@ namespace Frostybee.PwampAdmin.UI
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
-            // 
-            // btnExportLogs
-            // 
-            this.btnExportLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
-            this.btnExportLogs.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExportLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExportLogs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnExportLogs.ForeColor = System.Drawing.Color.White;
-            this.btnExportLogs.Location = new System.Drawing.Point(20, 328);
-            this.btnExportLogs.Name = "btnExportLogs";
-            this.btnExportLogs.Size = new System.Drawing.Size(80, 30);
-            this.btnExportLogs.TabIndex = 4;
-            this.btnExportLogs.Text = "💾 Export";
-            this.btnExportLogs.UseVisualStyleBackColor = false;
-            this.btnExportLogs.Click += new System.EventHandler(this.BtnExportLogs_Click);
             // 
             // panel1
             // 
@@ -383,7 +365,6 @@ namespace Frostybee.PwampAdmin.UI
         private TabPage errorTab;
         private RichTextBox _errorLogTextBox;
         private TabPage accessTab;
-        private Button btnExportLogs;
         private Panel panel1;
         private Controls.MySqlControl _mySqlModule;
         private Panel headerPanel;
