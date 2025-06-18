@@ -113,17 +113,6 @@ namespace Frostybee.PwampAdmin.Controls
             LogMessage(message, LogType.Error);
         }
 
-        //public virtual void Dispose()
-        //{
-        //    if (_apacheManager != null)
-        //    {
-        //        _apacheManager.Dispose();
-        //        _apacheManager = null;
-        //    }
-        //}
-
-       
-
         internal bool IsRunning()
         {
             return _apacheManager != null && _apacheManager.IsRunning;
@@ -188,13 +177,8 @@ namespace Frostybee.PwampAdmin.Controls
             if (string.IsNullOrEmpty(_apacheDirectory))
             {
                 throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
-            }
-            // Set up document root and PhpMyAdmin paths.            
-            //_phpMyAdminDirectory = ServerPathManager.GetServerBaseDirectory(ServerDefinitions.phpMyAdmin.Name) ?? 
-                                   Path.Combine(ServerPathManager.ApplicationDirectory, "apps", ServerDefinitions.phpMyAdmin.Name);
-
-            _customConfigPath = Path.Combine(_apacheDirectory, "conf", "custom_path.conf");
-            _httpdAliasConfigPath = Path.Combine(_apacheDirectory, "conf", "httpd-alias.conf");
+            }            
+            _customConfigPath = Path.Combine(_apacheDirectory, "conf", "pwamp-custom-path.conf");
 
             ApplyCustomConfiguration();
         }
@@ -229,16 +213,10 @@ namespace Frostybee.PwampAdmin.Controls
                 var configContent = new StringBuilder();
                 configContent.AppendLine(string.Format("Define SRVROOT \"{0}\"", _apacheDirectory));
                 configContent.AppendLine(string.Format("Define DOCROOT \"{0}\"", ServerPathManager.ApacheDocumentRoot));
+                configContent.AppendLine(string.Format("Define PWAMP_APPS_DIR \"{0}\"", ServerPathManager.AppsDirectory));
 
                 // Write the configuration to the file.
                 File.WriteAllText(_customConfigPath, configContent.ToString(), Encoding.UTF8);
-
-                // Also update the httpd-alias.conf file.
-                if (!UpdateHttpdAliasConfiguration())
-                {
-                    LogMessage("Failed to update httpd-alias.conf", LogType.Error);
-                    // Don't fail the entire operation if alias config update fails.
-                }
 
                 return true;
             }
@@ -249,65 +227,7 @@ namespace Frostybee.PwampAdmin.Controls
                 return false;
             }
         }
-
-        /// <summary>
-        /// Updates the httpd-alias.conf file to use the correct PMAROOT path.
-        /// </summary>
-        /// <returns>True if the file was updated successfully, false otherwise.</returns>
-        private bool UpdateHttpdAliasConfiguration()
-        {
-            try
-            {
-                string appsDirectoryPath = ServerPathManager.AppsDirectory;
-                if (!Directory.Exists(appsDirectoryPath))
-                {
-                    LogMessage("Apps folder is not found...", LogType.Error);
-                    return false;
-                }
-
-                if (!File.Exists(_httpdAliasConfigPath))
-                {
-                    LogMessage(string.Format("httpd-alias.conf file not found: {0}", _httpdAliasConfigPath), LogType.Error);
-                    return false;
-                }
-
-                // Read all lines from the file
-                var lines = File.ReadAllLines(_httpdAliasConfigPath);
-                bool updated = false;
-
-                // Update the first line if it contains the PMAROOT Define statement.
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    var line = lines[i].Trim();
-                    if (line.StartsWith("Define PWAMP_APPS_ROOT", StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Replace the hardcoded path with the relative path.
-                        lines[i] = string.Format("Define PWAMP_APPS_ROOT \"{0}\"", appsDirectoryPath);
-                        updated = true;
-                        LogMessage(string.Format("Updated PWAMP_APPS_ROOT path to: {0}", appsDirectoryPath), LogType.Info);
-                        break; // Only update the first occurrence.
-                    }
-                }
-
-                if (updated)
-                {
-                    // Write the updated content back to the file.
-                    File.WriteAllLines(_httpdAliasConfigPath, lines, Encoding.UTF8);
-                    return true;
-                }
-                else
-                {
-                    LogMessage("No PMAROOT Define statement found in httpd-alias.conf", LogType.Error);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogHelper.LogExceptionInfo(ex);
-                LogMessage(string.Format("Error updating httpd-alias.conf: {0}", ex.Message), LogType.Error);
-                return false;
-            }
-        }
+        
 
         /// <summary>
         /// Validates that all required directories and files exist for Apache to run.
