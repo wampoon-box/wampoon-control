@@ -21,7 +21,6 @@ namespace Frostybee.PwampAdmin.Controls
         // Apache and phpMyAdmin-related paths.
         private string _apacheDirectory;
         private string _customConfigPath;
-        private string _phpMyAdminDirectory;
         private string _httpdAliasConfigPath;
         
         public ApacheControl()
@@ -191,7 +190,7 @@ namespace Frostybee.PwampAdmin.Controls
                 throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
             }
             // Set up document root and PhpMyAdmin paths.            
-            _phpMyAdminDirectory = ServerPathManager.GetServerBaseDirectory(ServerDefinitions.phpMyAdmin.Name) ?? 
+            //_phpMyAdminDirectory = ServerPathManager.GetServerBaseDirectory(ServerDefinitions.phpMyAdmin.Name) ?? 
                                    Path.Combine(ServerPathManager.ApplicationDirectory, "apps", ServerDefinitions.phpMyAdmin.Name);
 
             _customConfigPath = Path.Combine(_apacheDirectory, "conf", "custom_path.conf");
@@ -259,9 +258,10 @@ namespace Frostybee.PwampAdmin.Controls
         {
             try
             {
-                if (!Directory.Exists(_phpMyAdminDirectory))
+                string appsDirectoryPath = ServerPathManager.AppsDirectory;
+                if (!Directory.Exists(appsDirectoryPath))
                 {
-                    LogMessage("phpAdmin folder is not found...", LogType.Error);
+                    LogMessage("Apps folder is not found...", LogType.Error);
                     return false;
                 }
 
@@ -279,12 +279,12 @@ namespace Frostybee.PwampAdmin.Controls
                 for (int i = 0; i < lines.Length; i++)
                 {
                     var line = lines[i].Trim();
-                    if (line.StartsWith("Define PMAROOT", StringComparison.OrdinalIgnoreCase))
+                    if (line.StartsWith("Define PWAMP_APPS_ROOT", StringComparison.OrdinalIgnoreCase))
                     {
                         // Replace the hardcoded path with the relative path.
-                        lines[i] = string.Format("Define PMAROOT \"{0}\"", _phpMyAdminDirectory);
+                        lines[i] = string.Format("Define PWAMP_APPS_ROOT \"{0}\"", appsDirectoryPath);
                         updated = true;
-                        LogMessage(string.Format("Updated PMAROOT path to: {0}", _phpMyAdminDirectory), LogType.Info);
+                        LogMessage(string.Format("Updated PWAMP_APPS_ROOT path to: {0}", appsDirectoryPath), LogType.Info);
                         break; // Only update the first occurrence.
                     }
                 }
