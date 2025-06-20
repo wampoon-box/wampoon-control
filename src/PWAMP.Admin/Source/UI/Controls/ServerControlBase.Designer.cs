@@ -46,7 +46,7 @@
             // 
             // pnlControls
             // 
-            this.pnlControls.BackColor = System.Drawing.Color.White;
+            this.pnlControls.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.pnlControls.Controls.Add(this.lblServerIcon);
             this.pnlControls.Controls.Add(this.lblServerTitle);
             this.pnlControls.Controls.Add(this.pcbServerStatus);
@@ -87,7 +87,7 @@
             // pcbServerStatus
             // 
             this.pcbServerStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.pcbServerStatus.Location = new System.Drawing.Point(186, 10);
+            this.pcbServerStatus.Location = new System.Drawing.Point(191, 10);
             this.pcbServerStatus.Name = "pcbServerStatus";
             this.pcbServerStatus.Size = new System.Drawing.Size(15, 15);
             this.pcbServerStatus.TabIndex = 2;
@@ -98,7 +98,7 @@
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.lblStatus.Location = new System.Drawing.Point(206, 12);
+            this.lblStatus.Location = new System.Drawing.Point(211, 12);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(59, 15);
             this.lblStatus.TabIndex = 3;
@@ -117,7 +117,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(150)))), ((int)(((byte)(85)))));
             this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStart.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -132,7 +132,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(73)))));
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStop.Enabled = false;
             this.btnStop.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
@@ -148,7 +148,7 @@
             // 
             // btnServerAdmin
             // 
-            this.btnServerAdmin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnServerAdmin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(120)))), ((int)(((byte)(249)))));
             this.btnServerAdmin.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnServerAdmin.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
             this.btnServerAdmin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

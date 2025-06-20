@@ -344,6 +344,8 @@ namespace Frostybee.PwampAdmin.Controls
 
         private void PnlControls_Paint(object sender, PaintEventArgs e)
         {
+            DrawBootstrapCardShadow(e.Graphics);
+            
             using (Brush borderBrush = new SolidBrush(GetLeftBorderColor()))
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -355,12 +357,43 @@ namespace Frostybee.PwampAdmin.Controls
                     
                     path.AddArc(0, 0, radius * 2, radius * 2, 180, 90);
                     path.AddLine(radius, 0, borderWidth, 0);
-                    path.AddLine(borderWidth, 0, borderWidth, pnlControls.Height);
-                    path.AddLine(borderWidth, pnlControls.Height, radius, pnlControls.Height);
-                    path.AddArc(0, pnlControls.Height - radius * 2, radius * 2, radius * 2, 90, 90);
+                    path.AddLine(borderWidth, 0, borderWidth, pnlControls.Height - 5);
+                    path.AddLine(borderWidth, pnlControls.Height - 5, radius, pnlControls.Height - 5);
+                    path.AddArc(0, pnlControls.Height - 5 - radius * 2, radius * 2, radius * 2, 90, 90);
                     path.CloseFigure();
                     
                     e.Graphics.FillPath(borderBrush, path);
+                }
+            }
+        }
+
+        private void DrawBootstrapCardShadow(Graphics graphics)
+        {
+            int shadowOffset = 4;
+            int shadowSize = 8;
+            int radius = 8;
+            Rectangle shadowRect = new Rectangle(shadowOffset, pnlControls.Height - shadowSize, 
+                                               pnlControls.Width - shadowOffset * 2, shadowSize);
+            
+            using (System.Drawing.Drawing2D.LinearGradientBrush shadowBrush = 
+                   new System.Drawing.Drawing2D.LinearGradientBrush(
+                       new Point(shadowRect.X, shadowRect.Y),
+                       new Point(shadowRect.X, shadowRect.Bottom),
+                       Color.FromArgb(25, 0, 0, 0),
+                       Color.FromArgb(0, 0, 0, 0)))
+            {
+                using (System.Drawing.Drawing2D.GraphicsPath shadowPath = new System.Drawing.Drawing2D.GraphicsPath())
+                {
+                    shadowPath.AddArc(shadowRect.X, shadowRect.Y, radius * 2, radius * 2, 180, 90);
+                    shadowPath.AddLine(shadowRect.X + radius, shadowRect.Y, shadowRect.Right - radius, shadowRect.Y);
+                    shadowPath.AddArc(shadowRect.Right - radius * 2, shadowRect.Y, radius * 2, radius * 2, 270, 90);
+                    shadowPath.AddLine(shadowRect.Right, shadowRect.Y + radius, shadowRect.Right, shadowRect.Bottom - radius);
+                    shadowPath.AddArc(shadowRect.Right - radius * 2, shadowRect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90);
+                    shadowPath.AddLine(shadowRect.Right - radius, shadowRect.Bottom, shadowRect.X + radius, shadowRect.Bottom);
+                    shadowPath.AddArc(shadowRect.X, shadowRect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90);
+                    shadowPath.CloseFigure();
+                    
+                    graphics.FillPath(shadowBrush, shadowPath);
                 }
             }
         }
