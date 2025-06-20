@@ -21,6 +21,7 @@ namespace Frostybee.PwampAdmin.Controls
         protected string AccessLogPath { get; set; }
         protected int PortNumber { get; set; }
         protected int ProcessId { get; set; }
+        protected ServerStatus CurrentStatus { get; set; } = ServerStatus.Stopped;
         internal ServerManagerBase ServerManager { get; set; }
 
         public ServerControlBase()
@@ -156,7 +157,8 @@ namespace Frostybee.PwampAdmin.Controls
         {
             lblStatus.Text = status.ToString().ToUpper();
             lblStatus.Refresh();
-            
+            CurrentStatus = status;
+
             // Update detailed info.
             string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
             string pidInfo;
@@ -366,14 +368,26 @@ namespace Frostybee.PwampAdmin.Controls
         private Color GetLeftBorderColor()
         {
             if (ServerManager != null && ServerManager.IsRunning)
+            {
                 return Color.Green;
+            }
+                
+            if(CurrentStatus == ServerStatus.Stopping || CurrentStatus == ServerStatus.Starting)
+            {
+                return Color.Orange;
+            }
             else
             {
                 if (!string.IsNullOrEmpty(ServiceName) && ServiceName.Contains("Apache"))
                 {
                     return Color.Blue;
 
-                }   
+                }
+                if (!string.IsNullOrEmpty(ServiceName) && ServiceName.Contains("MariaDB"))
+                {
+                    return Color.OrangeRed;
+
+                }
             }
             return Color.Red;
         }

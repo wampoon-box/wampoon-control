@@ -167,9 +167,11 @@ namespace Frostybee.PwampAdmin.UI
             // panel1
             // 
             this.panel1.Controls.Add(this.logsPanel);
-            this.panel1.Location = new System.Drawing.Point(12, 430);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 420);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(696, 395);
+            this.panel1.Padding = new System.Windows.Forms.Padding(12);
+            this.panel1.Size = new System.Drawing.Size(722, 413);
             this.panel1.TabIndex = 6;
             // 
             // headerPanel
@@ -206,12 +208,13 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.grpHelpers);
             this.panel2.Controls.Add(this.headerPanel);
             this.panel2.Controls.Add(this.groupBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(722, 833);
+            this.panel2.Size = new System.Drawing.Size(722, 420);
             this.panel2.TabIndex = 9;
             // 
             // groupBox1
@@ -348,9 +351,8 @@ namespace Frostybee.PwampAdmin.UI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(722, 833);
-            this.Controls.Add(this.grpHelpers);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel2);
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;

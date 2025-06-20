@@ -20,8 +20,8 @@ namespace Frostybee.PwampAdmin.Controls
 
         public MySqlControl()
         {
-            ServiceName = "MySQL";
-            DisplayName = "MySQL DB Server";
+            ServiceName = "MariaDB";
+            DisplayName = "MariaDB Server";
             // Default MySQL port, change if needed.
             PortNumber = 3306; 
             lblServerIcon.Text = "🗄️"; 
