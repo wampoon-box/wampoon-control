@@ -51,7 +51,7 @@ namespace Frostybee.PwampAdmin.Controls
             var accessLogItem = contextMenuTools.Items.Add("📊 View Access Logs");
             accessLogItem.Click += (s, e) => OpenAccessLogs();
             
-            contextMenuTools.Items.Add("-"); // Separator
+            contextMenuTools.Items.Add("-"); // Separator.
             
             var refreshItem = contextMenuTools.Items.Add("🔄 Refresh Status");
             refreshItem.Click += (s, e) => RefreshServerStatus();
@@ -93,6 +93,7 @@ namespace Frostybee.PwampAdmin.Controls
                 bool success = await ServerManager.StopAsync();
                 if (success)
                 {
+                    ProcessId = 0; // Clear PID when stopped.
                     btnStart.Enabled = true;
                     btnStop.Enabled = false;
                     UpdateStatus(ServerStatus.Stopped);
@@ -107,6 +108,7 @@ namespace Frostybee.PwampAdmin.Controls
                 ErrorLogHelper.LogExceptionInfo(ex);
                 MessageBox.Show($"Error stopping {ServiceName}: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ProcessId = 0; // Clear PID on error
                 btnStop.Enabled = true;
                 UpdateStatus(ServerStatus.Stopped);
             }
@@ -127,6 +129,7 @@ namespace Frostybee.PwampAdmin.Controls
                 bool success = await ServerManager.StartAsync();
                 if (success)
                 {
+                    ProcessId = (int)ServerManager.ProcessId; // Update PID when started.
                     UpdateStatus(ServerStatus.Running);
                     btnStop.Enabled = true;
                     btnStart.Enabled = false;
@@ -142,6 +145,7 @@ namespace Frostybee.PwampAdmin.Controls
                 ErrorLogHelper.LogExceptionInfo(ex);
                 MessageBox.Show($"Error starting {ServiceName}: " + ex.Message, "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ProcessId = 0; // Clear PID on error.
                 btnStart.Enabled = true;
                 UpdateStatus(ServerStatus.Stopped);
             }
@@ -152,18 +156,24 @@ namespace Frostybee.PwampAdmin.Controls
             lblStatus.Text = status.ToString().ToUpper();
             lblStatus.Refresh();
             
-            // Update detailed info
+            // Update detailed info.
             string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
-            string pidInfo = ProcessId > 0 ? $"PID: {ProcessId}" : "";
+            string pidInfo;
             
             if (status == ServerStatus.Running && ProcessId > 0)
             {
-                lblServerInfo.Text = $"Status: Running on {portInfo} | {pidInfo}";
+                pidInfo = $"PID: {ProcessId}";
+            }
+            else if (status == ServerStatus.Starting || status == ServerStatus.Stopping)
+            {
+                pidInfo = "PID: ...";
             }
             else
             {
-                lblServerInfo.Text = $"Status: {status} | {portInfo}";
+                pidInfo = "PID: Not Running";
             }
+            
+            lblServerInfo.Text = $"{portInfo} | {pidInfo}";
 
             switch (status)
             {
