@@ -132,7 +132,8 @@ namespace Frostybee.PwampAdmin.Controls
                 bool success = await ServerManager.StartAsync();
                 if (success)
                 {
-                    ProcessId = (int)ServerManager.ProcessId; // Update PID when started.
+                    // Update PID when started.
+                    ProcessId = ServerManager.ProcessId.HasValue ? (int)ServerManager.ProcessId.Value : 0;
                     UpdateStatus(ServerStatus.Running);
                     btnStop.Enabled = true;
                     btnStart.Enabled = false;
@@ -164,7 +165,7 @@ namespace Frostybee.PwampAdmin.Controls
             switch (serverStatus)
             {
                 case ServerStatus.Stopped:
-                    ApplyControlStyle(Color.Red, Color.DarkRed, Color.FromArgb(242, 160, 160));
+                    ApplyControlStyle(Color.Red, Color.DarkRed, Color.FromArgb(232, 162, 162));
                     break;
                 case ServerStatus.Running:
                     ApplyControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200));
@@ -286,7 +287,7 @@ namespace Frostybee.PwampAdmin.Controls
                 if (ServerManager != null)
                 {
                     bool isRunning = ServerManager.IsRunning;
-                    ProcessId = (int)ServerManager.ProcessId;
+                    ProcessId = ServerManager.ProcessId.HasValue ? (int)ServerManager.ProcessId.Value : 0;
                     
                     UpdateStatus(isRunning ? ServerStatus.Running : ServerStatus.Stopped);
                     
