@@ -47,7 +47,6 @@
             // pnlControls
             // 
             this.pnlControls.BackColor = System.Drawing.Color.White;
-            this.pnlControls.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlControls.Controls.Add(this.lblServerIcon);
             this.pnlControls.Controls.Add(this.lblServerTitle);
             this.pnlControls.Controls.Add(this.pcbServerStatus);
@@ -67,7 +66,7 @@
             // lblServerIcon
             // 
             this.lblServerIcon.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.lblServerIcon.Location = new System.Drawing.Point(15, 3);
+            this.lblServerIcon.Location = new System.Drawing.Point(11, 3);
             this.lblServerIcon.Name = "lblServerIcon";
             this.lblServerIcon.Size = new System.Drawing.Size(30, 30);
             this.lblServerIcon.TabIndex = 0;
@@ -79,7 +78,7 @@
             this.lblServerTitle.AutoSize = true;
             this.lblServerTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblServerTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.lblServerTitle.Location = new System.Drawing.Point(51, 7);
+            this.lblServerTitle.Location = new System.Drawing.Point(37, 7);
             this.lblServerTitle.Name = "lblServerTitle";
             this.lblServerTitle.Size = new System.Drawing.Size(109, 21);
             this.lblServerTitle.TabIndex = 1;
@@ -88,7 +87,7 @@
             // pcbServerStatus
             // 
             this.pcbServerStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.pcbServerStatus.Location = new System.Drawing.Point(195, 10);
+            this.pcbServerStatus.Location = new System.Drawing.Point(186, 10);
             this.pcbServerStatus.Name = "pcbServerStatus";
             this.pcbServerStatus.Size = new System.Drawing.Size(15, 15);
             this.pcbServerStatus.TabIndex = 2;
@@ -99,7 +98,7 @@
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.lblStatus.Location = new System.Drawing.Point(215, 12);
+            this.lblStatus.Location = new System.Drawing.Point(206, 12);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(59, 15);
             this.lblStatus.TabIndex = 3;
@@ -108,13 +107,13 @@
             // lblServerInfo
             // 
             this.lblServerInfo.AutoSize = true;
-            this.lblServerInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblServerInfo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblServerInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblServerInfo.Location = new System.Drawing.Point(15, 35);
+            this.lblServerInfo.Location = new System.Drawing.Point(38, 35);
             this.lblServerInfo.Name = "lblServerInfo";
-            this.lblServerInfo.Size = new System.Drawing.Size(165, 15);
+            this.lblServerInfo.Size = new System.Drawing.Size(133, 17);
             this.lblServerInfo.TabIndex = 7;
-            this.lblServerInfo.Text = "Status: Stopped | Port: Not Set";
+            this.lblServerInfo.Text = "Port: Not Set | PID: ... ";
             // 
             // btnStart
             // 

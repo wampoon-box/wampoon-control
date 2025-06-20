@@ -28,6 +28,7 @@ namespace Frostybee.PwampAdmin.Controls
             InitializeComponent();
             SetupEventHandlers();
             SetupToolsMenu();
+            pnlControls.Paint += PnlControls_Paint;
         }
 
         protected void SetupEventHandlers()
@@ -193,6 +194,9 @@ namespace Frostybee.PwampAdmin.Controls
 
                     break;
             }
+
+            // Redraw the control to apply the new styles to the control's left border.
+            pnlControls.Invalidate();
         }
 
         private void ApplyControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
@@ -334,6 +338,44 @@ namespace Frostybee.PwampAdmin.Controls
                 LogExceptionInfo(ex);
                 LogMessage($"Error refreshing server status: {ex.Message}", LogType.Error);
             }
+        }
+
+        private void PnlControls_Paint(object sender, PaintEventArgs e)
+        {
+            using (Brush borderBrush = new SolidBrush(GetLeftBorderColor()))
+            {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                
+                using (System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath())
+                {
+                    int borderWidth = 4;
+                    int radius = 8;
+                    
+                    path.AddArc(0, 0, radius * 2, radius * 2, 180, 90);
+                    path.AddLine(radius, 0, borderWidth, 0);
+                    path.AddLine(borderWidth, 0, borderWidth, pnlControls.Height);
+                    path.AddLine(borderWidth, pnlControls.Height, radius, pnlControls.Height);
+                    path.AddArc(0, pnlControls.Height - radius * 2, radius * 2, radius * 2, 90, 90);
+                    path.CloseFigure();
+                    
+                    e.Graphics.FillPath(borderBrush, path);
+                }
+            }
+        }
+
+        private Color GetLeftBorderColor()
+        {
+            if (ServerManager != null && ServerManager.IsRunning)
+                return Color.Green;
+            else
+            {
+                if (!string.IsNullOrEmpty(ServiceName) && ServiceName.Contains("Apache"))
+                {
+                    return Color.Blue;
+
+                }   
+            }
+            return Color.Red;
         }
     }
 }
