@@ -63,7 +63,6 @@
     <Compile Include="Source\Enums\Enums.cs" />
     <Compile Include="Source\Helpers\AppConstants.cs" />
     <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
-    <Compile Include="Source\Helpers\ServerConfigHelper.cs" />
     <Compile Include="Source\Helpers\ServerHelper.cs" />
     <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />

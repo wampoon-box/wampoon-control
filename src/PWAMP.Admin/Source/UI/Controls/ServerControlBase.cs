@@ -223,49 +223,33 @@ namespace Frostybee.PwampAdmin.Controls
         {
             try
             {
-                LogMessage($"Attempting to open config file for {ServiceName}...", LogType.Info);
-                
-                // Get diagnostic information
-                var configPath = ServerHelper.GetConfigPath(ServiceName);
-                var canOpen = ServerHelper.CanOpenConfigFile(ServiceName);
-                
-                LogMessage($"Config path: {configPath ?? "NULL"}", LogType.Info);
-                LogMessage($"Can open config file: {canOpen}", LogType.Info);
-                
-                if (string.IsNullOrEmpty(configPath))
+                if (!ServerPathManager.CanOpenConfigFile(ServiceName))
                 {
-                    LogMessage($"No config path found for {ServiceName}", LogType.Warning);
-                    MessageBox.Show($"Configuration file path not found for {ServiceName}.\n\nThis may indicate that the server is not properly installed or the application directory structure is incorrect.", 
-                        "Configuration Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    var configPath = ServerPathManager.GetConfigPath(ServiceName);
+                    LogMessage($"Config file not available for {ServiceName}: {configPath ?? "not configured"}", LogType.Warning);
+                    MessageBox.Show($"Configuration file not found for {ServiceName}.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                
-                if (!System.IO.File.Exists(configPath))
-                {
-                    LogMessage($"Config file does not exist: {configPath}", LogType.Warning);
-                    MessageBox.Show($"Configuration file not found at:\n{configPath}\n\nPlease ensure {ServiceName} is properly installed.", 
-                        "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                
-                bool success = ServerHelper.OpenConfigFile(ServiceName);
+
+                bool success = ServerPathManager.OpenConfigFile(ServiceName);
                 if (success)
                 {
-                    LogMessage($"Successfully opened config file for {ServiceName}", LogType.Info);
+                    LogMessage($"Opened config file for {ServiceName}", LogType.Info);
                 }
                 else
                 {
-                    LogMessage($"Failed to open config file for {ServiceName} - OS returned failure", LogType.Warning);
-                    MessageBox.Show($"Failed to open configuration file for {ServiceName}.\n\nPath: {configPath}\n\nPlease check if you have a default text editor configured.", 
-                        "Failed to Open File", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    LogMessage($"Failed to open config file for {ServiceName}", LogType.Warning);
+                    MessageBox.Show($"Failed to open configuration file for {ServiceName}.", "Error", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
                 LogExceptionInfo(ex);
-                LogMessage($"Exception while opening config file: {ex.Message}", LogType.Error);
-                MessageBox.Show($"Error opening configuration file for {ServiceName}:\n\n{ex.Message}", 
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogMessage($"Error opening config file: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening configuration file: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
