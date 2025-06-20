@@ -164,7 +164,7 @@ namespace Frostybee.PwampAdmin.Controls
             switch (serverStatus)
             {
                 case ServerStatus.Stopped:
-                    ApplyControlStyle(Color.Red, Color.DarkRed, Color.WhiteSmoke);
+                    ApplyControlStyle(Color.Red, Color.DarkRed, Color.FromArgb(242, 160, 160));
                     break;
                 case ServerStatus.Running:
                     ApplyControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200));
@@ -211,6 +211,12 @@ namespace Frostybee.PwampAdmin.Controls
             pcbServerStatus.BackColor = statusColor;
             lblStatus.ForeColor = lblForeColor;
             lblStatus.BackColor = lblBackColor;
+            
+            // Apply left borders to buttons instead of background colors
+            //UiHelper.ApplyLeftBorderToButton(btnStart, statusColor);
+            //UiHelper.ApplyLeftBorderToButton(btnStop, statusColor);
+            //UiHelper.ApplyLeftBorderToButton(btnServerAdmin, statusColor);
+            //UiHelper.ApplyLeftBorderToButton(btnTools, statusColor);
         }
 
 

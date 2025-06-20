@@ -95,14 +95,14 @@
             // 
             // lblStatus
             // 
-            this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.lblStatus.Location = new System.Drawing.Point(218, 12);
+            this.lblStatus.Location = new System.Drawing.Point(218, 8);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(59, 15);
+            this.lblStatus.Size = new System.Drawing.Size(59, 20);
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "STOPPED";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblServerInfo
             // 
@@ -173,7 +173,7 @@
             this.btnTools.Name = "btnTools";
             this.btnTools.Size = new System.Drawing.Size(121, 35);
             this.btnTools.TabIndex = 8;
-            this.btnTools.Text = "⚙️ Tools ▼";
+            this.btnTools.Text = "⚙️ Configs ▼";
             this.btnTools.UseVisualStyleBackColor = false;
             // 
             // contextMenuTools

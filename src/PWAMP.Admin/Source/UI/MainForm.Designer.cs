@@ -241,7 +241,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuit.ForeColor = System.Drawing.Color.White;
-            this.btnQuit.Location = new System.Drawing.Point(587, 27);
+            this.btnQuit.Location = new System.Drawing.Point(621, 27);
             this.btnQuit.Name = "btnQuit";
             this.btnQuit.Size = new System.Drawing.Size(94, 37);
             this.btnQuit.TabIndex = 4;
@@ -257,7 +257,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnStartAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStartAllServers.Location = new System.Drawing.Point(181, 27);
+            this.btnStartAllServers.Location = new System.Drawing.Point(238, 27);
             this.btnStartAllServers.Name = "btnStartAllServers";
             this.btnStartAllServers.Size = new System.Drawing.Size(94, 37);
             this.btnStartAllServers.TabIndex = 1;
@@ -273,7 +273,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
-            this.btnAbout.Location = new System.Drawing.Point(487, 27);
+            this.btnAbout.Location = new System.Drawing.Point(521, 27);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(94, 37);
             this.btnAbout.TabIndex = 3;
@@ -289,7 +289,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStopAllServers.Location = new System.Drawing.Point(285, 27);
+            this.btnStopAllServers.Location = new System.Drawing.Point(342, 27);
             this.btnStopAllServers.Name = "btnStopAllServers";
             this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
             this.btnStopAllServers.TabIndex = 2;
@@ -351,7 +351,7 @@ namespace Frostybee.PwampAdmin.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(812, 892);
+            this.ClientSize = new System.Drawing.Size(807, 892);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.MinimumSize = new System.Drawing.Size(600, 600);

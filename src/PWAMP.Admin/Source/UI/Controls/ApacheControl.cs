@@ -36,6 +36,7 @@ namespace Frostybee.PwampAdmin.Controls
         {
             try
             {
+                LogMessage($"Initializing server settings... ", LogType.Info);
                 lblServerTitle.Text = DisplayName;
                 
                 // Log diagnostic information for debugging configuration issues
@@ -60,6 +61,7 @@ namespace Frostybee.PwampAdmin.Controls
                 //TODO: Default admin URI for Apache. Might need to add the port number. 
                 //ServerAdminUri = $"http://localhost:{PortNumber}/"; 
                 ServerAdminUri = $"http://localhost";
+                UpdateStatus(CurrentStatus);
             }
             catch (Exception ex)
             {
@@ -73,7 +75,7 @@ namespace Frostybee.PwampAdmin.Controls
 
         private void ValidateServerConfig()
         {
-            LogMessage($"Initializing server settings... ", LogType.Info);
+            //LogMessage($"Initializing server settings... ", LogType.Info);
 
             //var serverApp = Path.Combine(ConfigManager.BaseDirectory, "apache", "bin", ConfigManager.Config.BinaryNames.Apache);
 
