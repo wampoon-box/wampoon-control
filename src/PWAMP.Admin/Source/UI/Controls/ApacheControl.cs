@@ -17,11 +17,10 @@ namespace Frostybee.PwampAdmin.Controls
 {
     internal partial class ApacheControl : ServerControlBase, IDisposable
     {
-        private ApacheManager _apacheManager;
+        private ApacheServerManager _apacheManager;
         // Apache and phpMyAdmin-related paths.
         private string _apacheDirectory;
         private string _customConfigPath;
-        private string _phpMyAdminDirectory;
         private string _httpdAliasConfigPath;
         
         public ApacheControl()
@@ -29,7 +28,8 @@ namespace Frostybee.PwampAdmin.Controls
             ServiceName = "Apache";
             DisplayName = "Apache HTTP Server";
             PortNumber = 80; // Default HTTP port, change if needed.
-            lblServerIcon.Text = "🌐";
+            lblServerIcon.Text = "🌐";            
+            btnServerAdmin.Text = "localhost";
         }
 
         public void InitializeModule()
@@ -41,10 +41,13 @@ namespace Frostybee.PwampAdmin.Controls
                 // the application has been moved to a different directory/drive.
                 UpdateApacheConfig();
 
-                _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);                
+                _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);                
                 _apacheManager.ErrorOccurred += LogError;
                 _apacheManager.StatusChanged += LogMessage;
-                ServerManager = _apacheManager;                
+                ServerManager = _apacheManager;
+                //TODO: Default admin URI for Apache. Might need to add the port number. 
+                //ServerAdminUri = $"http://localhost:{PortNumber}/"; 
+                ServerAdminUri = $"http://localhost";
             }
             catch (Exception ex)
             {
@@ -110,30 +113,6 @@ namespace Frostybee.PwampAdmin.Controls
             LogMessage(message, LogType.Error);
         }
 
-        //public virtual void Dispose()
-        //{
-        //    if (_apacheManager != null)
-        //    {
-        //        _apacheManager.Dispose();
-        //        _apacheManager = null;
-        //    }
-        //}
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_apacheManager != null)
-                {
-                    _apacheManager.ErrorOccurred -= LogError;
-                    _apacheManager.StatusChanged -= LogMessage;
-                    _apacheManager.Dispose();
-                    _apacheManager = null;
-                }
-            }
-            base.Dispose(disposing);
-        }
-
         internal bool IsRunning()
         {
             return _apacheManager != null && _apacheManager.IsRunning;
@@ -157,7 +136,7 @@ namespace Frostybee.PwampAdmin.Controls
                     
                     try
                     {
-                        _apacheManager = ServerManagerFactory.CreateServerManager<ApacheManager>(ServerDefinitions.Apache.Name);
+                        _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);
                         _apacheManager.ErrorOccurred += LogError;
                         _apacheManager.StatusChanged += LogMessage;
                         ServerManager = _apacheManager;
@@ -198,13 +177,8 @@ namespace Frostybee.PwampAdmin.Controls
             if (string.IsNullOrEmpty(_apacheDirectory))
             {
                 throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
-            }
-            // Set up document root and PhpMyAdmin paths.            
-            _phpMyAdminDirectory = ServerPathManager.GetServerBaseDirectory(ServerDefinitions.phpMyAdmin.Name) ?? 
-                                   Path.Combine(ServerPathManager.ApplicationDirectory, "apps", ServerDefinitions.phpMyAdmin.Name);
-
-            _customConfigPath = Path.Combine(_apacheDirectory, "conf", "custom_path.conf");
-            _httpdAliasConfigPath = Path.Combine(_apacheDirectory, "conf", "httpd-alias.conf");
+            }            
+            _customConfigPath = Path.Combine(_apacheDirectory, "conf", "pwamp-custom-path.conf");
 
             ApplyCustomConfiguration();
         }
@@ -239,16 +213,10 @@ namespace Frostybee.PwampAdmin.Controls
                 var configContent = new StringBuilder();
                 configContent.AppendLine(string.Format("Define SRVROOT \"{0}\"", _apacheDirectory));
                 configContent.AppendLine(string.Format("Define DOCROOT \"{0}\"", ServerPathManager.ApacheDocumentRoot));
+                configContent.AppendLine(string.Format("Define PWAMP_APPS_DIR \"{0}\"", ServerPathManager.AppsDirectory));
 
                 // Write the configuration to the file.
                 File.WriteAllText(_customConfigPath, configContent.ToString(), Encoding.UTF8);
-
-                // Also update the httpd-alias.conf file.
-                if (!UpdateHttpdAliasConfiguration())
-                {
-                    LogMessage("Failed to update httpd-alias.conf", LogType.Error);
-                    // Don't fail the entire operation if alias config update fails.
-                }
 
                 return true;
             }
@@ -259,64 +227,7 @@ namespace Frostybee.PwampAdmin.Controls
                 return false;
             }
         }
-
-        /// <summary>
-        /// Updates the httpd-alias.conf file to use the correct PMAROOT path.
-        /// </summary>
-        /// <returns>True if the file was updated successfully, false otherwise.</returns>
-        private bool UpdateHttpdAliasConfiguration()
-        {
-            try
-            {
-                if (!Directory.Exists(_phpMyAdminDirectory))
-                {
-                    LogMessage("phpAdmin folder is not found...", LogType.Error);
-                    return false;
-                }
-
-                if (!File.Exists(_httpdAliasConfigPath))
-                {
-                    LogMessage(string.Format("httpd-alias.conf file not found: {0}", _httpdAliasConfigPath), LogType.Error);
-                    return false;
-                }
-
-                // Read all lines from the file
-                var lines = File.ReadAllLines(_httpdAliasConfigPath);
-                bool updated = false;
-
-                // Update the first line if it contains the PMAROOT Define statement.
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    var line = lines[i].Trim();
-                    if (line.StartsWith("Define PMAROOT", StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Replace the hardcoded path with the relative path.
-                        lines[i] = string.Format("Define PMAROOT \"{0}\"", _phpMyAdminDirectory);
-                        updated = true;
-                        LogMessage(string.Format("Updated PMAROOT path to: {0}", _phpMyAdminDirectory), LogType.Info);
-                        break; // Only update the first occurrence.
-                    }
-                }
-
-                if (updated)
-                {
-                    // Write the updated content back to the file.
-                    File.WriteAllLines(_httpdAliasConfigPath, lines, Encoding.UTF8);
-                    return true;
-                }
-                else
-                {
-                    LogMessage("No PMAROOT Define statement found in httpd-alias.conf", LogType.Error);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogHelper.LogExceptionInfo(ex);
-                LogMessage(string.Format("Error updating httpd-alias.conf: {0}", ex.Message), LogType.Error);
-                return false;
-            }
-        }
+        
 
         /// <summary>
         /// Validates that all required directories and files exist for Apache to run.
@@ -403,6 +314,19 @@ namespace Frostybee.PwampAdmin.Controls
 
         #endregion
 
-
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_apacheManager != null)
+                {
+                    _apacheManager.ErrorOccurred -= LogError;
+                    _apacheManager.StatusChanged -= LogMessage;
+                    _apacheManager.Dispose();
+                    _apacheManager = null;
+                }
+            }
+            base.Dispose(disposing);
+        }
     }
 }

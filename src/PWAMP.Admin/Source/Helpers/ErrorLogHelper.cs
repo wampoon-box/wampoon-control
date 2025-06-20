@@ -13,8 +13,8 @@ namespace Frostybee.PwampAdmin.Helpers
     internal static class ErrorLogHelper
     {
         private static readonly object _lock = new object();
-        private static readonly string _logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
-        private static readonly string _logFilePath = Path.Combine(_logDirectory, "error.log");
+        private static readonly string _logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppConstants.APP_LOG_FOLDER);
+        private static readonly string _logFilePath = Path.Combine(_logDirectory, AppConstants.APP_LOG_FILE);
 
         static ErrorLogHelper()
         {
@@ -41,7 +41,7 @@ namespace Frostybee.PwampAdmin.Helpers
             WriteToFile(logEntry);
         }
 
-        internal static void LogErrorMessage(string message)
+        internal static void LogExceptionInfo(string message)
         {
             var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}{Environment.NewLine}";
             WriteToFile(logEntry);

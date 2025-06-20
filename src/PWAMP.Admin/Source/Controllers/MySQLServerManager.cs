@@ -9,12 +9,12 @@ using Frostybee.PwampAdmin.Helpers;
 
 namespace Frostybee.PwampAdmin.Controllers
 {
-    internal class MySQLManager : ServerManagerBase
+    internal class MySQLServerManager : ServerManagerBase
     {
         public override string ServerName { get; set; } = "MariaDB";
         protected override bool CanMonitorOutput { get; set; } = true;
 
-        public MySQLManager(string executablePath, string configPath = null) : base(executablePath, configPath)
+        public MySQLServerManager(string executablePath, string configPath = null) : base(executablePath, configPath)
         {
         }
 
@@ -41,6 +41,14 @@ namespace Frostybee.PwampAdmin.Controllers
             }
             return string.Empty;
         }
+        /// <summary>
+        /// MySQL/MariaDB shutdown command.
+        /// </summary>
+        /// <returns>The command to shutdown MySQL/MariaDB server. </returns>
+        private string GetStopArguments()
+        {
+            return "shutdown -u root";
+        }
 
         protected override int GetStartupDelay()
         {
@@ -54,13 +62,13 @@ namespace Frostybee.PwampAdmin.Controllers
             string mariaDbBinPath = Path.GetDirectoryName(_executablePath);
             string mariaDbAdminExe = Path.Combine(mariaDbBinPath, "mariadb-admin.exe");
 
-            LogError($"attempting to stop { ServerName} using: {mariaDbAdminExe}");
+            LogError($"Attempting to stop { ServerName}");
 
             try
             {
                 if (!File.Exists(_executablePath))
                 {
-                    LogError($"executable not found: {_executablePath}");
+                    LogError($"Executable not found: {_executablePath}");
                     return false;
                 }
 
@@ -84,7 +92,7 @@ namespace Frostybee.PwampAdmin.Controllers
 
                 shutdownProcess.Exited += (sender, e) =>
                 {
-                    LogMessage($"has exited with code: {shutdownProcess.ExitCode}");
+                    LogMessage($"Has exited with code: {shutdownProcess.ExitCode}");
                 };
 
                 //TODO: Check if the shutdown was successful by checking the exit code or output.
@@ -94,14 +102,10 @@ namespace Frostybee.PwampAdmin.Controllers
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
-                LogError($"failed to stop: {ex.Message}");
+                LogError($"Failed to stop: {ex.Message}");
                 return false;
             }
         }
-
-        private string GetStopArguments()
-        {
-            return "shutdown -u root";
-        }
+        
     }
 }
