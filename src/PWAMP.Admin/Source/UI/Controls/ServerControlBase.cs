@@ -226,102 +226,51 @@ namespace Frostybee.PwampAdmin.Controls
 
         protected virtual void OpenConfigFile()
         {
+            var configPath = ServerPathManager.GetConfigPath(ServiceName);
+            OpenServerFile(configPath, "configuration file");
+        }
+
+        protected virtual void OpenServerFile(string filePath, string fileTypeDisplayName)
+        {
             try
             {
-                if (!ServerPathManager.CanOpenConfigFile(ServiceName))
+                if (string.IsNullOrEmpty(filePath))
                 {
-                    var configPath = ServerPathManager.GetConfigPath(ServiceName);
-                    LogMessage($"Config file not available for {ServiceName}: {configPath ?? "not configured"}", LogType.Warning);
-                    MessageBox.Show($"Configuration file not found for {ServiceName}.", "Configuration", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    LogMessage($"{fileTypeDisplayName} path not configured.", LogType.Warning);
+                    MessageBox.Show($"{fileTypeDisplayName} path not configured for {ServiceName}.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                bool success = ServerPathManager.OpenConfigFile(ServiceName);
-                if (success)
+                if (System.IO.File.Exists(filePath))
                 {
-                    LogMessage($"Opened config file for {ServiceName}", LogType.Info);
+                    SystemHelper.ExecuteFile("notepad.exe", filePath, System.Diagnostics.ProcessWindowStyle.Normal);
+                    LogMessage($"Opened {fileTypeDisplayName.ToLower()}: {filePath}", LogType.Info);
                 }
                 else
                 {
-                    LogMessage($"Failed to open config file for {ServiceName}", LogType.Warning);
-                    MessageBox.Show($"Failed to open configuration file for {ServiceName}.", "Error", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    LogMessage($"{fileTypeDisplayName} file not found: {filePath}", LogType.Warning);
+                    MessageBox.Show($"{fileTypeDisplayName} file not found: {filePath}", "File Not Found", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
                 LogExceptionInfo(ex);
-                LogMessage($"Error opening config file: {ex.Message}", LogType.Error);
-                MessageBox.Show($"Error opening configuration file: {ex.Message}", "Error", 
+                LogMessage($"Error opening {fileTypeDisplayName.ToLower()}: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening {fileTypeDisplayName.ToLower()}: {ex.Message}", "Error", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         protected virtual void OpenErrorLogs()
         {
-            try
-            {
-                if (string.IsNullOrEmpty(ErrorLogPath))
-                {
-                    LogMessage("Error log path not configured.", LogType.Warning);
-                    MessageBox.Show($"Error log path not configured for {ServiceName}.", "Configuration", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                if (System.IO.File.Exists(ErrorLogPath))
-                {
-                    SystemHelper.ExecuteFile("notepad.exe", ErrorLogPath, System.Diagnostics.ProcessWindowStyle.Normal);
-                    LogMessage($"Opened error log: {ErrorLogPath}", LogType.Info);
-                }
-                else
-                {
-                    LogMessage($"Error log file not found: {ErrorLogPath}", LogType.Warning);
-                    MessageBox.Show($"Error log file not found: {ErrorLogPath}", "File Not Found", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogExceptionInfo(ex);
-                LogMessage($"Error opening error log: {ex.Message}", LogType.Error);
-                MessageBox.Show($"Error opening error log: {ex.Message}", "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            OpenServerFile(ErrorLogPath, "Error log");
         }
 
         protected virtual void OpenAccessLogs()
         {
-            try
-            {
-                if (string.IsNullOrEmpty(AccessLogPath))
-                {
-                    LogMessage("Access log path not configured.", LogType.Warning);
-                    MessageBox.Show($"Access log path not configured for {ServiceName}.", "Configuration", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                if (System.IO.File.Exists(AccessLogPath))
-                {
-                    SystemHelper.ExecuteFile("notepad.exe", AccessLogPath, System.Diagnostics.ProcessWindowStyle.Normal);
-                    LogMessage($"Opened access log: {AccessLogPath}", LogType.Info);
-                }
-                else
-                {
-                    LogMessage($"Access log file not found: {AccessLogPath}", LogType.Warning);
-                    MessageBox.Show($"Access log file not found: {AccessLogPath}", "File Not Found", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogExceptionInfo(ex);
-                LogMessage($"Error opening access log: {ex.Message}", LogType.Error);
-                MessageBox.Show($"Error opening access log: {ex.Message}", "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            OpenServerFile(AccessLogPath, "Access log");
         }
 
         protected virtual void RefreshServerStatus()
