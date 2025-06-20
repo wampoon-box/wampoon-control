@@ -51,8 +51,8 @@ namespace Frostybee.PwampAdmin.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
             this._apacheModule = new Frostybee.PwampAdmin.Controls.ApacheControl();
+            this._mySqlModule = new Frostybee.PwampAdmin.Controls.MySqlControl();
             this.logsPanel.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
@@ -69,9 +69,10 @@ namespace Frostybee.PwampAdmin.UI
             this.logsPanel.BackColor = System.Drawing.Color.White;
             this.logsPanel.Controls.Add(this.logsHeaderLabel);
             this.logsPanel.Controls.Add(this.logTabControl);
-            this.logsPanel.Location = new System.Drawing.Point(7, 15);
+            this.logsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logsPanel.Location = new System.Drawing.Point(12, 12);
             this.logsPanel.Name = "logsPanel";
-            this.logsPanel.Size = new System.Drawing.Size(698, 389);
+            this.logsPanel.Size = new System.Drawing.Size(747, 389);
             this.logsPanel.TabIndex = 5;
             // 
             // logsHeaderLabel
@@ -97,7 +98,7 @@ namespace Frostybee.PwampAdmin.UI
             this.logTabControl.Location = new System.Drawing.Point(20, 50);
             this.logTabControl.Name = "logTabControl";
             this.logTabControl.SelectedIndex = 0;
-            this.logTabControl.Size = new System.Drawing.Size(675, 266);
+            this.logTabControl.Size = new System.Drawing.Size(724, 266);
             this.logTabControl.TabIndex = 1;
             // 
             // outputTab
@@ -107,7 +108,7 @@ namespace Frostybee.PwampAdmin.UI
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTab.Size = new System.Drawing.Size(667, 238);
+            this.outputTab.Size = new System.Drawing.Size(716, 238);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
@@ -123,7 +124,7 @@ namespace Frostybee.PwampAdmin.UI
             this._rtxtActionsLog.Name = "_rtxtActionsLog";
             this._rtxtActionsLog.ReadOnly = true;
             this._rtxtActionsLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtActionsLog.Size = new System.Drawing.Size(659, 238);
+            this._rtxtActionsLog.Size = new System.Drawing.Size(708, 238);
             this._rtxtActionsLog.TabIndex = 0;
             this._rtxtActionsLog.Text = "";
             // 
@@ -166,10 +167,10 @@ namespace Frostybee.PwampAdmin.UI
             // panel1
             // 
             this.panel1.Controls.Add(this.logsPanel);
-            this.panel1.Location = new System.Drawing.Point(12, 445);
+            this.panel1.Location = new System.Drawing.Point(12, 428);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(12);
-            this.panel1.Size = new System.Drawing.Size(722, 413);
+            this.panel1.Size = new System.Drawing.Size(771, 413);
             this.panel1.TabIndex = 6;
             // 
             // headerPanel
@@ -179,7 +180,7 @@ namespace Frostybee.PwampAdmin.UI
             this.headerPanel.Controls.Add(this.subtitleLabel);
             this.headerPanel.Location = new System.Drawing.Point(21, 12);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(693, 71);
+            this.headerPanel.Size = new System.Drawing.Size(730, 71);
             this.headerPanel.TabIndex = 8;
             // 
             // titleLabel
@@ -211,7 +212,7 @@ namespace Frostybee.PwampAdmin.UI
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(754, 429);
+            this.panel2.Size = new System.Drawing.Size(770, 422);
             this.panel2.TabIndex = 9;
             // 
             // grpHelpers
@@ -224,10 +225,10 @@ namespace Frostybee.PwampAdmin.UI
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.grpHelpers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.grpHelpers.Location = new System.Drawing.Point(16, 332);
+            this.grpHelpers.Location = new System.Drawing.Point(18, 333);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
-            this.grpHelpers.Size = new System.Drawing.Size(696, 73);
+            this.grpHelpers.Size = new System.Drawing.Size(733, 76);
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "⚡ Quick Actions";
@@ -240,7 +241,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuit.ForeColor = System.Drawing.Color.White;
-            this.btnQuit.Location = new System.Drawing.Point(584, 23);
+            this.btnQuit.Location = new System.Drawing.Point(587, 27);
             this.btnQuit.Name = "btnQuit";
             this.btnQuit.Size = new System.Drawing.Size(94, 37);
             this.btnQuit.TabIndex = 4;
@@ -256,7 +257,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnStartAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStartAllServers.Location = new System.Drawing.Point(181, 23);
+            this.btnStartAllServers.Location = new System.Drawing.Point(181, 27);
             this.btnStartAllServers.Name = "btnStartAllServers";
             this.btnStartAllServers.Size = new System.Drawing.Size(94, 37);
             this.btnStartAllServers.TabIndex = 1;
@@ -272,7 +273,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
-            this.btnAbout.Location = new System.Drawing.Point(475, 23);
+            this.btnAbout.Location = new System.Drawing.Point(487, 27);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(94, 37);
             this.btnAbout.TabIndex = 3;
@@ -288,7 +289,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStopAllServers.Location = new System.Drawing.Point(281, 23);
+            this.btnStopAllServers.Location = new System.Drawing.Point(285, 27);
             this.btnStopAllServers.Name = "btnStopAllServers";
             this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
             this.btnStopAllServers.TabIndex = 2;
@@ -304,7 +305,7 @@ namespace Frostybee.PwampAdmin.UI
             this.btnOpenExplorer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenExplorer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnOpenExplorer.ForeColor = System.Drawing.Color.White;
-            this.btnOpenExplorer.Location = new System.Drawing.Point(31, 23);
+            this.btnOpenExplorer.Location = new System.Drawing.Point(31, 27);
             this.btnOpenExplorer.Name = "btnOpenExplorer";
             this.btnOpenExplorer.Size = new System.Drawing.Size(94, 37);
             this.btnOpenExplorer.TabIndex = 0;
@@ -315,41 +316,42 @@ namespace Frostybee.PwampAdmin.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this._mySqlModule);
             this.groupBox1.Controls.Add(this._apacheModule);
+            this.groupBox1.Controls.Add(this._mySqlModule);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.groupBox1.Location = new System.Drawing.Point(19, 95);
+            this.groupBox1.Location = new System.Drawing.Point(19, 101);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
-            this.groupBox1.Size = new System.Drawing.Size(696, 215);
+            this.groupBox1.Size = new System.Drawing.Size(732, 219);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Server Management";
             // 
-            // _mySqlModule
-            // 
-            this._mySqlModule.BackColor = System.Drawing.Color.White;
-            this._mySqlModule.Location = new System.Drawing.Point(352, 28);
-            this._mySqlModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._mySqlModule.Name = "_mySqlModule";
-            this._mySqlModule.Size = new System.Drawing.Size(326, 168);
-            this._mySqlModule.TabIndex = 7;
-            // 
             // _apacheModule
             // 
             this._apacheModule.BackColor = System.Drawing.Color.White;
-            this._apacheModule.Location = new System.Drawing.Point(14, 27);
+            this._apacheModule.Location = new System.Drawing.Point(19, 27);
+            this._apacheModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._apacheModule.Name = "_apacheModule";
-            this._apacheModule.Size = new System.Drawing.Size(322, 169);
+            this._apacheModule.Size = new System.Drawing.Size(335, 178);
             this._apacheModule.TabIndex = 4;
+            // 
+            // _mySqlModule
+            // 
+            this._mySqlModule.BackColor = System.Drawing.Color.White;
+            this._mySqlModule.Location = new System.Drawing.Point(380, 27);
+            this._mySqlModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._mySqlModule.Name = "_mySqlModule";
+            this._mySqlModule.Size = new System.Drawing.Size(335, 178);
+            this._mySqlModule.TabIndex = 7;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(763, 888);
+            this.ClientSize = new System.Drawing.Size(812, 892);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.MinimumSize = new System.Drawing.Size(600, 600);
