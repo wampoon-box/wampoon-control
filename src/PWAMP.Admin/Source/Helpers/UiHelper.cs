@@ -38,11 +38,11 @@ namespace Frostybee.PwampAdmin.Helpers
 
         internal static void DrawBootstrapCardShadow(Graphics graphics, Control control)
         {
-            int shadowOffset = 4;
-            int shadowSize = 8;
+            int shadowOffset = 3;
+            int shadowSize = 6;
             int radius = 8;
             
-            // Draw bottom shadow.
+            // Draw bottom shadow (inside control bounds but at bottom edge).
             Rectangle bottomShadowRect = new Rectangle(shadowOffset, control.Height - shadowSize, 
                                                      control.Width - shadowOffset * 2, shadowSize);
             
@@ -50,7 +50,7 @@ namespace Frostybee.PwampAdmin.Helpers
                    new System.Drawing.Drawing2D.LinearGradientBrush(
                        new Point(bottomShadowRect.X, bottomShadowRect.Y),
                        new Point(bottomShadowRect.X, bottomShadowRect.Bottom),
-                       Color.FromArgb(25, 0, 0, 0),
+                       Color.FromArgb(30, 0, 0, 0),
                        Color.FromArgb(0, 0, 0, 0)))
             {
                 using (System.Drawing.Drawing2D.GraphicsPath bottomShadowPath = new System.Drawing.Drawing2D.GraphicsPath())
@@ -68,7 +68,7 @@ namespace Frostybee.PwampAdmin.Helpers
                 }
             }
             
-            // Draw right shadow.
+            // Draw right shadow (inside control bounds but at right edge).
             Rectangle rightShadowRect = new Rectangle(control.Width - shadowSize, shadowOffset,
                                                     shadowSize, control.Height - shadowOffset * 2);
             
@@ -76,7 +76,7 @@ namespace Frostybee.PwampAdmin.Helpers
                    new System.Drawing.Drawing2D.LinearGradientBrush(
                        new Point(rightShadowRect.X, rightShadowRect.Y),
                        new Point(rightShadowRect.Right, rightShadowRect.Y),
-                       Color.FromArgb(25, 0, 0, 0),
+                       Color.FromArgb(30, 0, 0, 0),
                        Color.FromArgb(0, 0, 0, 0)))
             {
                 using (System.Drawing.Drawing2D.GraphicsPath rightShadowPath = new System.Drawing.Drawing2D.GraphicsPath())

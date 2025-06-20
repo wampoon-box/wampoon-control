@@ -135,7 +135,7 @@ namespace Frostybee.PwampAdmin.UI
             this.errorTab.Location = new System.Drawing.Point(4, 24);
             this.errorTab.Name = "errorTab";
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.errorTab.Size = new System.Drawing.Size(667, 238);
+            this.errorTab.Size = new System.Drawing.Size(716, 238);
             this.errorTab.TabIndex = 1;
             this.errorTab.Text = "MySQL Logs";
             this.errorTab.UseVisualStyleBackColor = true;
@@ -150,7 +150,7 @@ namespace Frostybee.PwampAdmin.UI
             this._rtxtErrorLog.Name = "_rtxtErrorLog";
             this._rtxtErrorLog.ReadOnly = true;
             this._rtxtErrorLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtErrorLog.Size = new System.Drawing.Size(661, 232);
+            this._rtxtErrorLog.Size = new System.Drawing.Size(710, 232);
             this._rtxtErrorLog.TabIndex = 0;
             this._rtxtErrorLog.Text = "";
             // 
@@ -159,7 +159,7 @@ namespace Frostybee.PwampAdmin.UI
             this.accessTab.Location = new System.Drawing.Point(4, 24);
             this.accessTab.Name = "accessTab";
             this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(667, 238);
+            this.accessTab.Size = new System.Drawing.Size(716, 238);
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
@@ -235,7 +235,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // btnQuit
             // 
-            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(73)))));
             this.btnQuit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnQuit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -283,7 +283,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // btnStopAllServers
             // 
-            this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(73)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStopAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

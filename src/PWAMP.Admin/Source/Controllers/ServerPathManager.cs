@@ -48,10 +48,7 @@ namespace Frostybee.PwampAdmin.Controllers
                 if (!string.IsNullOrEmpty(definition.ConfigFile))
                 {
                     configPath = Path.Combine(serverBaseDir, definition.ConfigFile);
-                    if (!File.Exists(configPath))
-                    {
-                        configPath = null;
-                    }
+                    // Don't set configPath to null if file doesn't exist - let CanOpenConfigFile handle that check
                 }
 
                 var pathInfo = new ServerPathInfo
@@ -188,15 +185,7 @@ namespace Frostybee.PwampAdmin.Controllers
             foreach (var pathInfo in _serverPaths.Values)
             {
                 pathInfo.IsAvailable = File.Exists(pathInfo.ExecutablePath);
-
-                // Also refresh config path availability
-                if (!string.IsNullOrEmpty(pathInfo.ConfigPath))
-                {
-                    if (!File.Exists(pathInfo.ConfigPath))
-                    {
-                        pathInfo.ConfigPath = null;
-                    }
-                }
+                // Note: We don't modify the ConfigPath here - let CanOpenConfigFile handle existence checks
             }
         }
 
@@ -333,6 +322,126 @@ namespace Frostybee.PwampAdmin.Controllers
             }
 
             return diagnostics;
+        }
+
+        /// <summary>
+        /// Logs detailed diagnostic information for Apache configuration debugging
+        /// </summary>
+        public static void LogApacheDiagnostics()
+        {
+            try
+            {
+                var apacheDefinition = ServerDefinitions.GetByName("Apache");
+                var diagnosticLines = new List<string>
+                {
+                    "=== APACHE CONFIGURATION DIAGNOSTICS ===",
+                    $"Timestamp: {DateTime.Now:yyyy-MM-dd HH:mm:ss}",
+                    $"Application Directory: {_applicationDirectory}",
+                    $"Apps Directory: {_appsDirectory}",
+                    $"Apps Directory Exists: {Directory.Exists(_appsDirectory)}",
+                    "",
+                    "Apache Definition Info:",
+                    $"  Name: {apacheDefinition?.Name ?? "NULL"}",
+                    $"  Directory: {apacheDefinition?.Directory ?? "NULL"}",
+                    $"  ExecutableName: {apacheDefinition?.ExecutableName ?? "NULL"}",
+                    $"  ConfigFile: {apacheDefinition?.ConfigFile ?? "NULL"}",
+                    ""
+                };
+
+                if (apacheDefinition != null)
+                {
+                    var serverBaseDir = Path.Combine(_appsDirectory, apacheDefinition.Directory);
+                    var configPath = Path.Combine(serverBaseDir, apacheDefinition.ConfigFile);
+                    
+                    diagnosticLines.AddRange(new[]
+                    {
+                        "Computed Paths:",
+                        $"  Server Base Dir: {serverBaseDir}",
+                        $"  Server Base Dir Exists: {Directory.Exists(serverBaseDir)}",
+                        $"  Config Path: {configPath}",
+                        $"  Config File Exists: {File.Exists(configPath)}",
+                        "",
+                        "ServerPathManager Results:",
+                        $"  GetServerPath('Apache') != null: {GetServerPath("Apache") != null}",
+                        $"  GetConfigPath('Apache'): {GetConfigPath("Apache") ?? "NULL"}",
+                        $"  CanOpenConfigFile('Apache'): {CanOpenConfigFile("Apache")}",
+                        ""
+                    });
+
+                    var pathInfo = GetServerPath("Apache");
+                    if (pathInfo != null)
+                    {
+                        diagnosticLines.AddRange(new[]
+                        {
+                            "Apache PathInfo Details:",
+                            $"  ServerName: {pathInfo.ServerName ?? "NULL"}",
+                            $"  ExecutablePath: {pathInfo.ExecutablePath ?? "NULL"}",
+                            $"  ConfigPath: {pathInfo.ConfigPath ?? "NULL"}",
+                            $"  ServerDirectory: {pathInfo.ServerDirectory ?? "NULL"}",
+                            $"  ServerBaseDirectory: {pathInfo.ServerBaseDirectory ?? "NULL"}",
+                            $"  IsAvailable: {pathInfo.IsAvailable}",
+                            ""
+                        });
+                    }
+                    else
+                    {
+                        diagnosticLines.Add("Apache PathInfo: NULL");
+                    }
+
+                    // Check if directories exist
+                    if (Directory.Exists(serverBaseDir))
+                    {
+                        try
+                        {
+                            var subdirs = Directory.GetDirectories(serverBaseDir);
+                            var files = Directory.GetFiles(serverBaseDir);
+                            diagnosticLines.AddRange(new[]
+                            {
+                                $"Contents of {serverBaseDir}:",
+                                $"  Subdirectories: {string.Join(", ", subdirs.Select(Path.GetFileName))}",
+                                $"  Files: {string.Join(", ", files.Select(Path.GetFileName))}",
+                                ""
+                            });
+
+                            var confDir = Path.Combine(serverBaseDir, "conf");
+                            if (Directory.Exists(confDir))
+                            {
+                                var confFiles = Directory.GetFiles(confDir);
+                                diagnosticLines.AddRange(new[]
+                                {
+                                    $"Contents of {confDir}:",
+                                    $"  Config Files: {string.Join(", ", confFiles.Select(Path.GetFileName))}",
+                                    ""
+                                });
+                            }
+                            else
+                            {
+                                diagnosticLines.Add($"Config directory does not exist: {confDir}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            diagnosticLines.Add($"Error listing directory contents: {ex.Message}");
+                        }
+                    }
+                }
+
+                diagnosticLines.Add("=== END DIAGNOSTICS ===");
+                
+                // Write to log file
+                var logDir = Path.Combine(_applicationDirectory, "pwamp-logs");
+                var logFile = Path.Combine(logDir, "apache-diagnostics.log");
+                
+                if (!Directory.Exists(logDir))
+                    Directory.CreateDirectory(logDir);
+                    
+                File.WriteAllLines(logFile, diagnosticLines);
+                
+            }
+            catch (Exception ex)
+            {
+                ErrorLogHelper.LogExceptionInfo(ex);
+            }
         }
     }    
 }

@@ -42,7 +42,7 @@ namespace Frostybee.PwampAdmin.Helpers
         /// </summary>
         public static bool OpenConfigFile(string serverName)
         {
-            return ServerConfigHelper.OpenServerConfigFile(serverName);
+            return ServerPathManager.OpenConfigFile(serverName);
         }
 
         /// <summary>

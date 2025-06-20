@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Frostybee.PwampAdmin.Controllers;
+using Frostybee.PwampAdmin.Enums;
+using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.UI;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Frostybee.PwampAdmin.Controllers;
-using Frostybee.PwampAdmin.Enums;
-using Frostybee.PwampAdmin.Helpers;
-using Frostybee.PwampAdmin.UI;
 using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Frostybee.PwampAdmin.Controls
 {
@@ -153,32 +154,14 @@ namespace Frostybee.PwampAdmin.Controls
             }
         }
 
-        protected void UpdateStatus(ServerStatus status)
+        protected void UpdateStatus(ServerStatus serverStatus)
         {
-            lblStatus.Text = status.ToString().ToUpper();
+            lblStatus.Text = serverStatus.ToString().ToUpper();
             lblStatus.Refresh();
-            CurrentStatus = status;
+            CurrentStatus = serverStatus;
+            UpdatePortAndPid(serverStatus);
 
-            // Update detailed info.
-            string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
-            string pidInfo;
-            
-            if (status == ServerStatus.Running && ProcessId > 0)
-            {
-                pidInfo = $"PID: {ProcessId}";
-            }
-            else if (status == ServerStatus.Starting || status == ServerStatus.Stopping)
-            {
-                pidInfo = "PID: ...";
-            }
-            else
-            {
-                pidInfo = "PID: Not Running";
-            }
-            
-            lblServerInfo.Text = $"{portInfo} | {pidInfo}";
-
-            switch (status)
+            switch (serverStatus)
             {
                 case ServerStatus.Stopped:
                     ApplyControlStyle(Color.Red, Color.DarkRed, Color.WhiteSmoke);
@@ -199,6 +182,28 @@ namespace Frostybee.PwampAdmin.Controls
 
             // Redraw the control to apply the new styles to the control's left border.
             pnlControls.Invalidate();
+        }
+
+        private void UpdatePortAndPid(ServerStatus serverStatus)
+        {
+            // Update detailed info.
+            string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
+            string pidInfo;
+
+            if (serverStatus == ServerStatus.Running && ProcessId > 0)
+            {
+                pidInfo = $"PID: {ProcessId}";
+            }
+            else if (serverStatus == ServerStatus.Starting || serverStatus == ServerStatus.Stopping)
+            {
+                pidInfo = "PID: ...";
+            }
+            else
+            {
+                pidInfo = "PID: Not Running";
+            }
+
+            lblServerInfo.Text = $"{portInfo} | {pidInfo}";
         }
 
         private void ApplyControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
@@ -223,31 +228,32 @@ namespace Frostybee.PwampAdmin.Controls
         {
             try
             {
-                if (string.IsNullOrEmpty(ConfigFilePath))
+                if (!ServerPathManager.CanOpenConfigFile(ServiceName))
                 {
-                    LogMessage("Config file path not configured.", LogType.Warning);
-                    MessageBox.Show($"Config file path not configured for {ServiceName}.", "Configuration", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    var configPath = ServerPathManager.GetConfigPath(ServiceName);
+                    LogMessage($"Config file not available for {ServiceName}: {configPath ?? "not configured"}", LogType.Warning);
+                    MessageBox.Show($"Configuration file not found for {ServiceName}.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (System.IO.File.Exists(ConfigFilePath))
+                bool success = ServerPathManager.OpenConfigFile(ServiceName);
+                if (success)
                 {
-                    SystemHelper.ExecuteFile("notepad.exe", ConfigFilePath, System.Diagnostics.ProcessWindowStyle.Normal);
-                    LogMessage($"Opened config file: {ConfigFilePath}", LogType.Info);
+                    LogMessage($"Opened config file for {ServiceName}", LogType.Info);
                 }
                 else
                 {
-                    LogMessage($"Config file not found: {ConfigFilePath}", LogType.Warning);
-                    MessageBox.Show($"Config file not found: {ConfigFilePath}", "File Not Found", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    LogMessage($"Failed to open config file for {ServiceName}", LogType.Warning);
+                    MessageBox.Show($"Failed to open configuration file for {ServiceName}.", "Error", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
                 LogExceptionInfo(ex);
                 LogMessage($"Error opening config file: {ex.Message}", LogType.Error);
-                MessageBox.Show($"Error opening config file: {ex.Message}", "Error", 
+                MessageBox.Show($"Error opening configuration file: {ex.Message}", "Error", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

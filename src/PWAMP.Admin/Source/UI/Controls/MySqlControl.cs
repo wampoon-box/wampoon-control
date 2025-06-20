@@ -41,6 +41,9 @@ namespace Frostybee.PwampAdmin.Controls
                 _mysqlManager.ErrorOccurred += LogError;
                 _mysqlManager.StatusChanged += LogMessage;
 
+                // Set the config file path for the "Open Config File" menu item.
+                ConfigFilePath = ServerPathManager.GetConfigPath("MariaDB");
+
                 LogMessage($"Initializing server settings... ", LogType.Info);
             }
             catch (Exception ex)

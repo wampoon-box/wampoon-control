@@ -37,9 +37,21 @@ namespace Frostybee.PwampAdmin.Controls
             try
             {
                 lblServerTitle.Text = DisplayName;
+                
+                // Log diagnostic information for debugging configuration issues
+                ServerPathManager.LogApacheDiagnostics();
+                
                 // We need to update the Apache and phpMyAdmin paths to ensure they are properly set up in case
                 // the application has been moved to a different directory/drive.
                 UpdateApacheConfig();
+
+                // Initialize log paths using ServerPathManager.
+                var logsDirectory = ServerHelper.GetApacheLogsDirectory();
+                if (!string.IsNullOrEmpty(logsDirectory))
+                {
+                    ErrorLogPath = Path.Combine(logsDirectory, "error.log");
+                    AccessLogPath = Path.Combine(logsDirectory, "access.log");
+                }
 
                 _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);                
                 _apacheManager.ErrorOccurred += LogError;
