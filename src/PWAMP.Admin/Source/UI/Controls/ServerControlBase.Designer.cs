@@ -61,13 +61,13 @@
             this.pnlControls.Location = new System.Drawing.Point(0, 0);
             this.pnlControls.Name = "pnlControls";
             this.pnlControls.Padding = new System.Windows.Forms.Padding(15);
-            this.pnlControls.Size = new System.Drawing.Size(443, 169);
+            this.pnlControls.Size = new System.Drawing.Size(278, 146);
             this.pnlControls.TabIndex = 2;
             // 
             // lblServerIcon
             // 
             this.lblServerIcon.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.lblServerIcon.Location = new System.Drawing.Point(15, 15);
+            this.lblServerIcon.Location = new System.Drawing.Point(15, 3);
             this.lblServerIcon.Name = "lblServerIcon";
             this.lblServerIcon.Size = new System.Drawing.Size(30, 30);
             this.lblServerIcon.TabIndex = 0;
@@ -79,7 +79,7 @@
             this.lblServerTitle.AutoSize = true;
             this.lblServerTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblServerTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.lblServerTitle.Location = new System.Drawing.Point(50, 20);
+            this.lblServerTitle.Location = new System.Drawing.Point(51, 7);
             this.lblServerTitle.Name = "lblServerTitle";
             this.lblServerTitle.Size = new System.Drawing.Size(109, 21);
             this.lblServerTitle.TabIndex = 1;
@@ -88,7 +88,7 @@
             // pcbServerStatus
             // 
             this.pcbServerStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.pcbServerStatus.Location = new System.Drawing.Point(254, 13);
+            this.pcbServerStatus.Location = new System.Drawing.Point(195, 10);
             this.pcbServerStatus.Name = "pcbServerStatus";
             this.pcbServerStatus.Size = new System.Drawing.Size(15, 15);
             this.pcbServerStatus.TabIndex = 2;
@@ -99,7 +99,7 @@
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.lblStatus.Location = new System.Drawing.Point(274, 15);
+            this.lblStatus.Location = new System.Drawing.Point(215, 12);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(59, 15);
             this.lblStatus.TabIndex = 3;
@@ -110,7 +110,7 @@
             this.lblServerInfo.AutoSize = true;
             this.lblServerInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblServerInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblServerInfo.Location = new System.Drawing.Point(15, 55);
+            this.lblServerInfo.Location = new System.Drawing.Point(15, 35);
             this.lblServerInfo.Name = "lblServerInfo";
             this.lblServerInfo.Size = new System.Drawing.Size(165, 15);
             this.lblServerInfo.TabIndex = 7;
@@ -124,9 +124,9 @@
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStart.ForeColor = System.Drawing.Color.White;
-            this.btnStart.Location = new System.Drawing.Point(13, 87);
+            this.btnStart.Location = new System.Drawing.Point(15, 57);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(100, 35);
+            this.btnStart.Size = new System.Drawing.Size(121, 35);
             this.btnStart.TabIndex = 4;
             this.btnStart.Text = "▶️ Start";
             this.btnStart.UseVisualStyleBackColor = false;
@@ -140,9 +140,9 @@
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStop.ForeColor = System.Drawing.Color.White;
-            this.btnStop.Location = new System.Drawing.Point(123, 87);
+            this.btnStop.Location = new System.Drawing.Point(142, 57);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(100, 35);
+            this.btnStop.Size = new System.Drawing.Size(121, 35);
             this.btnStop.TabIndex = 5;
             this.btnStop.Text = "⏹️ Stop";
             this.btnStop.UseVisualStyleBackColor = false;
@@ -155,9 +155,9 @@
             this.btnServerAdmin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServerAdmin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnServerAdmin.ForeColor = System.Drawing.Color.White;
-            this.btnServerAdmin.Location = new System.Drawing.Point(233, 87);
+            this.btnServerAdmin.Location = new System.Drawing.Point(15, 102);
             this.btnServerAdmin.Name = "btnServerAdmin";
-            this.btnServerAdmin.Size = new System.Drawing.Size(100, 35);
+            this.btnServerAdmin.Size = new System.Drawing.Size(121, 35);
             this.btnServerAdmin.TabIndex = 6;
             this.btnServerAdmin.Text = "🔧 Admin";
             this.btnServerAdmin.UseVisualStyleBackColor = false;
@@ -170,9 +170,9 @@
             this.btnTools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTools.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnTools.ForeColor = System.Drawing.Color.White;
-            this.btnTools.Location = new System.Drawing.Point(343, 87);
+            this.btnTools.Location = new System.Drawing.Point(142, 102);
             this.btnTools.Name = "btnTools";
-            this.btnTools.Size = new System.Drawing.Size(85, 35);
+            this.btnTools.Size = new System.Drawing.Size(121, 35);
             this.btnTools.TabIndex = 8;
             this.btnTools.Text = "⚙️ Tools ▼";
             this.btnTools.UseVisualStyleBackColor = false;
@@ -190,7 +190,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.pnlControls);
             this.Name = "ServerControlBase";
-            this.Size = new System.Drawing.Size(443, 169);
+            this.Size = new System.Drawing.Size(278, 146);
             this.pnlControls.ResumeLayout(false);
             this.pnlControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbServerStatus)).EndInit();
