@@ -66,7 +66,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // logsPanel
             // 
-            this.logsPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.logsPanel.BackColor = System.Drawing.Color.White;
             this.logsPanel.Controls.Add(this.logsHeaderLabel);
             this.logsPanel.Controls.Add(this.logTabControl);
             this.logsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -217,15 +217,19 @@ namespace Frostybee.PwampAdmin.UI
             // 
             this.groupBox1.Controls.Add(this._mySqlModule);
             this.groupBox1.Controls.Add(this._apacheModule);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.groupBox1.Location = new System.Drawing.Point(12, 105);
             this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
             this.groupBox1.Size = new System.Drawing.Size(826, 238);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "🖥️ Server Management";
             // 
             // _mySqlModule
             // 
-            this._mySqlModule.BackColor = System.Drawing.SystemColors.Control;
+            this._mySqlModule.BackColor = System.Drawing.Color.White;
             this._mySqlModule.Location = new System.Drawing.Point(422, 27);
             this._mySqlModule.Name = "_mySqlModule";
             this._mySqlModule.Size = new System.Drawing.Size(392, 169);
@@ -233,7 +237,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             // _apacheModule
             // 
-            this._apacheModule.BackColor = System.Drawing.SystemColors.Control;
+            this._apacheModule.BackColor = System.Drawing.Color.White;
             this._apacheModule.Location = new System.Drawing.Point(6, 27);
             this._apacheModule.Name = "_apacheModule";
             this._apacheModule.Size = new System.Drawing.Size(398, 169);
@@ -246,18 +250,22 @@ namespace Frostybee.PwampAdmin.UI
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Controls.Add(this.btnAbout);
-            this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.grpHelpers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.grpHelpers.Location = new System.Drawing.Point(12, 362);
             this.grpHelpers.Name = "grpHelpers";
+            this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
             this.grpHelpers.Size = new System.Drawing.Size(814, 62);
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
-            this.grpHelpers.Text = "Helpers";
+            this.grpHelpers.Text = "⚡ Quick Actions";
             // 
             // btnQuit
             // 
-            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.btnQuit.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnQuit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnQuit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuit.ForeColor = System.Drawing.Color.White;
             this.btnQuit.Location = new System.Drawing.Point(713, 19);
@@ -271,7 +279,9 @@ namespace Frostybee.PwampAdmin.UI
             // btnStartAllServers
             // 
             this.btnStartAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnStartAllServers.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnStartAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnStartAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
             this.btnStartAllServers.Location = new System.Drawing.Point(120, 19);
@@ -285,7 +295,9 @@ namespace Frostybee.PwampAdmin.UI
             // btnStopAllServers
             // 
             this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
-            this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStopAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
             this.btnStopAllServers.Location = new System.Drawing.Point(220, 19);
@@ -299,7 +311,9 @@ namespace Frostybee.PwampAdmin.UI
             // btnOpenExplorer
             // 
             this.btnOpenExplorer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
-            this.btnOpenExplorer.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnOpenExplorer.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpenExplorer.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
+            this.btnOpenExplorer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenExplorer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnOpenExplorer.ForeColor = System.Drawing.Color.White;
             this.btnOpenExplorer.Location = new System.Drawing.Point(6, 19);
@@ -313,7 +327,9 @@ namespace Frostybee.PwampAdmin.UI
             // btnAbout
             // 
             this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.btnAbout.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnAbout.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAbout.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
             this.btnAbout.Location = new System.Drawing.Point(334, 19);
@@ -328,7 +344,7 @@ namespace Frostybee.PwampAdmin.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(843, 833);
             this.Controls.Add(this.grpHelpers);
             this.Controls.Add(this.groupBox1);
