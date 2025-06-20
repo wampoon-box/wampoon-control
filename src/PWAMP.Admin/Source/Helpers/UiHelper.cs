@@ -93,5 +93,60 @@ namespace Frostybee.PwampAdmin.Helpers
                 }
             }
         }
+
+        internal static void ApplyLeftBorderToButton(Button button, Color borderColor)
+        {
+            // Keep the button's existing flat appearance but clear its border
+            button.FlatAppearance.BorderSize = 0;
+            
+            // Store the border color in the button's Tag property
+            button.Tag = borderColor;
+            
+            // Remove any existing paint handler and add the new one
+            button.Paint -= Button_Paint;
+            button.Paint += Button_Paint;
+            
+            // Force the button to repaint
+            button.Invalidate();
+        }
+
+        private static void Button_Paint(object sender, PaintEventArgs e)
+        {
+            Button button = sender as Button;
+            if (button == null || button.Tag == null) return;
+
+            Color borderColor = (Color)button.Tag;
+            
+            using (Brush borderBrush = new SolidBrush(borderColor))
+            {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                using (System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath())
+                {
+                    int borderWidth = 4;
+                    int radius = 6;
+                    int height = button.Height;
+
+                    // Create the rounded left border path - draw over the existing button
+                    if (height > radius * 2)
+                    {
+                        path.AddArc(0, 0, radius * 2, radius * 2, 180, 90);
+                        path.AddLine(radius, 0, borderWidth, 0);
+                        path.AddLine(borderWidth, 0, borderWidth, height - radius);
+                        path.AddLine(borderWidth, height - radius, radius, height - radius);
+                        path.AddArc(0, height - radius * 2, radius * 2, radius * 2, 90, 90);
+                        path.CloseFigure();
+
+                        e.Graphics.FillPath(borderBrush, path);
+                    }
+                    else
+                    {
+                        // Fallback for very small buttons - just draw a simple left border
+                        Rectangle borderRect = new Rectangle(0, 0, borderWidth, height);
+                        e.Graphics.FillRectangle(borderBrush, borderRect);
+                    }
+                }
+            }
+        }
     }
 }

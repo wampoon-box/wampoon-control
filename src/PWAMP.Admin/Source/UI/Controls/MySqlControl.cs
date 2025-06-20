@@ -32,6 +32,7 @@ namespace Frostybee.PwampAdmin.Controls
         {
             try
             {
+                LogMessage($"Initializing server settings... ", LogType.Info);
                 lblServerTitle.Text = DisplayName;
                 // Default admin URL, might need to adjust it to make it use the actual port number.
                 ServerAdminUri = $"http://localhost/phpmyadmin"; 
@@ -43,8 +44,7 @@ namespace Frostybee.PwampAdmin.Controls
 
                 // Set the config file path for the "Open Config File" menu item.
                 ConfigFilePath = ServerPathManager.GetConfigPath("MariaDB");
-
-                LogMessage($"Initializing server settings... ", LogType.Info);
+                UpdateStatus(CurrentStatus);
             }
             catch (Exception ex)
             {

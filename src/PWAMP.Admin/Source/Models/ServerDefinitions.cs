@@ -15,7 +15,7 @@ namespace Frostybee.Pwamp.Models
             name: "Apache",
             directory: "apache",
             executableName: "httpd.exe",
-            configFile: "conf/httpd.conf",
+            configFile: "conf\\httpd.conf",
             specialDirectories: new Dictionary<string, string>
             {
             { "DocumentRoot", "..\\htdocs" },
