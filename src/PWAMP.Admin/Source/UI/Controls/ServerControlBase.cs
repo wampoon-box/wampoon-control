@@ -16,6 +16,9 @@ namespace Frostybee.PwampAdmin.Controls
         protected string ServiceName { get; set; }
         protected string DisplayName { get; set; }
         protected string ServerAdminUri { get; set; }
+        protected string ConfigFilePath { get; set; }
+        protected string ErrorLogPath { get; set; }
+        protected string AccessLogPath { get; set; }
         protected int PortNumber { get; set; }
         protected int ProcessId { get; set; }
         internal ServerManagerBase ServerManager { get; set; }
@@ -24,6 +27,7 @@ namespace Frostybee.PwampAdmin.Controls
         {
             InitializeComponent();
             SetupEventHandlers();
+            SetupToolsMenu();
         }
 
         protected void SetupEventHandlers()
@@ -31,6 +35,31 @@ namespace Frostybee.PwampAdmin.Controls
             btnStart.Click += BtnStart_Click;
             btnStop.Click += BtnStop_Click;
             btnServerAdmin.Click += BtnOpenAdmin_Click;
+            btnTools.Click += BtnTools_Click;
+        }
+
+        protected void SetupToolsMenu()
+        {
+            contextMenuTools.Items.Clear();
+            
+            var configItem = contextMenuTools.Items.Add("📄 Open Config File");
+            configItem.Click += (s, e) => OpenConfigFile();
+            
+            var errorLogItem = contextMenuTools.Items.Add("📋 View Error Logs");
+            errorLogItem.Click += (s, e) => OpenErrorLogs();
+            
+            var accessLogItem = contextMenuTools.Items.Add("📊 View Access Logs");
+            accessLogItem.Click += (s, e) => OpenAccessLogs();
+            
+            contextMenuTools.Items.Add("-"); // Separator
+            
+            var refreshItem = contextMenuTools.Items.Add("🔄 Refresh Status");
+            refreshItem.Click += (s, e) => RefreshServerStatus();
+        }
+
+        protected virtual void BtnTools_Click(object sender, EventArgs e)
+        {
+            contextMenuTools.Show(btnTools, 0, btnTools.Height);
         }
 
         protected async virtual void BtnOpenAdmin_Click(object sender, EventArgs e)
@@ -120,8 +149,21 @@ namespace Frostybee.PwampAdmin.Controls
 
         protected void UpdateStatus(ServerStatus status)
         {
-            lblStatus.Text = $"{status}";
+            lblStatus.Text = status.ToString().ToUpper();
             lblStatus.Refresh();
+            
+            // Update detailed info
+            string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
+            string pidInfo = ProcessId > 0 ? $"PID: {ProcessId}" : "";
+            
+            if (status == ServerStatus.Running && ProcessId > 0)
+            {
+                lblServerInfo.Text = $"Status: Running on {portInfo} | {pidInfo}";
+            }
+            else
+            {
+                lblServerInfo.Text = $"Status: {status} | {portInfo}";
+            }
 
             switch (status)
             {
@@ -159,6 +201,129 @@ namespace Frostybee.PwampAdmin.Controls
         protected virtual void LogMessage(string log, LogType logType = LogType.Default)
         {
             LogMessage(ServiceName, log, logType);
+        }
+
+        protected virtual void OpenConfigFile()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ConfigFilePath))
+                {
+                    LogMessage("Config file path not configured.", LogType.Warning);
+                    MessageBox.Show($"Config file path not configured for {ServiceName}.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (System.IO.File.Exists(ConfigFilePath))
+                {
+                    SystemHelper.ExecuteFile("notepad.exe", ConfigFilePath, System.Diagnostics.ProcessWindowStyle.Normal);
+                    LogMessage($"Opened config file: {ConfigFilePath}", LogType.Info);
+                }
+                else
+                {
+                    LogMessage($"Config file not found: {ConfigFilePath}", LogType.Warning);
+                    MessageBox.Show($"Config file not found: {ConfigFilePath}", "File Not Found", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error opening config file: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening config file: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected virtual void OpenErrorLogs()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ErrorLogPath))
+                {
+                    LogMessage("Error log path not configured.", LogType.Warning);
+                    MessageBox.Show($"Error log path not configured for {ServiceName}.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (System.IO.File.Exists(ErrorLogPath))
+                {
+                    SystemHelper.ExecuteFile("notepad.exe", ErrorLogPath, System.Diagnostics.ProcessWindowStyle.Normal);
+                    LogMessage($"Opened error log: {ErrorLogPath}", LogType.Info);
+                }
+                else
+                {
+                    LogMessage($"Error log file not found: {ErrorLogPath}", LogType.Warning);
+                    MessageBox.Show($"Error log file not found: {ErrorLogPath}", "File Not Found", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error opening error log: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening error log: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected virtual void OpenAccessLogs()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(AccessLogPath))
+                {
+                    LogMessage("Access log path not configured.", LogType.Warning);
+                    MessageBox.Show($"Access log path not configured for {ServiceName}.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (System.IO.File.Exists(AccessLogPath))
+                {
+                    SystemHelper.ExecuteFile("notepad.exe", AccessLogPath, System.Diagnostics.ProcessWindowStyle.Normal);
+                    LogMessage($"Opened access log: {AccessLogPath}", LogType.Info);
+                }
+                else
+                {
+                    LogMessage($"Access log file not found: {AccessLogPath}", LogType.Warning);
+                    MessageBox.Show($"Access log file not found: {AccessLogPath}", "File Not Found", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error opening access log: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening access log: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected virtual void RefreshServerStatus()
+        {
+            try
+            {
+                if (ServerManager != null)
+                {
+                    bool isRunning = ServerManager.IsRunning;
+                    ProcessId = (int)ServerManager.ProcessId;
+                    
+                    UpdateStatus(isRunning ? ServerStatus.Running : ServerStatus.Stopped);
+                    
+                    btnStart.Enabled = !isRunning;
+                    btnStop.Enabled = isRunning;
+                    
+                    LogMessage("Server status refreshed.", LogType.Info);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error refreshing server status: {ex.Message}", LogType.Error);
+            }
         }
     }
 }

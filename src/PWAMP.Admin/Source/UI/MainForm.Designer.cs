@@ -112,7 +112,7 @@ namespace Frostybee.PwampAdmin.UI
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
-            // _logTextBox
+            // _rtxtActionsLog
             // 
             this._rtxtActionsLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -121,7 +121,7 @@ namespace Frostybee.PwampAdmin.UI
             this._rtxtActionsLog.Font = new System.Drawing.Font("Consolas", 10F);
             this._rtxtActionsLog.ForeColor = System.Drawing.Color.Black;
             this._rtxtActionsLog.Location = new System.Drawing.Point(13, 0);
-            this._rtxtActionsLog.Name = "_logTextBox";
+            this._rtxtActionsLog.Name = "_rtxtActionsLog";
             this._rtxtActionsLog.ReadOnly = true;
             this._rtxtActionsLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this._rtxtActionsLog.Size = new System.Drawing.Size(777, 238);
@@ -140,14 +140,14 @@ namespace Frostybee.PwampAdmin.UI
             this.errorTab.Text = "MySQL Logs";
             this.errorTab.UseVisualStyleBackColor = true;
             // 
-            // _errorLogTextBox
+            // _rtxtErrorLog
             // 
             this._rtxtErrorLog.BackColor = System.Drawing.Color.White;
             this._rtxtErrorLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this._rtxtErrorLog.Font = new System.Drawing.Font("Consolas", 10F);
             this._rtxtErrorLog.ForeColor = System.Drawing.Color.Red;
             this._rtxtErrorLog.Location = new System.Drawing.Point(3, 3);
-            this._rtxtErrorLog.Name = "_errorLogTextBox";
+            this._rtxtErrorLog.Name = "_rtxtErrorLog";
             this._rtxtErrorLog.ReadOnly = true;
             this._rtxtErrorLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this._rtxtErrorLog.Size = new System.Drawing.Size(777, 238);
@@ -222,7 +222,7 @@ namespace Frostybee.PwampAdmin.UI
             this.groupBox1.Location = new System.Drawing.Point(12, 105);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
-            this.groupBox1.Size = new System.Drawing.Size(826, 238);
+            this.groupBox1.Size = new System.Drawing.Size(1059, 238);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Server Management";
@@ -230,9 +230,9 @@ namespace Frostybee.PwampAdmin.UI
             // _mySqlModule
             // 
             this._mySqlModule.BackColor = System.Drawing.Color.White;
-            this._mySqlModule.Location = new System.Drawing.Point(422, 27);
+            this._mySqlModule.Location = new System.Drawing.Point(538, 27);
             this._mySqlModule.Name = "_mySqlModule";
-            this._mySqlModule.Size = new System.Drawing.Size(392, 169);
+            this._mySqlModule.Size = new System.Drawing.Size(509, 169);
             this._mySqlModule.TabIndex = 7;
             // 
             // _apacheModule
@@ -240,7 +240,7 @@ namespace Frostybee.PwampAdmin.UI
             this._apacheModule.BackColor = System.Drawing.Color.White;
             this._apacheModule.Location = new System.Drawing.Point(6, 27);
             this._apacheModule.Name = "_apacheModule";
-            this._apacheModule.Size = new System.Drawing.Size(398, 169);
+            this._apacheModule.Size = new System.Drawing.Size(509, 169);
             this._apacheModule.TabIndex = 4;
             // 
             // grpHelpers
@@ -345,7 +345,7 @@ namespace Frostybee.PwampAdmin.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(843, 833);
+            this.ClientSize = new System.Drawing.Size(1263, 833);
             this.Controls.Add(this.grpHelpers);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel2);
