@@ -35,6 +35,14 @@ namespace Frostybee.Pwamp.Models
             }
         );
 
+
+        public static readonly ServerDefinitionInfo php = new ServerDefinitionInfo(
+            name: "PHP",
+            directory: "php",
+            executableName: "php.exe",
+            configFile: "php.ini"
+        );
+
         public static readonly ServerDefinitionInfo phpMyAdmin = new ServerDefinitionInfo(
             name: "phpMyAdmin",
             directory: "phpmyadmin",
