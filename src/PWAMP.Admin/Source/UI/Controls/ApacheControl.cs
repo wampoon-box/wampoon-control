@@ -45,6 +45,14 @@ namespace Frostybee.PwampAdmin.Controls
                 // the application has been moved to a different directory/drive.
                 UpdateApacheConfig();
 
+                // Initialize log paths using ServerPathManager.
+                var logsDirectory = ServerHelper.GetApacheLogsDirectory();
+                if (!string.IsNullOrEmpty(logsDirectory))
+                {
+                    ErrorLogPath = Path.Combine(logsDirectory, "error.log");
+                    AccessLogPath = Path.Combine(logsDirectory, "access.log");
+                }
+
                 _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);                
                 _apacheManager.ErrorOccurred += LogError;
                 _apacheManager.StatusChanged += LogMessage;

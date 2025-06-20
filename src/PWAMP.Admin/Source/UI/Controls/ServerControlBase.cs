@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Frostybee.PwampAdmin.Controllers;
+using Frostybee.PwampAdmin.Enums;
+using Frostybee.PwampAdmin.Helpers;
+using Frostybee.PwampAdmin.UI;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Frostybee.PwampAdmin.Controllers;
-using Frostybee.PwampAdmin.Enums;
-using Frostybee.PwampAdmin.Helpers;
-using Frostybee.PwampAdmin.UI;
 using static Frostybee.PwampAdmin.Helpers.ErrorLogHelper;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Frostybee.PwampAdmin.Controls
 {
@@ -153,32 +154,14 @@ namespace Frostybee.PwampAdmin.Controls
             }
         }
 
-        protected void UpdateStatus(ServerStatus status)
+        protected void UpdateStatus(ServerStatus serverStatus)
         {
-            lblStatus.Text = status.ToString().ToUpper();
+            lblStatus.Text = serverStatus.ToString().ToUpper();
             lblStatus.Refresh();
-            CurrentStatus = status;
+            CurrentStatus = serverStatus;
+            UpdatePortAndPid(serverStatus);
 
-            // Update detailed info.
-            string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
-            string pidInfo;
-            
-            if (status == ServerStatus.Running && ProcessId > 0)
-            {
-                pidInfo = $"PID: {ProcessId}";
-            }
-            else if (status == ServerStatus.Starting || status == ServerStatus.Stopping)
-            {
-                pidInfo = "PID: ...";
-            }
-            else
-            {
-                pidInfo = "PID: Not Running";
-            }
-            
-            lblServerInfo.Text = $"{portInfo} | {pidInfo}";
-
-            switch (status)
+            switch (serverStatus)
             {
                 case ServerStatus.Stopped:
                     ApplyControlStyle(Color.Red, Color.DarkRed, Color.WhiteSmoke);
@@ -199,6 +182,28 @@ namespace Frostybee.PwampAdmin.Controls
 
             // Redraw the control to apply the new styles to the control's left border.
             pnlControls.Invalidate();
+        }
+
+        private void UpdatePortAndPid(ServerStatus serverStatus)
+        {
+            // Update detailed info.
+            string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
+            string pidInfo;
+
+            if (serverStatus == ServerStatus.Running && ProcessId > 0)
+            {
+                pidInfo = $"PID: {ProcessId}";
+            }
+            else if (serverStatus == ServerStatus.Starting || serverStatus == ServerStatus.Stopping)
+            {
+                pidInfo = "PID: ...";
+            }
+            else
+            {
+                pidInfo = "PID: Not Running";
+            }
+
+            lblServerInfo.Text = $"{portInfo} | {pidInfo}";
         }
 
         private void ApplyControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
