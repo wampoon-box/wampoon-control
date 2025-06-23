@@ -25,7 +25,7 @@ namespace Frostybee.Pwamp.Controls
         
         public ApacheControl()
         {
-            ServiceName = "Apache";
+            ServiceName = PackageType.Apache.ToServerName();
             DisplayName = "Apache HTTP Server";
             PortNumber = 80; // Default HTTP port, change if needed.
             lblServerIcon.Text = "🌐";            
@@ -187,7 +187,7 @@ namespace Frostybee.Pwamp.Controls
         /// </summary>
         public void UpdateApacheConfig()
         {
-            _apacheDirectory = ServerPathManager.GetServerBaseDirectory("Apache");
+            _apacheDirectory = ServerPathManager.GetServerBaseDirectory(PackageType.Apache.ToServerName());
             if (string.IsNullOrEmpty(_apacheDirectory))
             {
                 throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
@@ -252,7 +252,7 @@ namespace Frostybee.Pwamp.Controls
             try
             {
                 // Use ServerPathManager to check if Apache is available.
-                if (!ServerPathManager.IsServerAvailable("Apache"))
+                if (!ServerPathManager.IsServerAvailable(PackageType.Apache.ToServerName()))
                 {
                     LogMessage("Apache is not available according to ServerPathManager", LogType.Error);
                     return false;
@@ -266,7 +266,7 @@ namespace Frostybee.Pwamp.Controls
                 }
 
                 // Use ServerPathManager to get and validate Apache executable.
-                var apacheExecutablePath = ServerPathManager.GetExecutablePath("Apache");
+                var apacheExecutablePath = ServerPathManager.GetExecutablePath(PackageType.Apache.ToServerName());
                 if (string.IsNullOrEmpty(apacheExecutablePath) || !File.Exists(apacheExecutablePath))
                 {
                     LogMessage(string.Format("Apache executable not found: {0}", apacheExecutablePath), LogType.Error);
@@ -274,7 +274,7 @@ namespace Frostybee.Pwamp.Controls
                 }
 
                 // Use ServerPathManager to get and validate Apache configuration.
-                var apacheConfigPath = ServerPathManager.GetConfigPath("Apache");
+                var apacheConfigPath = ServerPathManager.GetConfigPath(PackageType.Apache.ToServerName());
                 if (string.IsNullOrEmpty(apacheConfigPath) || !File.Exists(apacheConfigPath))
                 {
                     LogMessage(string.Format("Apache configuration file not found: {0}", apacheConfigPath), LogType.Error);

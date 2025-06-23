@@ -123,8 +123,8 @@ namespace Frostybee.Pwamp.Helpers
 
                 using (System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath())
                 {
-                    int borderWidth = 4;
-                    int radius = 6;
+                    int borderWidth = 12;
+                    int radius = 12;
                     int height = button.Height;
 
                     // Create the rounded left border path - draw over the existing button

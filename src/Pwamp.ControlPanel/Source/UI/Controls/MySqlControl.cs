@@ -20,7 +20,7 @@ namespace Frostybee.Pwamp.Controls
 
         public MySqlControl()
         {
-            ServiceName = "MariaDB";
+            ServiceName = PackageType.MariaDB.ToServerName();
             DisplayName = "MariaDB Server";
             // Default MySQL port, change if needed.
             PortNumber = 3306; 
@@ -43,7 +43,7 @@ namespace Frostybee.Pwamp.Controls
                 _mysqlManager.StatusChanged += LogMessage;
 
                 // Set the config file path for the "Open Config File" menu item.
-                ConfigFilePath = ServerPathManager.GetConfigPath("MariaDB");
+                ConfigFilePath = ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName());
                 UpdateStatus(CurrentStatus);
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace Frostybee.Pwamp.Controls
         private void LogError(object sender, string message)
         {
             LogMessage(message, LogType.Error);
-            MainForm.Instance?.AddErrorLog("MySQL", message);
+            MainForm.Instance?.AddErrorLog(PackageType.MySQL.ToServerName(), message);
         }
          
         internal bool IsRunning()

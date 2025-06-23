@@ -328,7 +328,7 @@ namespace Frostybee.Pwamp.Controls
 
                         e.Graphics.FillPath(borderBrush, path);
                     }
-                }
+                }                
             }
             catch (Exception ex)
             {
@@ -338,7 +338,7 @@ namespace Frostybee.Pwamp.Controls
 
         private Color GetLeftBorderColor()
         {
-            if (ServerManager != null && ServerManager.IsRunning)
+            if (CurrentStatus == ServerStatus.Running)
             {
                 return Color.Green;
             }
@@ -349,12 +349,12 @@ namespace Frostybee.Pwamp.Controls
             }
             else
             {
-                if (!string.IsNullOrEmpty(ServiceName) && ServiceName.Contains("Apache"))
+                if (!string.IsNullOrEmpty(ServiceName) && ServiceName.Contains(PackageType.Apache.ToServerName()))
                 {
                     return Color.Blue;
 
                 }
-                if (!string.IsNullOrEmpty(ServiceName) && ServiceName.Contains("MariaDB"))
+                if (!string.IsNullOrEmpty(ServiceName) && ServiceName.Contains(PackageType.MariaDB.ToServerName()))
                 {
                     return Color.OrangeRed;
 

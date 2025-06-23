@@ -87,7 +87,7 @@
             // pcbServerStatus
             // 
             this.pcbServerStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.pcbServerStatus.Location = new System.Drawing.Point(198, 10);
+            this.pcbServerStatus.Location = new System.Drawing.Point(188, 11);
             this.pcbServerStatus.Name = "pcbServerStatus";
             this.pcbServerStatus.Size = new System.Drawing.Size(15, 15);
             this.pcbServerStatus.TabIndex = 2;
@@ -97,9 +97,9 @@
             // 
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.lblStatus.Location = new System.Drawing.Point(218, 8);
+            this.lblStatus.Location = new System.Drawing.Point(209, 9);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(59, 20);
+            this.lblStatus.Size = new System.Drawing.Size(65, 20);
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "STOPPED";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

@@ -32,7 +32,7 @@ namespace Frostybee.Pwamp.Controllers
         protected abstract bool CanMonitorOutput { get; set; }
         public bool IsRunning => _serverProcess != null && !_serverProcess.HasExited;
         
-        protected bool IsMySqlServer => ServerName.Contains("MySQL") || ServerName.Contains("MariaDB");
+        protected bool IsMySqlServer => ServerName.Contains(PackageType.MySQL.ToServerName()) || ServerName.Contains(PackageType.MariaDB.ToServerName());
 
         internal ServerManagerBase(string executablePath, string configPath = null)
         {

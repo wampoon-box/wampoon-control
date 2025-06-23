@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Frostybee.Pwamp.Helpers.ErrorLogHelper;
 using Frostybee.Pwamp.Helpers;
+using Frostybee.Pwamp.Enums;
 
 namespace Frostybee.Pwamp.Controllers
 {
     internal class ApacheServerManager : ServerManagerBase
     {
-        public override string ServerName { get; set; } = "Apache";
+        public override string ServerName { get; set; } = PackageType.Apache.ToString();
         protected override bool CanMonitorOutput { get; set; } = false;
         
 

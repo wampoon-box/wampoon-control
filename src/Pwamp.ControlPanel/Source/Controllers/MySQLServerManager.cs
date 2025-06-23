@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Frostybee.Pwamp.Helpers;
+using Frostybee.Pwamp.Enums;
 
 namespace Frostybee.Pwamp.Controllers
 {
     internal class MySQLServerManager : ServerManagerBase
     {
-        public override string ServerName { get; set; } = "MariaDB";
+        public override string ServerName { get; set; } = PackageType.MariaDB.ToServerName();
         protected override bool CanMonitorOutput { get; set; } = true;
 
         public MySQLServerManager(string executablePath, string configPath = null) : base(executablePath, configPath)

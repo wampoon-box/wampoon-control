@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Frostybee.Pwamp.Models;
 using Frostybee.Pwamp.Helpers;
+using Frostybee.Pwamp.Enums;
 
 namespace Frostybee.Pwamp.Controllers
 {
@@ -331,7 +332,7 @@ namespace Frostybee.Pwamp.Controllers
         {
             try
             {
-                var apacheDefinition = ServerDefinitions.GetByName("Apache");
+                var apacheDefinition = ServerDefinitions.GetByName(PackageType.Apache.ToServerName());
                 var diagnosticLines = new List<string>
                 {
                     "=== APACHE CONFIGURATION DIAGNOSTICS ===",
@@ -362,13 +363,13 @@ namespace Frostybee.Pwamp.Controllers
                         $"  Config File Exists: {File.Exists(configPath)}",
                         "",
                         "ServerPathManager Results:",
-                        $"  GetServerPath('Apache') != null: {GetServerPath("Apache") != null}",
-                        $"  GetConfigPath('Apache'): {GetConfigPath("Apache") ?? "NULL"}",
-                        $"  CanOpenConfigFile('Apache'): {CanOpenConfigFile("Apache")}",
+                        $"  GetServerPath('Apache') != null: {GetServerPath(PackageType.Apache.ToServerName()) != null}",
+                        $"  GetConfigPath('Apache'): {GetConfigPath(PackageType.Apache.ToServerName()) ?? "NULL"}",
+                        $"  CanOpenConfigFile('Apache'): {CanOpenConfigFile(PackageType.Apache.ToServerName())}",
                         ""
                     });
 
-                    var pathInfo = GetServerPath("Apache");
+                    var pathInfo = GetServerPath(PackageType.Apache.ToServerName());
                     if (pathInfo != null)
                     {
                         diagnosticLines.AddRange(new[]
