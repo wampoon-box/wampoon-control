@@ -21,8 +21,8 @@ namespace Frostybee.Pwamp.Controllers
         protected string _executablePath;
         protected string _configPath;
         private bool _disposed = false;
-        public event EventHandler<string> StatusChanged;
-        public event EventHandler<string> ErrorOccurred;
+        public event EventHandler<ServerLogEventArgs> StatusChanged;
+        public event EventHandler<ServerLogEventArgs> ErrorOccurred;
         public int? ProcessId => _serverProcess?.Id;
         public abstract string ServerName { get; set; }
 
@@ -50,7 +50,7 @@ namespace Frostybee.Pwamp.Controllers
         {
             if (!string.IsNullOrWhiteSpace(message))
             {
-                StatusChanged?.Invoke(this, message);
+                StatusChanged?.Invoke(this, new ServerLogEventArgs(message, LogType.Info));
             }
 
         }
@@ -62,7 +62,7 @@ namespace Frostybee.Pwamp.Controllers
             // to log errors on the GUI differently in the future.
             if (!string.IsNullOrWhiteSpace(message))
             {
-                ErrorOccurred?.Invoke(this, message);
+                ErrorOccurred?.Invoke(this, new ServerLogEventArgs(message, LogType.Error));
             }
         }
 

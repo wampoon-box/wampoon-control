@@ -23,7 +23,7 @@ namespace Frostybee.Pwamp.UI
 
         public MainForm()
         {
-            Text = "PWAMP Control Panel";
+            Text = AppConstants.APP_NAME;
             InitializeComponent();
 
             Instance = this;
@@ -144,11 +144,11 @@ namespace Frostybee.Pwamp.UI
 
             if (_rtxtActionsLog.InvokeRequired)
             {
-                _rtxtActionsLog.Invoke(new Action(() => AddMySqlLogInternal(_rtxtActionsLog, logEntry, logType)));
+                _rtxtActionsLog.Invoke(new Action(() => AddLogInternal(_rtxtActionsLog, logEntry, logType)));
             }
             else
             {
-                AddMySqlLogInternal(_rtxtActionsLog, logEntry, logType);
+                AddLogInternal(_rtxtActionsLog, logEntry, logType);
             }
         }
 
@@ -182,11 +182,11 @@ namespace Frostybee.Pwamp.UI
 
             if (_rtxtErrorLog.InvokeRequired)
             {
-                _rtxtErrorLog.Invoke(new Action(() => AddMySqlLogInternal(_rtxtErrorLog, logEntry, logType)));
+                _rtxtErrorLog.Invoke(new Action(() => AddLogInternal(_rtxtErrorLog, logEntry, logType)));
             }
             else
             {
-                AddMySqlLogInternal(_rtxtErrorLog, logEntry, logType);
+                AddLogInternal(_rtxtErrorLog, logEntry, logType);
             }
         }
 
@@ -211,7 +211,7 @@ namespace Frostybee.Pwamp.UI
             }
         }
 
-        private void AddMySqlLogInternal(RichTextBox txtLogControl, string logEntry, LogType logType)
+        private void AddLogInternal(RichTextBox txtLogControl, string logEntry, LogType logType)
         {
             if (txtLogControl == null) return;
 

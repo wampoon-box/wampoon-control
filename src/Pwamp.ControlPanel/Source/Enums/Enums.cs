@@ -43,4 +43,16 @@ namespace Frostybee.Pwamp.Enums
             return packageType.ToString();
         }
     }
+
+    public class ServerLogEventArgs : EventArgs
+    {
+        public string Message { get; }
+        public LogType LogType { get; }
+
+        public ServerLogEventArgs(string message, LogType logType)
+        {
+            Message = message;
+            LogType = logType;
+        }
+    }
 }

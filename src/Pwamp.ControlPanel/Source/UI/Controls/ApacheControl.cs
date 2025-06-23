@@ -116,15 +116,15 @@ namespace Frostybee.Pwamp.Controls
             return true;
         }
 
-        private void LogMessage(object sender, string message)
+        private void LogMessage(object sender, ServerLogEventArgs e)
         {
             //AddLog(string.Format(LanguageManager._("{0} Service is disabled."), ModuleName), LogType.Debug);
-            LogMessage(message, LogType.Info);
+            LogMessage(e.Message, e.LogType);
         }
 
-        private void LogError(object sender, string message)
+        private void LogError(object sender, ServerLogEventArgs e)
         {
-            LogMessage(message, LogType.Error);
+            LogMessage(e.Message, e.LogType);
         }
 
         internal bool IsRunning()
