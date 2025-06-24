@@ -47,7 +47,7 @@ namespace Frostybee.Pwamp.Controls
                 UpdateApacheConfig();
 
                 // Initialize log paths using ServerPathManager.
-                var logsDirectory = ServerHelper.GetApacheLogsDirectory();
+                var logsDirectory = ServerPathManager.GetSpecialPath(PackageType.Apache.ToServerName(), "Logs");
                 if (!string.IsNullOrEmpty(logsDirectory))
                 {
                     ErrorLogPath = Path.Combine(logsDirectory, "error.log");

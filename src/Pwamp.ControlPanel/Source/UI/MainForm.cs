@@ -20,6 +20,9 @@ namespace Frostybee.Pwamp.UI
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
         private NotifyIcon _notifyIcon;
+        
+        private const int MAX_LOG_LINES = 1000;
+        private const int TRIMMED_LOG_LINES = 500;
 
         public MainForm()
         {
@@ -135,21 +138,27 @@ namespace Frostybee.Pwamp.UI
             }
         }
 
-        public void AddLog(string module, string log, LogType logType = LogType.Default)
+        private void AddLogToControl(RichTextBox control, string module, string message, LogType logType, bool includeTimestamp = true)
         {
-            if (_rtxtActionsLog == null) return;
-
-            var timestamp = DateTime.Now.ToString("HH:mm:ss");
-            var logEntry = $"[{timestamp}] [{module}] {log}";
-
-            if (_rtxtActionsLog.InvokeRequired)
+            if (control == null) return;
+            
+            var logEntry = includeTimestamp 
+                ? $"[{DateTime.Now:HH:mm:ss}] [{module}] {message}"
+                : $"[{module}] {message}";
+            
+            if (control.InvokeRequired)
             {
-                _rtxtActionsLog.Invoke(new Action(() => AddLogInternal(_rtxtActionsLog, logEntry, logType)));
+                control.Invoke(new Action(() => AddLogInternal(control, logEntry, logType)));
             }
             else
             {
-                AddLogInternal(_rtxtActionsLog, logEntry, logType);
+                AddLogInternal(control, logEntry, logType);
             }
+        }
+
+        public void AddLog(string module, string log, LogType logType = LogType.Default)
+        {
+            AddLogToControl(_rtxtActionsLog, module, log, logType);
         }
 
         public void AddLog(string log, LogType logType = LogType.Default)
@@ -159,57 +168,14 @@ namespace Frostybee.Pwamp.UI
 
         public void AddErrorLog(string module, string log)
         {
-            if (_rtxtErrorLog == null) return;
-
-            var timestamp = DateTime.Now.ToString("HH:mm:ss");
-            var logEntry = $"[{timestamp}] [{module}] {log}";
-
-            if (_rtxtErrorLog.InvokeRequired)
-            {
-                _rtxtErrorLog.Invoke(new Action(() => AddErrorLogInternal(logEntry)));
-            }
-            else
-            {
-                AddErrorLogInternal(logEntry);
-            }
+            AddLogToControl(_rtxtErrorLog, module, log, LogType.Error);
         }
 
         public void AddMySqlLog(string log, LogType logType = LogType.Default)
         {
-            if (_rtxtErrorLog == null) return;
-
-            var logEntry = $"[MySQL] {log}";
-
-            if (_rtxtErrorLog.InvokeRequired)
-            {
-                _rtxtErrorLog.Invoke(new Action(() => AddLogInternal(_rtxtErrorLog, logEntry, logType)));
-            }
-            else
-            {
-                AddLogInternal(_rtxtErrorLog, logEntry, logType);
-            }
+            AddLogToControl(_rtxtErrorLog, "MySQL", log, logType, false);
         }
 
-        private void AddErrorLogInternal(string logEntry)
-        {
-            if (_rtxtErrorLog == null) return;
-
-            _rtxtErrorLog.SelectionStart = _rtxtErrorLog.TextLength;
-            _rtxtErrorLog.SelectionLength = 0;
-            _rtxtErrorLog.SelectionColor = Color.Red;
-            _rtxtErrorLog.AppendText(logEntry + Environment.NewLine);
-            _rtxtErrorLog.SelectionColor = _rtxtErrorLog.ForeColor;
-            _rtxtErrorLog.ScrollToCaret();
-
-            // Limit log size
-            if (_rtxtErrorLog.Lines.Length > 1000)
-            {
-                var lines = _rtxtErrorLog.Lines;
-                var newLines = new string[500];
-                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
-                _rtxtErrorLog.Lines = newLines;
-            }
-        }
 
         private void AddLogInternal(RichTextBox txtLogControl, string logEntry, LogType logType)
         {
@@ -225,11 +191,11 @@ namespace Frostybee.Pwamp.UI
             txtLogControl.ScrollToCaret();
 
             // Limit log size.
-            if (txtLogControl.Lines.Length > 1000)
+            if (txtLogControl.Lines.Length > MAX_LOG_LINES)
             {
                 var lines = txtLogControl.Lines;
-                var newLines = new string[500];
-                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
+                var newLines = new string[TRIMMED_LOG_LINES];
+                Array.Copy(lines, lines.Length - TRIMMED_LOG_LINES, newLines, 0, TRIMMED_LOG_LINES);
                 txtLogControl.Lines = newLines;
             }            
         }        

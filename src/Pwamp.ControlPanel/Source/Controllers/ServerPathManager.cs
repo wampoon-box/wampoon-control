@@ -1,448 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Frostybee.Pwamp.Models;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Enums;
+using Frostybee.Pwamp.Services;
 
 namespace Frostybee.Pwamp.Controllers
 {
     /// <summary>
-    /// Manages server paths based on the application's directory structure.
+    /// Facade for server path management using composed services.
     /// </summary>
     public static class ServerPathManager
     {
-        private static readonly string _applicationDirectory;
-        private static readonly string _appsDirectory;
-        private static readonly Dictionary<string, ServerPathInfo> _serverPaths;
-        public static string ApplicationDirectory => _applicationDirectory;
-        public static string AppsDirectory => _appsDirectory;
-        public static string ApacheDocumentRoot => Path.Combine(_applicationDirectory, "htdocs");
+        private static readonly ServerPathResolver _pathResolver;
+        private static readonly ServerFileOperations _fileOperations;
+        private static readonly ServerDiagnostics _diagnostics;
 
         static ServerPathManager()
         {
-            // Get the directory where myApp.exe is located
-            _applicationDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            _appsDirectory = Path.Combine(_applicationDirectory, "apps");
-
-            _serverPaths = new Dictionary<string, ServerPathInfo>();
-            InitializeServerPaths();
+            var fileOps = new FileOperations();
+            _pathResolver = new ServerPathResolver(fileOps);
+            _fileOperations = new ServerFileOperations(fileOps, _pathResolver);
+            _diagnostics = new ServerDiagnostics(fileOps, _pathResolver);
         }
 
-        /// <summary>
-        /// Initializes the server paths based on the known directory structure.
-        /// </summary>
-        private static void InitializeServerPaths()
-        {
-            var serverDefinitions = ServerDefinitions.GetAll();
+        public static string ApplicationDirectory => _pathResolver.ApplicationDirectory;
+        public static string AppsDirectory => _pathResolver.AppsDirectory;
+        public static string ApacheDocumentRoot => _pathResolver.ApacheDocumentRoot;
 
-            foreach (var definition in serverDefinitions)
-            {
-                var serverBaseDir = Path.Combine(_appsDirectory, definition.Directory);
-                var serverBinDir = Path.Combine(serverBaseDir, "bin");
-                var executablePath = Path.Combine(serverBinDir, definition.ExecutableName);
+        public static ServerPathInfo GetServerPath(string serverName) => _pathResolver.GetServerPath(serverName);
+        public static Dictionary<string, ServerPathInfo> GetAllServerPaths() => _pathResolver.GetAllServerPaths();
+        public static List<ServerPathInfo> GetAvailableServers() => _pathResolver.GetAvailableServers();
+        public static string GetExecutablePath(string serverName) => _pathResolver.GetExecutablePath(serverName);
+        public static string GetConfigPath(string serverName) => _pathResolver.GetConfigPath(serverName);
+        public static string GetSpecialPath(string serverName, string pathType) => _pathResolver.GetSpecialPath(serverName, pathType);
+        public static bool IsServerAvailable(string serverName) => _pathResolver.IsServerAvailable(serverName);
+        public static string GetServerBinDirectory(string serverName) => _pathResolver.GetServerBinDirectory(serverName);
+        public static string GetServerBaseDirectory(string serverName) => _pathResolver.GetServerBaseDirectory(serverName);
+        public static List<string> GetServerNames() => _pathResolver.GetServerNames();
+        public static List<string> GetAvailableServerNames() => _pathResolver.GetAvailableServerNames();
+        public static void RefreshServerAvailability() => _pathResolver.RefreshServerAvailability();
 
-                string configPath = null;
-                if (!string.IsNullOrEmpty(definition.ConfigFile))
-                {
-                    configPath = Path.Combine(serverBaseDir, definition.ConfigFile);
-                    // Don't set configPath to null if file doesn't exist - let CanOpenConfigFile handle that check
-                }
+        public static bool OpenConfigFile(string serverName) => _fileOperations.OpenConfigFile(serverName);
+        public static bool OpenFileInDefaultEditor(string filePath) => _fileOperations.OpenFileInDefaultEditor(filePath);
+        public static bool CanOpenConfigFile(string serverName) => _fileOperations.CanOpenConfigFile(serverName);
+        public static string GetConfigFileSize(string serverName) => _fileOperations.GetConfigFileSize(serverName);
+        public static DateTime? GetConfigFileLastModified(string serverName) => _fileOperations.GetConfigFileLastModified(serverName);
 
-                var pathInfo = new ServerPathInfo
-                {
-                    ServerName = definition.Name,
-                    ServerDirectory = serverBinDir,
-                    ServerBaseDirectory = serverBaseDir,
-                    ExecutablePath = executablePath,
-                    ConfigPath = configPath,
-                    IsAvailable = File.Exists(executablePath)
-                };
-
-                // Compute special paths.
-                foreach (var specialDir in definition.SpecialDirectories)
-                {
-                    var specialPath = specialDir.Value.Contains(".exe")
-                        ? Path.Combine(serverBaseDir, specialDir.Value)  // For executable files
-                        : Path.Combine(serverBaseDir, specialDir.Value); // For directories
-
-                    pathInfo.SpecialPaths[specialDir.Key] = specialPath;
-                }
-
-                _serverPaths[definition.Name] = pathInfo;
-            }
-        }
-
-        /// <summary>
-        /// Gets the path information for a specific server.
-        /// </summary>
-        public static ServerPathInfo GetServerPath(string serverName)
-        {
-            if (string.IsNullOrWhiteSpace(serverName))
-                return null;
-
-            ServerPathInfo pathInfo;
-            return _serverPaths.TryGetValue(serverName, out pathInfo) ? pathInfo : null;
-        }
-
-        /// <summary>
-        /// Gets all available server path information.
-        /// </summary>
-        public static Dictionary<string, ServerPathInfo> GetAllServerPaths()
-        {
-            return new Dictionary<string, ServerPathInfo>(_serverPaths);
-        }
-
-        /// <summary>
-        /// Gets only the servers that are available (executable exists).
-        /// </summary>
-        public static List<ServerPathInfo> GetAvailableServers()
-        {
-            return _serverPaths.Values.Where(s => s.IsAvailable).ToList();
-        }
-
-        /// <summary>
-        /// Gets the executable path for a server.
-        /// </summary>
-        public static string GetExecutablePath(string serverName)
-        {
-            var serverPath = GetServerPath(serverName);
-            return serverPath != null ? serverPath.ExecutablePath : null;
-        }
-
-        /// <summary>
-        /// Gets the configuration file path for a server.
-        /// </summary>
-        public static string GetConfigPath(string serverName)
-        {
-            var serverPath = GetServerPath(serverName);
-            return serverPath != null ? serverPath.ConfigPath : null;
-        }
-
-        /// <summary>
-        /// Gets a special path for a server (e.g., DocumentRoot, Data directory, etc.).
-        /// </summary>
-        public static string GetSpecialPath(string serverName, string pathType)
-        {
-            var pathInfo = GetServerPath(serverName);
-            if (pathInfo == null)
-                return null;
-
-            string path;
-            return pathInfo.SpecialPaths.TryGetValue(pathType, out path) ? path : null;
-        }
-
-        /// <summary>
-        /// Checks if a server is available (executable exists).
-        /// </summary>
-        public static bool IsServerAvailable(string serverName)
-        {
-            var pathInfo = GetServerPath(serverName);
-            return pathInfo != null && pathInfo.IsAvailable;
-        }
-
-        /// <summary>
-        /// Gets the server directory (bin folder).
-        /// </summary>
-        public static string GetServerBinDirectory(string serverName)
-        {
-            var serverPath = GetServerPath(serverName);
-            return serverPath != null ? serverPath.ServerDirectory : null;
-        }
-
-        /// <summary>
-        /// Gets the server base directory (parent of bin folder).
-        /// </summary>
-        public static string GetServerBaseDirectory(string serverName)
-        {
-            var serverPath = GetServerPath(serverName);
-            return serverPath != null ? serverPath.ServerBaseDirectory : null;
-        }
-
-        /// <summary>
-        /// Gets a list of all configured server names.
-        /// </summary>
-        public static List<string> GetServerNames()
-        {
-            return _serverPaths.Keys.ToList();
-        }
-
-        /// <summary>
-        /// Gets a list of available server names.
-        /// </summary>
-        public static List<string> GetAvailableServerNames()
-        {
-            return _serverPaths.Values.Where(s => s.IsAvailable).Select(s => s.ServerName).ToList();
-        }
-
-        /// <summary>
-        /// Refreshes the availability status of all servers (re-checks if executables exist).
-        /// </summary>
-        public static void RefreshServerAvailability()
-        {
-            foreach (var pathInfo in _serverPaths.Values)
-            {
-                pathInfo.IsAvailable = File.Exists(pathInfo.ExecutablePath);
-                // Note: We don't modify the ConfigPath here - let CanOpenConfigFile handle existence checks
-            }
-        }
-
-        /// <summary>
-        /// Opens the configuration file for a server in the default system editor
-        /// </summary>
-        public static bool OpenConfigFile(string serverName)
-        {
-            try
-            {
-                var configPath = GetConfigPath(serverName);
-                if (string.IsNullOrEmpty(configPath))
-                {
-                    return false; // No config file defined or found
-                }
-
-                if (!File.Exists(configPath))
-                {
-                    return false; // Config file doesn't exist
-                }
-
-                return OpenFileInDefaultEditor(configPath);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Opens any file in the default system editor
-        /// </summary>
-        public static bool OpenFileInDefaultEditor(string filePath)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-                {
-                    return false;
-                }
-
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = filePath,
-                    UseShellExecute = true,
-                    Verb = "open"
-                };
-
-                Process.Start(startInfo);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks if a server has a configuration file that can be opened
-        /// </summary>
-        public static bool CanOpenConfigFile(string serverName)
-        {
-            var configPath = GetConfigPath(serverName);
-            return !string.IsNullOrEmpty(configPath) && File.Exists(configPath);
-        }
-
-        /// <summary>
-        /// Gets the file size of a configuration file in a human-readable format
-        /// </summary>
-        public static string GetConfigFileSize(string serverName)
-        {
-            try
-            {
-                var configPath = GetConfigPath(serverName);
-                if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
-                {
-                    return "N/A";
-                }
-
-                var fileInfo = new FileInfo(configPath);
-                long bytes = fileInfo.Length;
-
-                if (bytes < 1024)
-                    return string.Format("{0} B", bytes);
-                else if (bytes < 1024 * 1024)
-                    return string.Format("{0:F1} KB", bytes / 1024.0);
-                else
-                    return string.Format("{0:F1} MB", bytes / (1024.0 * 1024.0));
-            }
-            catch (Exception)
-            {
-                return "N/A";
-            }
-        }
-
-        /// <summary>
-        /// Gets the last modified date of a configuration file
-        /// </summary>
-        public static DateTime? GetConfigFileLastModified(string serverName)
-        {
-            try
-            {
-                var configPath = GetConfigPath(serverName);
-                if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
-                {
-                    return null;
-                }
-
-                return File.GetLastWriteTime(configPath);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets diagnostic information for troubleshooting
-        /// </summary>
-        public static Dictionary<string, string> GetDiagnosticInfo()
-        {
-            var diagnostics = new Dictionary<string, string>();
-            diagnostics["Application Directory"] = _applicationDirectory;
-            diagnostics["Apps Directory"] = _appsDirectory;
-            diagnostics["Apps Directory Exists"] = Directory.Exists(_appsDirectory).ToString();
-
-            foreach (var kvp in _serverPaths)
-            {
-                var pathInfo = kvp.Value;
-                diagnostics[string.Format("{0} - Executable Path", kvp.Key)] = pathInfo.ExecutablePath;
-                diagnostics[string.Format("{0} - Executable Exists", kvp.Key)] = File.Exists(pathInfo.ExecutablePath).ToString();
-                diagnostics[string.Format("{0} - Config Path", kvp.Key)] = pathInfo.ConfigPath ?? "Not configured";
-                diagnostics[string.Format("{0} - Config Exists", kvp.Key)] = (pathInfo.ConfigPath != null && File.Exists(pathInfo.ConfigPath)).ToString();
-            }
-
-            return diagnostics;
-        }
-
-        /// <summary>
-        /// Logs detailed diagnostic information for Apache configuration debugging
-        /// </summary>
-        public static void LogApacheDiagnostics()
-        {
-            try
-            {
-                var apacheDefinition = ServerDefinitions.GetByName(PackageType.Apache.ToServerName());
-                var diagnosticLines = new List<string>
-                {
-                    "=== APACHE CONFIGURATION DIAGNOSTICS ===",
-                    $"Timestamp: {DateTime.Now:yyyy-MM-dd HH:mm:ss}",
-                    $"Application Directory: {_applicationDirectory}",
-                    $"Apps Directory: {_appsDirectory}",
-                    $"Apps Directory Exists: {Directory.Exists(_appsDirectory)}",
-                    "",
-                    "Apache Definition Info:",
-                    $"  Name: {apacheDefinition?.Name ?? "NULL"}",
-                    $"  Directory: {apacheDefinition?.Directory ?? "NULL"}",
-                    $"  ExecutableName: {apacheDefinition?.ExecutableName ?? "NULL"}",
-                    $"  ConfigFile: {apacheDefinition?.ConfigFile ?? "NULL"}",
-                    ""
-                };
-
-                if (apacheDefinition != null)
-                {
-                    var serverBaseDir = Path.Combine(_appsDirectory, apacheDefinition.Directory);
-                    var configPath = Path.Combine(serverBaseDir, apacheDefinition.ConfigFile);
-                    
-                    diagnosticLines.AddRange(new[]
-                    {
-                        "Computed Paths:",
-                        $"  Server Base Dir: {serverBaseDir}",
-                        $"  Server Base Dir Exists: {Directory.Exists(serverBaseDir)}",
-                        $"  Config Path: {configPath}",
-                        $"  Config File Exists: {File.Exists(configPath)}",
-                        "",
-                        "ServerPathManager Results:",
-                        $"  GetServerPath('Apache') != null: {GetServerPath(PackageType.Apache.ToServerName()) != null}",
-                        $"  GetConfigPath('Apache'): {GetConfigPath(PackageType.Apache.ToServerName()) ?? "NULL"}",
-                        $"  CanOpenConfigFile('Apache'): {CanOpenConfigFile(PackageType.Apache.ToServerName())}",
-                        ""
-                    });
-
-                    var pathInfo = GetServerPath(PackageType.Apache.ToServerName());
-                    if (pathInfo != null)
-                    {
-                        diagnosticLines.AddRange(new[]
-                        {
-                            "Apache PathInfo Details:",
-                            $"  ServerName: {pathInfo.ServerName ?? "NULL"}",
-                            $"  ExecutablePath: {pathInfo.ExecutablePath ?? "NULL"}",
-                            $"  ConfigPath: {pathInfo.ConfigPath ?? "NULL"}",
-                            $"  ServerDirectory: {pathInfo.ServerDirectory ?? "NULL"}",
-                            $"  ServerBaseDirectory: {pathInfo.ServerBaseDirectory ?? "NULL"}",
-                            $"  IsAvailable: {pathInfo.IsAvailable}",
-                            ""
-                        });
-                    }
-                    else
-                    {
-                        diagnosticLines.Add("Apache PathInfo: NULL");
-                    }
-
-                    // Check if directories exist
-                    if (Directory.Exists(serverBaseDir))
-                    {
-                        try
-                        {
-                            var subdirs = Directory.GetDirectories(serverBaseDir);
-                            var files = Directory.GetFiles(serverBaseDir);
-                            diagnosticLines.AddRange(new[]
-                            {
-                                $"Contents of {serverBaseDir}:",
-                                $"  Subdirectories: {string.Join(", ", subdirs.Select(Path.GetFileName))}",
-                                $"  Files: {string.Join(", ", files.Select(Path.GetFileName))}",
-                                ""
-                            });
-
-                            var confDir = Path.Combine(serverBaseDir, "conf");
-                            if (Directory.Exists(confDir))
-                            {
-                                var confFiles = Directory.GetFiles(confDir);
-                                diagnosticLines.AddRange(new[]
-                                {
-                                    $"Contents of {confDir}:",
-                                    $"  Config Files: {string.Join(", ", confFiles.Select(Path.GetFileName))}",
-                                    ""
-                                });
-                            }
-                            else
-                            {
-                                diagnosticLines.Add($"Config directory does not exist: {confDir}");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            diagnosticLines.Add($"Error listing directory contents: {ex.Message}");
-                        }
-                    }
-                }
-
-                diagnosticLines.Add("=== END DIAGNOSTICS ===");
-                
-                // Write to log file
-                var logDir = Path.Combine(_applicationDirectory, "pwamp-logs");
-                var logFile = Path.Combine(logDir, "apache-diagnostics.log");
-                
-                if (!Directory.Exists(logDir))
-                    Directory.CreateDirectory(logDir);
-                    
-                File.WriteAllLines(logFile, diagnosticLines);
-                
-            }
-            catch (Exception ex)
-            {
-                ErrorLogHelper.LogExceptionInfo(ex);
-            }
-        }
+        public static Dictionary<string, string> GetDiagnosticInfo() => _diagnostics.GetDiagnosticInfo();
+        public static void LogApacheDiagnostics() => _diagnostics.LogApacheDiagnostics();
     }    
 }
