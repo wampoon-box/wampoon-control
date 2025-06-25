@@ -20,10 +20,13 @@ namespace Frostybee.Pwamp.UI
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
         private NotifyIcon _notifyIcon;
+        
+        private const int MAX_LOG_LINES = 1000;
+        private const int TRIMMED_LOG_LINES = 500;
 
         public MainForm()
         {
-            Text = "PWAMP Control Panel";
+            Text = AppConstants.APP_NAME;
             InitializeComponent();
 
             Instance = this;
@@ -45,8 +48,8 @@ namespace Frostybee.Pwamp.UI
             {
                 SetFromIcon();
                 // Attempt to initialize the service modules.
-                _apacheModule.InitializeModule();
-                _mySqlModule.InitializeModule();
+                _apacheServerModule.InitializeModule();
+                _mySqlServerModule.InitializeModule();
 
                 AddLog("Application initialized successfully", LogType.Info);
             }
@@ -135,83 +138,41 @@ namespace Frostybee.Pwamp.UI
             }
         }
 
-        public void AddLog(string module, string log, LogType logType = LogType.Default)
+        private void AddLogToControl(RichTextBox control, string module, string message, LogType logType, bool includeTimestamp = true)
         {
-            if (_rtxtActionsLog == null) return;
-
-            var timestamp = DateTime.Now.ToString("HH:mm:ss");
-            var logEntry = $"[{timestamp}] [{module}] {log}";
-
-            if (_rtxtActionsLog.InvokeRequired)
+            if (control == null) return;
+            
+            var logEntry = includeTimestamp 
+                ? $"[{DateTime.Now:HH:mm:ss}] [{module}] {message}"
+                : $"[{module}] {message}";
+            
+            if (control.InvokeRequired)
             {
-                _rtxtActionsLog.Invoke(new Action(() => AddMySqlLogInternal(_rtxtActionsLog, logEntry, logType)));
+                control.Invoke(new Action(() => AddLogInternal(control, logEntry, logType)));
             }
             else
             {
-                AddMySqlLogInternal(_rtxtActionsLog, logEntry, logType);
+                AddLogInternal(control, logEntry, logType);
             }
+        }
+
+        public void AddLog(string module, string log, LogType logType = LogType.Default)
+        {
+            AddLogToControl(_rtxtActionsLog, module, log, logType);
         }
 
         public void AddLog(string log, LogType logType = LogType.Default)
         {
             AddLog("System", log, logType);
         }
-
-        public void AddErrorLog(string module, string log)
-        {
-            if (_rtxtErrorLog == null) return;
-
-            var timestamp = DateTime.Now.ToString("HH:mm:ss");
-            var logEntry = $"[{timestamp}] [{module}] {log}";
-
-            if (_rtxtErrorLog.InvokeRequired)
-            {
-                _rtxtErrorLog.Invoke(new Action(() => AddErrorLogInternal(logEntry)));
-            }
-            else
-            {
-                AddErrorLogInternal(logEntry);
-            }
-        }
-
+        
         public void AddMySqlLog(string log, LogType logType = LogType.Default)
         {
-            if (_rtxtErrorLog == null) return;
-
-            var logEntry = $"[MySQL] {log}";
-
-            if (_rtxtErrorLog.InvokeRequired)
-            {
-                _rtxtErrorLog.Invoke(new Action(() => AddMySqlLogInternal(_rtxtErrorLog, logEntry, logType)));
-            }
-            else
-            {
-                AddMySqlLogInternal(_rtxtErrorLog, logEntry, logType);
-            }
+            AddLogToControl(_rtxtErrorLog, "MySQL", log, logType, false);
         }
 
-        private void AddErrorLogInternal(string logEntry)
-        {
-            if (_rtxtErrorLog == null) return;
 
-            _rtxtErrorLog.SelectionStart = _rtxtErrorLog.TextLength;
-            _rtxtErrorLog.SelectionLength = 0;
-            _rtxtErrorLog.SelectionColor = Color.Red;
-            _rtxtErrorLog.AppendText(logEntry + Environment.NewLine);
-            _rtxtErrorLog.SelectionColor = _rtxtErrorLog.ForeColor;
-            _rtxtErrorLog.ScrollToCaret();
-
-            // Limit log size
-            if (_rtxtErrorLog.Lines.Length > 1000)
-            {
-                var lines = _rtxtErrorLog.Lines;
-                var newLines = new string[500];
-                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
-                _rtxtErrorLog.Lines = newLines;
-            }
-        }
-
-        private void AddMySqlLogInternal(RichTextBox txtLogControl, string logEntry, LogType logType)
+        private void AddLogInternal(RichTextBox txtLogControl, string logEntry, LogType logType)
         {
             if (txtLogControl == null) return;
 
@@ -225,11 +186,11 @@ namespace Frostybee.Pwamp.UI
             txtLogControl.ScrollToCaret();
 
             // Limit log size.
-            if (txtLogControl.Lines.Length > 1000)
+            if (txtLogControl.Lines.Length > MAX_LOG_LINES)
             {
                 var lines = txtLogControl.Lines;
-                var newLines = new string[500];
-                Array.Copy(lines, lines.Length - 500, newLines, 0, 500);
+                var newLines = new string[TRIMMED_LOG_LINES];
+                Array.Copy(lines, lines.Length - TRIMMED_LOG_LINES, newLines, 0, TRIMMED_LOG_LINES);
                 txtLogControl.Lines = newLines;
             }            
         }        
@@ -266,8 +227,8 @@ namespace Frostybee.Pwamp.UI
                 }
                 // Clean up managers on application exit.
                 bool hasRunningServices =
-                                         ((_apacheModule != null && _apacheModule.IsRunning()) ||
-                                          (_mySqlModule != null && _mySqlModule.IsRunning()));
+                                         ((_apacheServerModule != null && _apacheServerModule.IsServerRunning()) ||
+                                          (_mySqlServerModule != null && _mySqlServerModule.IsServerRunning()));
 
                 if (hasRunningServices)
                 {
@@ -317,12 +278,12 @@ namespace Frostybee.Pwamp.UI
             try
             {
                 // Stop servers asynchronously
-                await _apacheModule?.StopServer();
-                await _mySqlModule?.StopServer();
+                await _apacheServerModule?.StopServer();
+                await _mySqlServerModule?.StopServer();
 
                 // Dispose modules after stopping.
-                _apacheModule?.Dispose();
-                _mySqlModule?.Dispose();
+                _apacheServerModule?.Dispose();
+                _mySqlServerModule?.Dispose();
 
                 // Exit the application after stopping is complete.
                 Application.Exit();
@@ -333,8 +294,8 @@ namespace Frostybee.Pwamp.UI
                 System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
 
                 // Still dispose modules even if stopping failed.
-                _apacheModule?.Dispose();
-                _mySqlModule?.Dispose();
+                _apacheServerModule?.Dispose();
+                _mySqlServerModule?.Dispose();
 
                 // Still try to exit the application.
                 Application.Exit();
@@ -344,18 +305,21 @@ namespace Frostybee.Pwamp.UI
         private async void BtnStartAllServers_Click(object sender, EventArgs e)
         {
             btnStopAllServers.Enabled = false;
-            await _apacheModule?.StartServer();
-            await _mySqlModule?.StartServer();
+            await _apacheServerModule?.StartServer();
+            await _mySqlServerModule?.StartServer();
             btnStopAllServers.Enabled = true;
         }
 
         private async void BtnStopAllServers_Click(object sender, EventArgs e)
-        {
-            btnStartAllServers.Enabled = false;
-            //TODO: Enable the button if both servers are running.
-            await _apacheModule?.StopServer();
-            await _mySqlModule?.StopServer();
-            btnStartAllServers.Enabled = true;
+        {            
+            if (_apacheServerModule.IsServerRunning() || _mySqlServerModule.IsServerRunning())
+            {
+                btnStartAllServers.Enabled = false;
+                //TODO: Enable the button if both servers are running.
+                await _apacheServerModule?.StopServer();
+                await _mySqlServerModule?.StopServer();
+                btnStartAllServers.Enabled = true;
+            }
         }
 
         private void BtnExportLogs_Click(object sender, EventArgs e)
@@ -412,7 +376,6 @@ namespace Frostybee.Pwamp.UI
 
         }
 
-
         protected override void WndProc(ref Message m)
         {
             // Process the message sent from the Main method to activate the existing instance.
@@ -440,7 +403,6 @@ namespace Frostybee.Pwamp.UI
             TopMost = true;
             TopMost = false;
         }
-
 
     }
 }

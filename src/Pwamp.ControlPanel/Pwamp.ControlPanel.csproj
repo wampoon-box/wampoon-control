@@ -63,9 +63,13 @@
     <Compile Include="Source\Enums\Enums.cs" />
     <Compile Include="Source\Helpers\AppConstants.cs" />
     <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
-    <Compile Include="Source\Helpers\ServerHelper.cs" />
     <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />
+    <Compile Include="Source\Interfaces\IFileOperations.cs" />
+    <Compile Include="Source\Services\FileOperations.cs" />
+    <Compile Include="Source\Services\ServerPathResolver.cs" />
+    <Compile Include="Source\Services\ServerFileOperations.cs" />
+    <Compile Include="Source\Services\ServerDiagnostics.cs" />
     <Compile Include="Source\Models\ServerConfigInfo.cs" />
     <Compile Include="Source\Models\ServerDefinitionInfo.cs" />
     <Compile Include="Source\Models\ServerDefinitions.cs" />

@@ -27,7 +27,7 @@ namespace Frostybee.Pwamp.Controls
         {
             ServiceName = PackageType.Apache.ToServerName();
             DisplayName = "Apache HTTP Server";
-            PortNumber = 80; // Default HTTP port, change if needed.
+            PortNumber = AppConstants.Ports.APACHE_DEFAULT;
             lblServerIcon.Text = "🌐";            
             btnServerAdmin.Text = "localhost";
         }
@@ -47,20 +47,25 @@ namespace Frostybee.Pwamp.Controls
                 UpdateApacheConfig();
 
                 // Initialize log paths using ServerPathManager.
-                var logsDirectory = ServerHelper.GetApacheLogsDirectory();
+                var logsDirectory = ServerPathManager.GetSpecialPath(PackageType.Apache.ToServerName(), "Logs");
                 if (!string.IsNullOrEmpty(logsDirectory))
                 {
-                    ErrorLogPath = Path.Combine(logsDirectory, "error.log");
-                    AccessLogPath = Path.Combine(logsDirectory, "access.log");
+                    ErrorLogPath = Path.Combine(logsDirectory, AppConstants.APACHE_ERROR_LOG);
+                    AccessLogPath = Path.Combine(logsDirectory, AppConstants.APACHE_ACCESS_LOG);
                 }
 
-                _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);                
-                _apacheManager.ErrorOccurred += LogError;
-                _apacheManager.StatusChanged += LogMessage;
-                ServerManager = _apacheManager;
+                EnsureServerManagerInitialized();
+
+                //_apacheManager = new ApacheServerManager(
+                //    ServerPathManager.GetExecutablePath(PackageType.Apache.ToServerName()),
+                //    ServerPathManager.GetConfigPath(PackageType.Apache.ToServerName()));
+                //_apacheManager.ErrorOccurred += HandleServerLogError;
+                //_apacheManager.StatusChanged += HandleServerLogMessage;
+                //ServerManager = _apacheManager;
+
                 //TODO: Default admin URI for Apache. Might need to add the port number. 
                 //ServerAdminUri = $"http://localhost:{PortNumber}/"; 
-                ServerAdminUri = $"http://localhost";
+                ServerAdminUri = AppConstants.Urls.LOCALHOST_HTTP;
                 UpdateStatus(CurrentStatus);
             }
             catch (Exception ex)
@@ -71,6 +76,14 @@ namespace Frostybee.Pwamp.Controls
 
             ValidateServerConfig();
 
+        }
+
+        protected override void InitializeServerManager()
+        {
+            _apacheManager = new ApacheServerManager(
+                ServerPathManager.GetExecutablePath(PackageType.Apache.ToServerName()),
+                ServerPathManager.GetConfigPath(PackageType.Apache.ToServerName()));
+            ServerManager = _apacheManager;
         }
 
         private void ValidateServerConfig()
@@ -102,35 +115,8 @@ namespace Frostybee.Pwamp.Controls
             //AddLog(LanguageManager._("Checking for required tools..."), LogType.Debug);
         }
 
-        private bool CheckPort(int port, bool showDialog = true)
-        {
-            if (NetworkPortHelper.IsPortInUse(port))
-            {
-                if (showDialog)
-                {
-                    MessageBox.Show($"Port {port} is in use. Apache server cannot be started.", "Port In Use",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                return false;
-            }
-            return true;
-        }
 
-        private void LogMessage(object sender, string message)
-        {
-            //AddLog(string.Format(LanguageManager._("{0} Service is disabled."), ModuleName), LogType.Debug);
-            LogMessage(message, LogType.Info);
-        }
 
-        private void LogError(object sender, string message)
-        {
-            LogMessage(message, LogType.Error);
-        }
-
-        internal bool IsRunning()
-        {
-            return _apacheManager != null && _apacheManager.IsRunning;
-        }
 
         protected override async void BtnStart_Click(object sender, EventArgs e)
         {
@@ -138,9 +124,6 @@ namespace Frostybee.Pwamp.Controls
             {
                 if (!CheckPort(PortNumber, false))
                 {
-                    LogMessage($"Port {PortNumber} is in use. Cannot start {ServiceName}.", LogType.Warning);
-                    MessageBox.Show($"Port {PortNumber} is in use. Please close the application using this port and try again.",
-                                  "Port In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -148,20 +131,8 @@ namespace Frostybee.Pwamp.Controls
                 {
                     LogMessage("Server manager is not initialized. Attempting to reinitialize...", LogType.Debug);
                     
-                    try
+                    if (!EnsureServerManagerInitialized())
                     {
-                        _apacheManager = ServerManagerFactory.CreateServerManager<ApacheServerManager>(ServerDefinitions.Apache.Name);
-                        _apacheManager.ErrorOccurred += LogError;
-                        _apacheManager.StatusChanged += LogMessage;
-                        ServerManager = _apacheManager;
-                        LogMessage("Server manager reinitialized successfully.", LogType.Info);
-                    }
-                    catch (Exception initEx)
-                    {
-                        ErrorLogHelper.LogExceptionInfo(initEx);
-                        LogMessage($"Failed to reinitialize server manager: {initEx.Message}", LogType.Error);
-                        MessageBox.Show($"Cannot start {ServiceName}: Server manager initialization failed.\n\n{initEx.Message}", 
-                                      "Initialization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -192,7 +163,7 @@ namespace Frostybee.Pwamp.Controls
             {
                 throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
             }            
-            _customConfigPath = Path.Combine(_apacheDirectory, "conf", "pwamp-custom-path.conf");
+            _customConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
 
             ApplyCustomConfiguration();
         }
@@ -334,8 +305,7 @@ namespace Frostybee.Pwamp.Controls
             {
                 if (_apacheManager != null)
                 {
-                    _apacheManager.ErrorOccurred -= LogError;
-                    _apacheManager.StatusChanged -= LogMessage;
+                    _apacheManager.OnLogServerMessage -= HandleServerLog;
                     _apacheManager.Dispose();
                     _apacheManager = null;
                 }

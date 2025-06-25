@@ -25,20 +25,19 @@ namespace Frostybee.Pwamp.Controllers
             {
                 FileName = _executablePath,
                 Arguments = GetStartArguments(),
-                UseShellExecute = false, 
-                CreateNoWindow = true, 
-                RedirectStandardError = true, 
-                RedirectStandardOutput = true, 
-                WindowStyle = ProcessWindowStyle.Normal,         
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                WindowStyle = ProcessWindowStyle.Normal,
             };
         }
 
         protected override string GetStartArguments()
         {
-
             if (!string.IsNullOrEmpty(_configPath))
             {
-                return $"--defaults-file={_configPath} --console";
+                return string.Format("--defaults-file={0} --console", _configPath);
             }
             return string.Empty;
         }
@@ -53,8 +52,7 @@ namespace Frostybee.Pwamp.Controllers
 
         protected override int GetStartupDelay()
         {
-            // Allocate 3 seconds delay needed for MySQL to start up.
-            return 3000;
+            return AppConstants.Timeouts.MYSQL_STARTUP_DELAY_MS;
         }
 
         protected override async Task<bool> PerformGracefulShutdown()
@@ -63,13 +61,12 @@ namespace Frostybee.Pwamp.Controllers
             string mariaDbBinPath = Path.GetDirectoryName(_executablePath);
             string mariaDbAdminExe = Path.Combine(mariaDbBinPath, "mariadb-admin.exe");
 
-            LogError($"Attempting to stop { ServerName}");
+            LogError($"Attempting to stop { ServerName}", LogType.Warning);
 
             try
             {
-                if (!File.Exists(_executablePath))
+                if (!ValidateExecutableExists())
                 {
-                    LogError($"Executable not found: {_executablePath}");
                     return false;
                 }
 

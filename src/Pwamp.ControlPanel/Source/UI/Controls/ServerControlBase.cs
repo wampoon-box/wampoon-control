@@ -69,7 +69,7 @@ namespace Frostybee.Pwamp.Controls
         {
             try
             {
-                SystemHelper.OpenUrl(ServerAdminUri);
+                await Task.Run(()=> SystemHelper.OpenUrl(ServerAdminUri));
             }
             catch (Exception ex)
             {
@@ -334,6 +334,65 @@ namespace Frostybee.Pwamp.Controls
             {
                 LogExceptionInfo(ex);
             }
+        }
+
+        protected bool CheckPort(int port, bool showDialog = true)
+        {
+            if (NetworkPortHelper.IsPortInUse(port))
+            {
+                if (showDialog)
+                {
+                    MessageBox.Show(string.Format(AppConstants.Messages.PORT_IN_USE, port, ServiceName), "Port In Use",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return false;
+            }
+            return true;
+        }
+
+        protected void HandleServerLog(object sender, ServerLogEventArgs e)
+        {
+            LogMessage(e.Message, e.LogType);
+        }
+
+        protected virtual void InitializeServerManager()
+        {
+            // Override in derived classes to initialize specific server managers
+        }
+
+        protected bool EnsureServerManagerInitialized()
+        {
+            if (ServerManager != null) return true;            
+            //LogMessage(AppConstants.Messages.SERVER_MANAGER_NOT_INITIALIZED, LogType.Debug);
+            
+            try
+            {
+                InitializeServerManager();
+                if (ServerManager != null)
+                {
+                    ServerManager.OnLogServerMessage += HandleServerLog;
+                    //LogMessage(AppConstants.Messages.SERVER_MANAGER_REINITIALIZED, LogType.Info);
+                    return true;
+                }
+                else
+                {
+                    LogMessage("Server manager initialization returned null", LogType.Error);
+                    return false;
+                }
+            }
+            catch (Exception initEx)
+            {
+                ErrorLogHelper.LogExceptionInfo(initEx);
+                LogMessage(string.Format(AppConstants.Messages.FAILED_TO_OPERATION, "reinitialize server manager", initEx.Message), LogType.Error);
+                MessageBox.Show($"Cannot start {ServiceName}: Server manager initialization failed.\n\n{initEx.Message}", 
+                              "Initialization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        
+        internal bool IsServerRunning()
+        {
+            return ServerManager != null && ServerManager.IsRunning;
         }
 
         private Color GetLeftBorderColor()

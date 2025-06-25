@@ -23,7 +23,10 @@ namespace Frostybee.Pwamp.Helpers
                 case LogType.Info:
                     textColor = Color.Blue;
                     break;
-                case LogType.Debug:
+                case LogType.Success:
+                    textColor = Color.Green;
+                    break;
+                case LogType.Warning:
                     textColor = Color.Orange;
                     break;
                 case LogType.DebugDetails:
@@ -38,9 +41,9 @@ namespace Frostybee.Pwamp.Helpers
 
         internal static void DrawBootstrapCardShadow(Graphics graphics, Control control)
         {
-            int shadowOffset = 3;
-            int shadowSize = 6;
-            int radius = 8;
+            int shadowOffset = AppConstants.UI.SHADOW_OFFSET;
+            int shadowSize = AppConstants.UI.SHADOW_SIZE;
+            int radius = AppConstants.UI.BORDER_RADIUS;
             
             // Draw bottom shadow (inside control bounds but at bottom edge).
             Rectangle bottomShadowRect = new Rectangle(shadowOffset, control.Height - shadowSize, 
@@ -123,8 +126,8 @@ namespace Frostybee.Pwamp.Helpers
 
                 using (System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath())
                 {
-                    int borderWidth = 12;
-                    int radius = 12;
+                    int borderWidth = AppConstants.UI.BORDER_WIDTH;
+                    int radius = AppConstants.UI.BUTTON_BORDER_RADIUS;
                     int height = button.Height;
 
                     // Create the rounded left border path - draw over the existing button

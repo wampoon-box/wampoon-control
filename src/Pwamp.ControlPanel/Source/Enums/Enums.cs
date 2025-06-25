@@ -18,6 +18,7 @@ namespace Frostybee.Pwamp.Enums
     {
         Default,
         Info,
+        Success,
         Error,
         Warning,
         Debug,
@@ -41,6 +42,18 @@ namespace Frostybee.Pwamp.Enums
             // We could use ToString(), however, this method was implemented just in case we want to return a custom
             // server name in the future. 
             return packageType.ToString();
+        }
+    }
+
+    public class ServerLogEventArgs : EventArgs
+    {
+        public string Message { get; }
+        public LogType LogType { get; }
+
+        public ServerLogEventArgs(string message, LogType logType)
+        {
+            Message = message;
+            LogType = logType;
         }
     }
 }

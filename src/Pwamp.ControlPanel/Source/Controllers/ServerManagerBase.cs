@@ -21,8 +21,8 @@ namespace Frostybee.Pwamp.Controllers
         protected string _executablePath;
         protected string _configPath;
         private bool _disposed = false;
-        public event EventHandler<string> StatusChanged;
-        public event EventHandler<string> ErrorOccurred;
+        public event EventHandler<ServerLogEventArgs> OnLogServerMessage;
+
         public int? ProcessId => _serverProcess?.Id;
         public abstract string ServerName { get; set; }
 
@@ -45,24 +45,29 @@ namespace Frostybee.Pwamp.Controllers
         protected abstract int GetStartupDelay();
         protected abstract ProcessStartInfo GetProcessStartInfo();
 
-        //FIXME: Remove this method if it is not needed.
-        protected virtual void LogMessage(string message)
+        protected bool ValidateExecutableExists()
         {
-            if (!string.IsNullOrWhiteSpace(message))
+            if (!File.Exists(_executablePath))
             {
-                StatusChanged?.Invoke(this, message);
+                LogError(string.Format(AppConstants.Messages.EXECUTABLE_NOT_FOUND, _executablePath));
+                return false;
             }
-
+            return true;
         }
 
-        //FIXME: Remove this method if it is not needed.
-        protected virtual void LogError(string message)
+        protected virtual void LogMessage(string message, LogType logType = LogType.Info)
         {
-            // Note: This method might be redundant. However, it is good to keep it for now just in case we want
-            // to log errors on the GUI differently in the future.
             if (!string.IsNullOrWhiteSpace(message))
             {
-                ErrorOccurred?.Invoke(this, message);
+                OnLogServerMessage?.Invoke(this, new ServerLogEventArgs(message, logType));
+            }
+        }
+
+        protected virtual void LogError(string message, LogType logType = LogType.Error)
+        {
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                LogMessage(message, logType); 
             }
         }
 
@@ -116,7 +121,7 @@ namespace Frostybee.Pwamp.Controllers
                     LogError($"Has exited with code: {_serverProcess.ExitCode}");
                 };
                 //TODO: Pass the process ID to the main form.
-                LogMessage($"Started successfully (PID: {_serverProcess.Id})");
+                LogMessage($"Started successfully (PID: {_serverProcess.Id})", LogType.Success);
                 return true;
             }
             catch (Exception ex)
@@ -181,7 +186,7 @@ namespace Frostybee.Pwamp.Controllers
                 //-- 1) First off, we attempt a graceful process shutdown.
                 if (await PerformGracefulShutdown())
                 {
-                    LogMessage($"Stopped gracefully!");
+                    LogMessage($"Stopped gracefully!", LogType.Success);
                     return true;
                 }
                 else
@@ -210,7 +215,7 @@ namespace Frostybee.Pwamp.Controllers
                 LogMessage($"Stopping it forcefully...");
                 _serverProcess.Kill();
                 //_serverProcess.WaitForExit();
-                bool exited = await Task.Run(() => _serverProcess.WaitForExit(5000));
+                bool exited = await Task.Run(() => _serverProcess.WaitForExit(AppConstants.Timeouts.PROCESS_WAIT_TIMEOUT_MS));
 
                 if (exited)
                 {
