@@ -311,12 +311,15 @@ namespace Frostybee.Pwamp.UI
         }
 
         private async void BtnStopAllServers_Click(object sender, EventArgs e)
-        {
-            btnStartAllServers.Enabled = false;
-            //TODO: Enable the button if both servers are running.
-            await _apacheServerModule?.StopServer();
-            await _mySqlServerModule?.StopServer();
-            btnStartAllServers.Enabled = true;
+        {            
+            if (_apacheServerModule.IsServerRunning() || _mySqlServerModule.IsServerRunning())
+            {
+                btnStartAllServers.Enabled = false;
+                //TODO: Enable the button if both servers are running.
+                await _apacheServerModule?.StopServer();
+                await _mySqlServerModule?.StopServer();
+                btnStartAllServers.Enabled = true;
+            }
         }
 
         private void BtnExportLogs_Click(object sender, EventArgs e)

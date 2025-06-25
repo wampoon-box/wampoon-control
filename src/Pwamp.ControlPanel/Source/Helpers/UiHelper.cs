@@ -26,7 +26,7 @@ namespace Frostybee.Pwamp.Helpers
                 case LogType.Success:
                     textColor = Color.Green;
                     break;
-                case LogType.Debug:
+                case LogType.Warning:
                     textColor = Color.Orange;
                     break;
                 case LogType.DebugDetails:
