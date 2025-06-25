@@ -21,8 +21,8 @@ namespace Frostybee.Pwamp.Controllers
         protected string _executablePath;
         protected string _configPath;
         private bool _disposed = false;
-        public event EventHandler<ServerLogEventArgs> StatusChanged;
-        public event EventHandler<ServerLogEventArgs> ErrorOccurred;
+        public event EventHandler<ServerLogEventArgs> OnLogServerMessage;
+
         public int? ProcessId => _serverProcess?.Id;
         public abstract string ServerName { get; set; }
 
@@ -55,24 +55,19 @@ namespace Frostybee.Pwamp.Controllers
             return true;
         }
 
-        //FIXME: Remove this method if it is not needed.
         protected virtual void LogMessage(string message, LogType logType = LogType.Info)
         {
             if (!string.IsNullOrWhiteSpace(message))
             {
-                StatusChanged?.Invoke(this, new ServerLogEventArgs(message, logType));
+                OnLogServerMessage?.Invoke(this, new ServerLogEventArgs(message, logType));
             }
-
         }
 
-        //FIXME: Remove this method if it is not needed.
         protected virtual void LogError(string message, LogType logType = LogType.Error)
         {
-            // Note: This method might be redundant. However, it is good to keep it for now just in case we want
-            // to log errors on the GUI differently in the future.
             if (!string.IsNullOrWhiteSpace(message))
             {
-                ErrorOccurred?.Invoke(this, new ServerLogEventArgs(message, logType));
+                LogMessage(message, logType); 
             }
         }
 

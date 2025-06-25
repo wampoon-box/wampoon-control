@@ -69,7 +69,7 @@ namespace Frostybee.Pwamp.Controls
         {
             try
             {
-                SystemHelper.OpenUrl(ServerAdminUri);
+                await Task.Run(()=> SystemHelper.OpenUrl(ServerAdminUri));
             }
             catch (Exception ex)
             {
@@ -350,12 +350,7 @@ namespace Frostybee.Pwamp.Controls
             return true;
         }
 
-        protected void HandleServerLogMessage(object sender, ServerLogEventArgs e)
-        {
-            LogMessage(e.Message, e.LogType);
-        }
-
-        protected void HandleServerLogError(object sender, ServerLogEventArgs e)
+        protected void HandleServerLog(object sender, ServerLogEventArgs e)
         {
             LogMessage(e.Message, e.LogType);
         }
@@ -367,8 +362,7 @@ namespace Frostybee.Pwamp.Controls
 
         protected bool EnsureServerManagerInitialized()
         {
-            if (ServerManager != null) return true;
-            
+            if (ServerManager != null) return true;            
             //LogMessage(AppConstants.Messages.SERVER_MANAGER_NOT_INITIALIZED, LogType.Debug);
             
             try
@@ -376,8 +370,7 @@ namespace Frostybee.Pwamp.Controls
                 InitializeServerManager();
                 if (ServerManager != null)
                 {
-                    ServerManager.ErrorOccurred += HandleServerLogError;
-                    ServerManager.StatusChanged += HandleServerLogMessage;
+                    ServerManager.OnLogServerMessage += HandleServerLog;
                     //LogMessage(AppConstants.Messages.SERVER_MANAGER_REINITIALIZED, LogType.Info);
                     return true;
                 }

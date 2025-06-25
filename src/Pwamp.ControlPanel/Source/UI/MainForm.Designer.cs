@@ -49,8 +49,8 @@ namespace Frostybee.Pwamp.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this._apacheModule = new Frostybee.Pwamp.Controls.ApacheControl();
-            this._mySqlModule = new Frostybee.Pwamp.Controls.MySqlControl();
+            this._apacheServerModule = new Frostybee.Pwamp.Controls.ApacheControl();
+            this._mySqlServerModule = new Frostybee.Pwamp.Controls.MySqlControl();
             this.panel1 = new System.Windows.Forms.Panel();
             this.logsGroupBox.SuspendLayout();
             this.logTabControl.SuspendLayout();
@@ -297,8 +297,8 @@ namespace Frostybee.Pwamp.UI
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this._apacheModule);
-            this.groupBox1.Controls.Add(this._mySqlModule);
+            this.groupBox1.Controls.Add(this._apacheServerModule);
+            this.groupBox1.Controls.Add(this._mySqlServerModule);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.groupBox1.Location = new System.Drawing.Point(19, 90);
@@ -311,21 +311,21 @@ namespace Frostybee.Pwamp.UI
             // 
             // _apacheModule
             // 
-            this._apacheModule.BackColor = System.Drawing.Color.White;
-            this._apacheModule.Location = new System.Drawing.Point(19, 27);
-            this._apacheModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._apacheModule.Name = "_apacheModule";
-            this._apacheModule.Size = new System.Drawing.Size(335, 178);
-            this._apacheModule.TabIndex = 4;
+            this._apacheServerModule.BackColor = System.Drawing.Color.White;
+            this._apacheServerModule.Location = new System.Drawing.Point(19, 27);
+            this._apacheServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._apacheServerModule.Name = "_apacheModule";
+            this._apacheServerModule.Size = new System.Drawing.Size(335, 178);
+            this._apacheServerModule.TabIndex = 4;
             // 
             // _mySqlModule
             // 
-            this._mySqlModule.BackColor = System.Drawing.Color.White;
-            this._mySqlModule.Location = new System.Drawing.Point(380, 27);
-            this._mySqlModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._mySqlModule.Name = "_mySqlModule";
-            this._mySqlModule.Size = new System.Drawing.Size(335, 178);
-            this._mySqlModule.TabIndex = 7;
+            this._mySqlServerModule.BackColor = System.Drawing.Color.White;
+            this._mySqlServerModule.Location = new System.Drawing.Point(380, 27);
+            this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._mySqlServerModule.Name = "_mySqlModule";
+            this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
+            this._mySqlServerModule.TabIndex = 7;
             // 
             // panel1
             // 
@@ -363,7 +363,7 @@ namespace Frostybee.Pwamp.UI
         }
         #endregion
 
-        private Controls.ApacheControl _apacheModule;
+        private Controls.ApacheControl _apacheServerModule;
         private GroupBox logsGroupBox;
         private TabControl logTabControl;
         private TabPage outputTab;
@@ -371,7 +371,7 @@ namespace Frostybee.Pwamp.UI
         private TabPage errorTab;
         private RichTextBox _rtxtErrorLog;
         private TabPage accessTab;
-        private Controls.MySqlControl _mySqlModule;
+        private Controls.MySqlControl _mySqlServerModule;
         private Panel headerPanel;
         private Label titleLabel;
         private Label subtitleLabel;

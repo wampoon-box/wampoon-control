@@ -116,16 +116,6 @@ namespace Frostybee.Pwamp.Controls
         }
 
 
-        private void LogMessage(object sender, ServerLogEventArgs e)
-        {
-            //AddLog(string.Format(LanguageManager._("{0} Service is disabled."), ModuleName), LogType.Debug);
-            LogMessage(e.Message, e.LogType);
-        }
-
-        private void LogError(object sender, ServerLogEventArgs e)
-        {
-            LogMessage(e.Message, e.LogType);
-        }
 
 
         protected override async void BtnStart_Click(object sender, EventArgs e)
@@ -315,8 +305,7 @@ namespace Frostybee.Pwamp.Controls
             {
                 if (_apacheManager != null)
                 {
-                    _apacheManager.ErrorOccurred -= HandleServerLogError;
-                    _apacheManager.StatusChanged -= HandleServerLogMessage;
+                    _apacheManager.OnLogServerMessage -= HandleServerLog;
                     _apacheManager.Dispose();
                     _apacheManager = null;
                 }

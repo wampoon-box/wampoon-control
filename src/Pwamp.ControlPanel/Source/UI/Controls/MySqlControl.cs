@@ -96,8 +96,7 @@ namespace Frostybee.Pwamp.Controls
             {
                 if (_mysqlManager != null)
                 {
-                    _mysqlManager.ErrorOccurred -= HandleServerLogError;
-                    _mysqlManager.StatusChanged -= HandleServerLogMessage;
+                    _mysqlManager.OnLogServerMessage -= HandleServerLog;
                     _mysqlManager.Dispose();
                     _mysqlManager = null;
                 }

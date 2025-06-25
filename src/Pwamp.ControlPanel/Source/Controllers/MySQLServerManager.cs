@@ -61,7 +61,7 @@ namespace Frostybee.Pwamp.Controllers
             string mariaDbBinPath = Path.GetDirectoryName(_executablePath);
             string mariaDbAdminExe = Path.Combine(mariaDbBinPath, "mariadb-admin.exe");
 
-            LogError($"Attempting to stop { ServerName}");
+            LogError($"Attempting to stop { ServerName}", LogType.Warning);
 
             try
             {

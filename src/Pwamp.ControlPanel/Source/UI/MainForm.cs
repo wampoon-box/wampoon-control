@@ -48,8 +48,8 @@ namespace Frostybee.Pwamp.UI
             {
                 SetFromIcon();
                 // Attempt to initialize the service modules.
-                _apacheModule.InitializeModule();
-                _mySqlModule.InitializeModule();
+                _apacheServerModule.InitializeModule();
+                _mySqlServerModule.InitializeModule();
 
                 AddLog("Application initialized successfully", LogType.Info);
             }
@@ -165,12 +165,7 @@ namespace Frostybee.Pwamp.UI
         {
             AddLog("System", log, logType);
         }
-
-        public void AddErrorLog(string module, string log)
-        {
-            AddLogToControl(_rtxtErrorLog, module, log, LogType.Error);
-        }
-
+        
         public void AddMySqlLog(string log, LogType logType = LogType.Default)
         {
             AddLogToControl(_rtxtErrorLog, "MySQL", log, logType, false);
@@ -232,8 +227,8 @@ namespace Frostybee.Pwamp.UI
                 }
                 // Clean up managers on application exit.
                 bool hasRunningServices =
-                                         ((_apacheModule != null && _apacheModule.IsServerRunning()) ||
-                                          (_mySqlModule != null && _mySqlModule.IsServerRunning()));
+                                         ((_apacheServerModule != null && _apacheServerModule.IsServerRunning()) ||
+                                          (_mySqlServerModule != null && _mySqlServerModule.IsServerRunning()));
 
                 if (hasRunningServices)
                 {
@@ -283,12 +278,12 @@ namespace Frostybee.Pwamp.UI
             try
             {
                 // Stop servers asynchronously
-                await _apacheModule?.StopServer();
-                await _mySqlModule?.StopServer();
+                await _apacheServerModule?.StopServer();
+                await _mySqlServerModule?.StopServer();
 
                 // Dispose modules after stopping.
-                _apacheModule?.Dispose();
-                _mySqlModule?.Dispose();
+                _apacheServerModule?.Dispose();
+                _mySqlServerModule?.Dispose();
 
                 // Exit the application after stopping is complete.
                 Application.Exit();
@@ -299,8 +294,8 @@ namespace Frostybee.Pwamp.UI
                 System.Diagnostics.Debug.WriteLine($"Error stopping services: {ex.Message}");
 
                 // Still dispose modules even if stopping failed.
-                _apacheModule?.Dispose();
-                _mySqlModule?.Dispose();
+                _apacheServerModule?.Dispose();
+                _mySqlServerModule?.Dispose();
 
                 // Still try to exit the application.
                 Application.Exit();
@@ -310,8 +305,8 @@ namespace Frostybee.Pwamp.UI
         private async void BtnStartAllServers_Click(object sender, EventArgs e)
         {
             btnStopAllServers.Enabled = false;
-            await _apacheModule?.StartServer();
-            await _mySqlModule?.StartServer();
+            await _apacheServerModule?.StartServer();
+            await _mySqlServerModule?.StartServer();
             btnStopAllServers.Enabled = true;
         }
 
@@ -319,8 +314,8 @@ namespace Frostybee.Pwamp.UI
         {
             btnStartAllServers.Enabled = false;
             //TODO: Enable the button if both servers are running.
-            await _apacheModule?.StopServer();
-            await _mySqlModule?.StopServer();
+            await _apacheServerModule?.StopServer();
+            await _mySqlServerModule?.StopServer();
             btnStartAllServers.Enabled = true;
         }
 
@@ -378,7 +373,6 @@ namespace Frostybee.Pwamp.UI
 
         }
 
-
         protected override void WndProc(ref Message m)
         {
             // Process the message sent from the Main method to activate the existing instance.
@@ -406,7 +400,6 @@ namespace Frostybee.Pwamp.UI
             TopMost = true;
             TopMost = false;
         }
-
 
     }
 }
