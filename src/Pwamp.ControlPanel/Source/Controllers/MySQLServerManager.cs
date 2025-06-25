@@ -37,7 +37,7 @@ namespace Frostybee.Pwamp.Controllers
         {
             if (!string.IsNullOrEmpty(_configPath))
             {
-                return string.Format(AppConstants.Arguments.MYSQL_CONFIG_ARG, _configPath);
+                return string.Format("--defaults-file={0} --console", _configPath);
             }
             return string.Empty;
         }
@@ -47,7 +47,7 @@ namespace Frostybee.Pwamp.Controllers
         /// <returns>The command to shutdown MySQL/MariaDB server. </returns>
         private string GetStopArguments()
         {
-            return AppConstants.Arguments.MYSQL_SHUTDOWN_ARG;
+            return "shutdown -u root";
         }
 
         protected override int GetStartupDelay()

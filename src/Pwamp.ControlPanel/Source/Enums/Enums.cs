@@ -18,6 +18,7 @@ namespace Frostybee.Pwamp.Enums
     {
         Default,
         Info,
+        Success,
         Error,
         Warning,
         Debug,

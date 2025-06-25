@@ -10,20 +10,20 @@ namespace Frostybee.Pwamp.Helpers
         public const string APP_LOG_FOLDER = "pwamp-logs";
         public const string APP_LOG_FILE = "error.log";
         
-        // Log file names
+        // Log file names.
         public const string APACHE_ERROR_LOG = "error.log";
         public const string APACHE_ACCESS_LOG = "access.log";
         public const string APACHE_DIAGNOSTICS_LOG = "apache-diagnostics.log";
-        
-        // Network Configuration
+
+        // Network Configuration.
         public static class Ports
         {
             public const int APACHE_DEFAULT = 80;
             public const int MYSQL_DEFAULT = 3306;
             public const int HTTPS_DEFAULT = 443;
         }
-        
-        // Timeout and Delay Values
+
+        // Timeout and Delay Values.
         public static class Timeouts
         {
             public const int APACHE_STARTUP_DELAY_MS = 2000;
@@ -31,8 +31,8 @@ namespace Frostybee.Pwamp.Helpers
             public const int PROCESS_WAIT_TIMEOUT_MS = 5000;
             public const int GRACEFUL_SHUTDOWN_DELAY_MS = 3000;
         }
-        
-        // File Extensions and Names
+
+        // File Extensions and Names.
         public static class FileNames
         {
             public const string APACHE_EXECUTABLE = "httpd.exe";
@@ -42,8 +42,8 @@ namespace Frostybee.Pwamp.Helpers
             public const string PHPMYADMIN_CONFIG = "config.inc.php";
             public const string EXECUTABLE_EXTENSION = ".exe";
         }
-        
-        // URL Templates
+
+        // URL Templates..
         public static class Urls
         {
             public const string LOCALHOST_HTTP = "http://localhost";
@@ -52,8 +52,8 @@ namespace Frostybee.Pwamp.Helpers
             public const string HTTP_PROTOCOL = "http://";
             public const string HTTPS_PROTOCOL = "https://";
         }
-        
-        // Directory Names
+
+        // Directory Names.
         public static class Directories
         {
             public const string APACHE_CONF = "conf";
@@ -72,26 +72,18 @@ namespace Frostybee.Pwamp.Helpers
             public const int BORDER_WIDTH = 12;
             public const int BUTTON_BORDER_RADIUS = 12;
         }
-        
-        // Default Paths
+
+        // Default Paths.
         public static class DefaultPaths
         {
-            public const string XAMPP_ROOT = @"C:\xampp";
-            public const string APACHE_BASE = XAMPP_ROOT + @"\apache";
-            public const string MYSQL_BASE = XAMPP_ROOT + @"\mysql";
+            public const string PAMPP_ROOT = @"C:\pwamp\apps";
+            public const string APACHE_BASE = PAMPP_ROOT + @"\apache";
+            public const string MYSQL_BASE = PAMPP_ROOT + @"\mysql";
             public const string APACHE_BIN_PATH = APACHE_BASE + @"\bin";
             public const string MYSQL_BIN_PATH = MYSQL_BASE + @"\bin";
         }
-        
-        // Process Arguments Templates
-        public static class Arguments
-        {
-            public const string APACHE_CONFIG_ARG = "-f \"{0}\"";
-            public const string MYSQL_CONFIG_ARG = "--defaults-file={0} --console";
-            public const string MYSQL_SHUTDOWN_ARG = "shutdown -u root";
-        }
-        
-        // Message Templates
+
+        // Message Templates.
         public static class Messages
         {
             public const string PORT_IN_USE = "Port {0} is in use. {1} server cannot be started.";

@@ -369,7 +369,7 @@ namespace Frostybee.Pwamp.Controls
         {
             if (ServerManager != null) return true;
             
-            LogMessage(AppConstants.Messages.SERVER_MANAGER_NOT_INITIALIZED, LogType.Debug);
+            //LogMessage(AppConstants.Messages.SERVER_MANAGER_NOT_INITIALIZED, LogType.Debug);
             
             try
             {
@@ -378,7 +378,7 @@ namespace Frostybee.Pwamp.Controls
                 {
                     ServerManager.ErrorOccurred += HandleServerLogError;
                     ServerManager.StatusChanged += HandleServerLogMessage;
-                    LogMessage(AppConstants.Messages.SERVER_MANAGER_REINITIALIZED, LogType.Info);
+                    //LogMessage(AppConstants.Messages.SERVER_MANAGER_REINITIALIZED, LogType.Info);
                     return true;
                 }
                 else

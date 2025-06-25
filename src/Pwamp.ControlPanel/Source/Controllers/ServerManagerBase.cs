@@ -56,23 +56,23 @@ namespace Frostybee.Pwamp.Controllers
         }
 
         //FIXME: Remove this method if it is not needed.
-        protected virtual void LogMessage(string message)
+        protected virtual void LogMessage(string message, LogType logType = LogType.Info)
         {
             if (!string.IsNullOrWhiteSpace(message))
             {
-                StatusChanged?.Invoke(this, new ServerLogEventArgs(message, LogType.Info));
+                StatusChanged?.Invoke(this, new ServerLogEventArgs(message, logType));
             }
 
         }
 
         //FIXME: Remove this method if it is not needed.
-        protected virtual void LogError(string message)
+        protected virtual void LogError(string message, LogType logType = LogType.Error)
         {
             // Note: This method might be redundant. However, it is good to keep it for now just in case we want
             // to log errors on the GUI differently in the future.
             if (!string.IsNullOrWhiteSpace(message))
             {
-                ErrorOccurred?.Invoke(this, new ServerLogEventArgs(message, LogType.Error));
+                ErrorOccurred?.Invoke(this, new ServerLogEventArgs(message, logType));
             }
         }
 
@@ -126,7 +126,7 @@ namespace Frostybee.Pwamp.Controllers
                     LogError($"Has exited with code: {_serverProcess.ExitCode}");
                 };
                 //TODO: Pass the process ID to the main form.
-                LogMessage($"Started successfully (PID: {_serverProcess.Id})");
+                LogMessage($"Started successfully (PID: {_serverProcess.Id})", LogType.Success);
                 return true;
             }
             catch (Exception ex)
@@ -191,7 +191,7 @@ namespace Frostybee.Pwamp.Controllers
                 //-- 1) First off, we attempt a graceful process shutdown.
                 if (await PerformGracefulShutdown())
                 {
-                    LogMessage($"Stopped gracefully!");
+                    LogMessage($"Stopped gracefully!", LogType.Success);
                     return true;
                 }
                 else

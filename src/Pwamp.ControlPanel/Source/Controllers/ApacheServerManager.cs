@@ -28,7 +28,7 @@ namespace Frostybee.Pwamp.Controllers
         {
             if (!string.IsNullOrEmpty(_configPath))
             {
-                return string.Format(AppConstants.Arguments.APACHE_CONFIG_ARG, _configPath);
+                return string.Format("-f \"{0}\"", _configPath);
             }
             return string.Empty;
         }
