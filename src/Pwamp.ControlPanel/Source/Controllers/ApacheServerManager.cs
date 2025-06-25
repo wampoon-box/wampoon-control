@@ -28,15 +28,13 @@ namespace Frostybee.Pwamp.Controllers
         {
             if (!string.IsNullOrEmpty(_configPath))
             {
-                return $"-f \"{_configPath}\"";
+                return string.Format(AppConstants.Arguments.APACHE_CONFIG_ARG, _configPath);
             }
-            // No additional arguments if config path is not provided.
             return string.Empty;
         }
         protected override int GetStartupDelay()
         {
-            // Allocate 2 seconds delay needed for Apache to start up.
-            return 2000;
+            return AppConstants.Timeouts.APACHE_STARTUP_DELAY_MS;
         }
 
         protected override ProcessStartInfo GetProcessStartInfo()
@@ -72,6 +70,11 @@ namespace Frostybee.Pwamp.Controllers
                 return false;
             }
 
+            if (!ValidateExecutableExists())
+            {
+                return false;
+            }
+
             try
             {
                 // Attach to the console of the Apache process
@@ -93,9 +96,9 @@ namespace Frostybee.Pwamp.Controllers
 
                     // Wait for a moment for Apache to shut down
                     // You might need to adjust the timeout.
-                    _serverProcess.WaitForExit(5000);
+                    _serverProcess.WaitForExit(AppConstants.Timeouts.PROCESS_WAIT_TIMEOUT_MS);
                     //var shutdownCompleted = await Task.Run(() => _serverProcess.WaitForExit(5000));
-                    await Task.Delay(3000);
+                    await Task.Delay(AppConstants.Timeouts.GRACEFUL_SHUTDOWN_DELAY_MS);
                     if (_serverProcess.HasExited)
                     {
                         LogMessage("Stopped successfully (Ctrl+C sent).");

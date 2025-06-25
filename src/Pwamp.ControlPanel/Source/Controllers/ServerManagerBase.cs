@@ -45,6 +45,16 @@ namespace Frostybee.Pwamp.Controllers
         protected abstract int GetStartupDelay();
         protected abstract ProcessStartInfo GetProcessStartInfo();
 
+        protected bool ValidateExecutableExists()
+        {
+            if (!File.Exists(_executablePath))
+            {
+                LogError(string.Format(AppConstants.Messages.EXECUTABLE_NOT_FOUND, _executablePath));
+                return false;
+            }
+            return true;
+        }
+
         //FIXME: Remove this method if it is not needed.
         protected virtual void LogMessage(string message)
         {
@@ -210,7 +220,7 @@ namespace Frostybee.Pwamp.Controllers
                 LogMessage($"Stopping it forcefully...");
                 _serverProcess.Kill();
                 //_serverProcess.WaitForExit();
-                bool exited = await Task.Run(() => _serverProcess.WaitForExit(5000));
+                bool exited = await Task.Run(() => _serverProcess.WaitForExit(AppConstants.Timeouts.PROCESS_WAIT_TIMEOUT_MS));
 
                 if (exited)
                 {

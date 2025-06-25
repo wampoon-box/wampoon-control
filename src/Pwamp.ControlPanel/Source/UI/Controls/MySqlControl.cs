@@ -23,7 +23,7 @@ namespace Frostybee.Pwamp.Controls
             ServiceName = PackageType.MariaDB.ToServerName();
             DisplayName = "MariaDB Server";
             // Default MySQL port, change if needed.
-            PortNumber = 3306; 
+            PortNumber = AppConstants.Ports.MYSQL_DEFAULT; 
             lblServerIcon.Text = "🗄️"; 
             btnServerAdmin.Text = "phpMyAdmin";
 
@@ -35,12 +35,17 @@ namespace Frostybee.Pwamp.Controls
                 LogMessage($"Initializing server settings... ", LogType.Info);
                 lblServerTitle.Text = DisplayName;
                 // Default admin URL, might need to adjust it to make it use the actual port number.
-                ServerAdminUri = $"http://localhost/phpmyadmin"; 
-                _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLServerManager>(ServerDefinitions.MariaDB.Name);            
-                ServerManager = _mysqlManager;
+                ServerAdminUri = AppConstants.Urls.PHPMYADMIN_URL;
 
-                _mysqlManager.ErrorOccurred += LogError;
-                _mysqlManager.StatusChanged += LogMessage;
+                EnsureServerManagerInitialized();
+
+                //_mysqlManager = new MySQLServerManager(
+                //    ServerPathManager.GetExecutablePath(PackageType.MariaDB.ToServerName()),
+                //    ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName()));
+                //ServerManager = _mysqlManager;
+
+                //_mysqlManager.ErrorOccurred += HandleServerLogError;
+                //_mysqlManager.StatusChanged += HandleServerLogMessage;
 
                 // Set the config file path for the "Open Config File" menu item.
                 ConfigFilePath = ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName());
@@ -53,36 +58,14 @@ namespace Frostybee.Pwamp.Controls
             }
         }
 
-        private void LogMessage(object sender, ServerLogEventArgs e)
+        protected override void InitializeServerManager()
         {
-            //AddLog(string.Format(LanguageManager._("{0} Service is disabled."), ModuleName), LogType.Debug);
-            LogMessage(e.Message, e.LogType);
+            _mysqlManager = new MySQLServerManager(
+                ServerPathManager.GetExecutablePath(PackageType.MariaDB.ToServerName()),
+                ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName()));
+            ServerManager = _mysqlManager;
         }
 
-        private void LogError(object sender, ServerLogEventArgs e)
-        {
-            LogMessage(e.Message, e.LogType);
-            MainForm.Instance?.AddErrorLog(PackageType.MySQL.ToServerName(), e.Message);
-        }
-         
-        internal bool IsRunning()
-        {
-            return _mysqlManager != null && _mysqlManager.IsRunning;
-        }
-
-        private bool CheckPort(int port, bool showDialog = true)
-        {
-            if (NetworkPortHelper.IsPortInUse(port))
-            {
-                if (showDialog)
-                {
-                    MessageBox.Show($"Port {port} is in use. MySQL server cannot be started.", "Port In Use",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                return false;
-            }
-            return true;
-        }
 
         protected override async void BtnStart_Click(object sender, EventArgs e)
         {
@@ -90,42 +73,19 @@ namespace Frostybee.Pwamp.Controls
             {
                 if (!CheckPort(PortNumber, false))
                 {
-                    LogMessage($"Port {PortNumber} is in use. Cannot start {ServiceName}.", LogType.Warning);
-                    MessageBox.Show($"Port {PortNumber} is in use. Please close the application using this port and try again.", 
-                                  "Port In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (ServerManager == null)
+                if (!EnsureServerManagerInitialized())
                 {
-                    LogMessage("Server manager is not initialized. Attempting to reinitialize...", LogType.Warning);
-                    
-                    try
-                    {
-                        _mysqlManager = ServerManagerFactory.CreateServerManager<MySQLServerManager>(ServerDefinitions.MariaDB.Name);
-                        _mysqlManager.ErrorOccurred += LogError;
-                        _mysqlManager.StatusChanged += LogMessage;
-                        ServerManager = _mysqlManager;
-                        LogMessage("Server manager reinitialized successfully.", LogType.Info);
-                    }
-                    catch (Exception initEx)
-                    {
-                        ErrorLogHelper.LogExceptionInfo(initEx);
-                        LogMessage($"Failed to reinitialize server manager: {initEx.Message}", LogType.Error);
-                        MessageBox.Show($"Cannot start {ServiceName}: Server manager initialization failed.\n\n{initEx.Message}", 
-                                      "Initialization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    return;
                 }
 
                 base.BtnStart_Click(sender, e);
             }
             catch (Exception ex)
             {
-                ErrorLogHelper.LogExceptionInfo(ex);
-                LogMessage($"Error starting {ServiceName}: {ex.Message}", LogType.Error);
-                MessageBox.Show($"Error starting {ServiceName}: {ex.Message}", "Startup Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //ExceptionHandlerUtils.HandleUIException(ex, "starting", ServiceName, this);
                 btnStart.Enabled = true;
                 UpdateStatus(ServerStatus.Stopped);
             }
@@ -136,8 +96,8 @@ namespace Frostybee.Pwamp.Controls
             {
                 if (_mysqlManager != null)
                 {
-                    _mysqlManager.ErrorOccurred -= LogError;
-                    _mysqlManager.StatusChanged -= LogMessage;
+                    _mysqlManager.ErrorOccurred -= HandleServerLogError;
+                    _mysqlManager.StatusChanged -= HandleServerLogMessage;
                     _mysqlManager.Dispose();
                     _mysqlManager = null;
                 }

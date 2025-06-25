@@ -232,8 +232,8 @@ namespace Frostybee.Pwamp.UI
                 }
                 // Clean up managers on application exit.
                 bool hasRunningServices =
-                                         ((_apacheModule != null && _apacheModule.IsRunning()) ||
-                                          (_mySqlModule != null && _mySqlModule.IsRunning()));
+                                         ((_apacheModule != null && _apacheModule.IsServerRunning()) ||
+                                          (_mySqlModule != null && _mySqlModule.IsServerRunning()));
 
                 if (hasRunningServices)
                 {

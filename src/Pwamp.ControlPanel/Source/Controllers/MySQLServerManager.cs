@@ -25,20 +25,19 @@ namespace Frostybee.Pwamp.Controllers
             {
                 FileName = _executablePath,
                 Arguments = GetStartArguments(),
-                UseShellExecute = false, 
-                CreateNoWindow = true, 
-                RedirectStandardError = true, 
-                RedirectStandardOutput = true, 
-                WindowStyle = ProcessWindowStyle.Normal,         
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                WindowStyle = ProcessWindowStyle.Normal,
             };
         }
 
         protected override string GetStartArguments()
         {
-
             if (!string.IsNullOrEmpty(_configPath))
             {
-                return $"--defaults-file={_configPath} --console";
+                return string.Format(AppConstants.Arguments.MYSQL_CONFIG_ARG, _configPath);
             }
             return string.Empty;
         }
@@ -48,13 +47,12 @@ namespace Frostybee.Pwamp.Controllers
         /// <returns>The command to shutdown MySQL/MariaDB server. </returns>
         private string GetStopArguments()
         {
-            return "shutdown -u root";
+            return AppConstants.Arguments.MYSQL_SHUTDOWN_ARG;
         }
 
         protected override int GetStartupDelay()
         {
-            // Allocate 3 seconds delay needed for MySQL to start up.
-            return 3000;
+            return AppConstants.Timeouts.MYSQL_STARTUP_DELAY_MS;
         }
 
         protected override async Task<bool> PerformGracefulShutdown()
@@ -67,9 +65,8 @@ namespace Frostybee.Pwamp.Controllers
 
             try
             {
-                if (!File.Exists(_executablePath))
+                if (!ValidateExecutableExists())
                 {
-                    LogError($"Executable not found: {_executablePath}");
                     return false;
                 }
 

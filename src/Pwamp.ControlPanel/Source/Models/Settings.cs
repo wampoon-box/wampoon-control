@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using Frostybee.Pwamp.Helpers;
 
 namespace Frostybee.Pwamp.Models
 {
@@ -19,12 +20,12 @@ namespace Frostybee.Pwamp.Models
 
         public Settings()
         {
-            // Default values
-            ApacheExePath = @"C:\xampp\apache\bin\httpd.exe";
-            ApacheWorkingDir = @"C:\xampp\apache\bin";
-            MySqlExePath = @"C:\xampp\mysql\bin\mysqld.exe";
-            MySqlWorkingDir = @"C:\xampp\mysql\bin";
-            PhpMyAdminUrl = "http://localhost/phpmyadmin/";
+            // Default values using AppConstants
+            ApacheExePath = Path.Combine(AppConstants.DefaultPaths.APACHE_BIN_PATH, AppConstants.FileNames.APACHE_EXECUTABLE);
+            ApacheWorkingDir = AppConstants.DefaultPaths.APACHE_BIN_PATH;
+            MySqlExePath = Path.Combine(AppConstants.DefaultPaths.MYSQL_BIN_PATH, AppConstants.FileNames.MYSQL_EXECUTABLE);
+            MySqlWorkingDir = AppConstants.DefaultPaths.MYSQL_BIN_PATH;
+            PhpMyAdminUrl = AppConstants.Urls.PHPMYADMIN_URL;
         }
     }
 }
