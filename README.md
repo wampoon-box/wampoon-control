@@ -1,110 +1,89 @@
 # WAMPoon Control Panel
 
-An application for managing Apache and MySQL/MariaDB servers in a local development environment. This control panel provides an intuitive interface for starting, stopping, and monitoring your web development stack.
+A lightweight Windows application for managing Apache and MySQL/MariaDB servers during web development. WAMPoon Control Panel eliminates the hassle of manually starting and stopping servers through command line interfaces.
 
-## Features
+## What It Does
 
-### Server Management
-- **Apache HTTP Server Control**: Start, stop, and monitor Apache web server,
-- **MySQL/MariaDB Database Control**: Start, stop, and monitor database server,
-- **Graceful Shutdown**: Properly terminate servers using appropriate shutdown commands,
-- **Bulk Operations**: Start or stop all servers simultaneously.
+WAMPoon Control Panel gives you point-and-click control over your local development servers:
 
-### User Interface
-- **System Tray Integration**: Minimize to system tray for background operation,
-- **Single Instance**: Prevents multiple instances from running simultaneously,
-- **Context Menus**: Right-click actions for quick access,
-- **Status Indicators**: Visual feedback for server states.
+- Start and stop Apache HTTP Server with a single click
+- Manage MySQL/MariaDB database server operations
+- Monitor server status in real-time through integrated logging
+- Control all servers at once or individually
+- Run quietly in your system tray when minimized
 
-## Requirements
+The application handles proper server shutdown procedures and prevents conflicts by ensuring only one instance runs at a time.
 
-### System Requirements
-- **Operating System**: Windows 10 or later
-- **Framework**: .NET Framework 4.8 
-- **Architecture**: Any CPU (x86/x64)
-- **Memory**: Minimum 512 MB RAM
-- **Disk Space**: ~50 MB for application
+## System Requirements
 
-### Server Requirements
-- **Apache**: Apache HTTP Server 2.4+ (httpd.exe)
-- **Database**: MariaDB 10.3+ (mariadbd.exe)
-- **Configuration**: Valid httpd.conf and my.ini configuration files
+**Operating System:** Windows 10 or later  
+**Runtime:** .NET Framework 4.8 (already included in Windows 10 or later)  
+
+**Server Software:**
+- Apache HTTP Server 2.4 or newer
+- MariaDB 10.3 or newer (or compatible MySQL installation)
+- Properly configured httpd.conf and my.ini files
 
 
-## Usage
+## Getting Started
 
-### Starting the Application
-1. Launch `PwampoonControl.exe`
-2. The control panel will initialize and detect your server installations,
-3. Use the server control buttons to start/stop individual servers,
-4. Monitor server status through the real-time log display.
+1. Run `PwampoonControl.exe` to launch the application
+2. The control panel will scan for your Apache and MariaDB installations
+3. Click individual start/stop buttons to control each server
+4. Use "Start All" or "Stop All" for bulk operations
+5. Watch the log area for real-time server status updates
 
-### Server Operations
-- **Start Server**: Click the start button for Apache or MySQL,
-- **Stop Server**: Click the stop button to gracefully shutdown servers,
-- **Start All**: Use the "Start All" button to launch all servers,
-- **Stop All**: Use the "Stop All" button to shutdown all servers.
+Right-click the system tray icon for quick access to common functions when the window is minimized.
 
 
-## Troubleshooting
+## Common Issues
 
-### Common Issues
-1. **Port Already in Use**: Check if other applications are using ports 80 (Apache) or 3306 (MySQL),
-2. **Server Not Found**: Verify server installation paths in settings,
-4. **Configuration Errors**: Check server configuration files for syntax errors.
+**Servers won't start:** Check if ports 80 (Apache) or 3306 (MySQL) are already in use by other applications.
 
-### Getting Help
-- Check the diagnostic logs in the application
-- Review the error log files in the `wampoon-logs` directory
-- Enable debug logging for detailed troubleshooting information
+**"Server Not Found" errors:** Verify the installation paths in your application settings match your actual server locations.
 
-## Development
+**Configuration problems:** Review your httpd.conf and my.ini files for syntax errors or invalid paths.
 
-### Building from Source
-1. Clone the repository
-2. Open `Pwamp.ControlPanel.sln` in Visual Studio
-5. Run the application (F5)
+**Need more details:** Check the diagnostic logs within the application or look for error files in the `wampoon-logs` directory. Enable debug logging for verbose troubleshooting output.
 
+## Building from Source
+
+1. Clone this repository
+2. Open `Pwamp.ControlPanel.sln` in Visual Studio 2022 or later  
+3. Build the solution (Ctrl+Shift+B)
+4. Run with F5 or Ctrl+F5
 
 ## Contributing
 
-We welcome contributions! Please follow these steps:
+Contributions are welcome. Please:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Create a Pull Request
+3. Make your changes and test thoroughly
+4. Commit with clear, descriptive messages
+5. Push your branch and create a Pull Request
 
-## Bug Reports
+## Reporting Issues
 
-If you encounter any issues, please report them on our [GitHub Issues page](https://github.com/frostybee/pwamp-control/issues).
+Found a bug? Please check the [Issues page](https://github.com/orgs/wampoon-box/wampoon-control/issues) first to see if it's already been reported.
 
-### When reporting a bug, please include:
-- **Operating System**: Windows version and architecture
-- **Application Version**: Version number from the About dialog
-- **Steps to Reproduce**: Clear steps to reproduce the issue
-- **Expected Behavior**: What you expected to happen
-- **Actual Behavior**: What actually happened
-- **Error Messages**: Any error messages or logs
-- **Screenshots**: If applicable, add screenshots to help explain the problem
+**When reporting a new issue, include:**
+- Your Windows version and architecture
+- Application version (from About dialog)
+- Steps to reproduce the problem
+- What you expected vs. what actually happened
+- Any error messages or relevant log files
+- Screenshots if helpful
 
-### Before submitting a bug report:
-1. Check if the issue has already been reported
-2. Try the latest version of the application
-3. Review the troubleshooting section above
-4. Gather relevant log files from the `wampoon-logs` directory
+**Before reporting:**
+- Make sure you're using the latest version
+- Check the troubleshooting section above
+- Look for log files in the `wampoon-logs` directory
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-- **GitHub Repository**: [https://github.com/frostybee/pwamp-control](https://github.com/frostybee/pwamp-control)
-- **Issue Tracker**: [https://github.com/frostybee/pwamp-control/issues](https://github.com/frostybee/pwamp-control/issues)
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Note**: This application is designed for local development environments. For production use, consider proper server administration tools and security configurations.
-> Use at your own risk!
+> This tool is designed for local development environments. Production servers require proper administration tools and security hardening. Use at your own risk.
