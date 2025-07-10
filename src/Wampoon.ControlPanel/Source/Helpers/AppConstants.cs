@@ -60,7 +60,7 @@ namespace Wampoon.ControlPanel.Helpers
             public const string APACHE_BIN = "bin";
             public const string APACHE_LOGS = "logs";
             public const string MYSQL_DATA = "data";
-            public const string CUSTOM_CONFIG_NAME = "pwamp-custom-path.conf";
+            public const string CUSTOM_CONFIG_NAME = "wampoon-custom-path.conf";
         }
         
         // UI Constants
