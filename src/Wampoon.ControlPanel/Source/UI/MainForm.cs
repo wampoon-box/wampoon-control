@@ -40,6 +40,7 @@ namespace Wampoon.ControlPanel.UI
             Load += MainForm_Load;
 
             InitializeNotifyIcon();
+            InitializeBanner();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -103,6 +104,52 @@ namespace Wampoon.ControlPanel.UI
             contextMenu.Items.Add("Restore", null, (s, e) => RestoreFromTray());
             contextMenu.Items.Add("Exit", null, (s, e) => ExitApplication());
             _notifyIcon.ContextMenuStrip = contextMenu;
+        }
+
+        private void InitializeBanner()
+        {
+            try
+            {
+                // Create a professional icon using text since we don't have an image file
+                var bitmap = new Bitmap(40, 40);
+                using (var g = Graphics.FromImage(bitmap))
+                {
+                    // Create a gradient background
+                    using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                        new Rectangle(0, 0, 40, 40),
+                        Color.FromArgb(37, 99, 235),
+                        Color.FromArgb(59, 130, 246),
+                        45f))
+                    {
+                        g.FillEllipse(brush, 0, 0, 40, 40);
+                    }
+                    
+                    // Add a subtle border
+                    using (var pen = new Pen(Color.FromArgb(29, 78, 216), 2))
+                    {
+                        g.DrawEllipse(pen, 1, 1, 38, 38);
+                    }
+                    
+                    // Draw the "W" letter
+                    using (var font = new Font("Segoe UI", 18, FontStyle.Bold))
+                    {
+                        g.DrawString("W", font, new SolidBrush(Color.White), 10, 8);
+                    }
+                }
+                bannerIcon.Image = bitmap;
+                
+                // Update banner title with version if available
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                if (version != null)
+                {
+                    titleLabel.Text = $"WAMPoon Control Panel v{version.Major}.{version.Minor}";
+                }
+            }
+            catch
+            {
+                // If bitmap creation fails, hide the icon
+                bannerIcon.Visible = false;
+            }
         }
 
         private void NotifyIcon_DoubleClick(object sender, EventArgs e)
