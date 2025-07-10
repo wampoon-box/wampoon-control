@@ -1,4 +1,4 @@
-﻿using Frostybee.Pwamp.Enums;
+﻿using Wampoon.ControlPanel.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp.Helpers
+namespace Wampoon.ControlPanel.Helpers
 {
     
     internal class UiHelper

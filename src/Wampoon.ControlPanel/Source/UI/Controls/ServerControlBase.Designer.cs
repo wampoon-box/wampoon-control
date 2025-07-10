@@ -1,4 +1,4 @@
-﻿namespace Frostybee.Pwamp.Controls
+﻿namespace Wampoon.ControlPanel.Controls
 {
     partial class ServerControlBase
     {

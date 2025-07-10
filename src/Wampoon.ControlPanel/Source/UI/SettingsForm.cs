@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Models;
+using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.Models;
 
 namespace Frostybee.Forms.UI
 {

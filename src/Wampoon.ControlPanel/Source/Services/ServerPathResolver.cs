@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Frostybee.Pwamp.Interfaces;
-using Frostybee.Pwamp.Models;
+using Wampoon.ControlPanel.Interfaces;
+using Wampoon.ControlPanel.Models;
 
-namespace Frostybee.Pwamp.Services
+namespace Wampoon.ControlPanel.Services
 {
     public class ServerPathResolver
     {

@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Frostybee.Pwamp.Helpers
+namespace Wampoon.ControlPanel.Helpers
 {
     internal static class AppConstants
     {
-        public const string APP_NAME = "PWAMP Control Panel";        
+        public const string APP_NAME = "WAMPoon Control Panel";        
         public const string APP_VERSION = "1.0.0";
-        public const string GITHUB_REPO_URI = "https://github.com/frostybee/pwamp-control";
-        public const string APP_LOG_FOLDER = "pwamp-logs";
+        public const string GITHUB_REPO_URI = "https://github.com/wampoon-box/wampoon-control";
+        public const string APP_LOG_FOLDER = "wampoon-logs";
         public const string APP_LOG_FILE = "error.log";
         
         // Log file names.
@@ -76,7 +76,7 @@ namespace Frostybee.Pwamp.Helpers
         // Default Paths.
         public static class DefaultPaths
         {
-            public const string PAMPP_ROOT = @"C:\pwamp\apps";
+            public const string PAMPP_ROOT = @"C:\wampoon\apps";
             public const string APACHE_BASE = PAMPP_ROOT + @"\apache";
             public const string MYSQL_BASE = PAMPP_ROOT + @"\mysql";
             public const string APACHE_BIN_PATH = APACHE_BASE + @"\bin";

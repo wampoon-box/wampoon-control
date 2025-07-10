@@ -6,11 +6,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Enums;
-using static Frostybee.Pwamp.Helpers.ErrorLogHelper;
+using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.Enums;
+using static Wampoon.ControlPanel.Helpers.ErrorLogHelper;
 
-namespace Frostybee.Pwamp.UI
+namespace Wampoon.ControlPanel.UI
 {
     public partial class MainForm : Form
     {
@@ -80,7 +80,7 @@ namespace Frostybee.Pwamp.UI
         private void InitializeNotifyIcon()
         {
             _notifyIcon = new NotifyIcon();
-            _notifyIcon.Text = "PWAMP Control Panel";
+            _notifyIcon.Text = "WAMPoon Control Panel";
             _notifyIcon.Visible = false;
 
             try
@@ -235,7 +235,7 @@ namespace Frostybee.Pwamp.UI
                     e.Cancel = true;
                     Hide();
                     _notifyIcon.Visible = true;
-                    //_notifyIcon.ShowBalloonTip(300, "PWAMP Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
+                    //_notifyIcon.ShowBalloonTip(300, "WAMPoon Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
                     return;
                 }
                 if (WindowState != FormWindowState.Normal)

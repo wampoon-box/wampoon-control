@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Frostybee.Pwamp.Models;
-using Frostybee.Pwamp.Services;
+using Wampoon.ControlPanel.Models;
+using Wampoon.ControlPanel.Services;
 
-namespace Frostybee.Pwamp.Controllers
+namespace Wampoon.ControlPanel.Controllers
 {
     /// <summary>
     /// Facade for server path management using composed services.

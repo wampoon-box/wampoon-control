@@ -1,16 +1,16 @@
-﻿using Frostybee.Pwamp.Controllers;
-using Frostybee.Pwamp.Enums;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.UI;
+﻿using Wampoon.ControlPanel.Controllers;
+using Wampoon.ControlPanel.Enums;
+using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.UI;
 using System;
 using System.Data;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Frostybee.Pwamp.Helpers.ErrorLogHelper;
+using static Wampoon.ControlPanel.Helpers.ErrorLogHelper;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Frostybee.Pwamp.Controls
+namespace Wampoon.ControlPanel.Controls
 {
     public partial class ServerControlBase : UserControl
     {

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp.UI
+namespace Wampoon.ControlPanel.UI
 {
     partial class MainForm
     {
@@ -49,9 +49,9 @@ namespace Frostybee.Pwamp.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this._apacheServerModule = new Frostybee.Pwamp.Controls.ApacheControl();
-            this._mySqlServerModule = new Frostybee.Pwamp.Controls.MySqlControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this._apacheServerModule = new Wampoon.ControlPanel.Controls.ApacheControl();
+            this._mySqlServerModule = new Wampoon.ControlPanel.Controls.MySqlControl();
             this.logsGroupBox.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
@@ -171,18 +171,18 @@ namespace Frostybee.Pwamp.UI
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.titleLabel.Location = new System.Drawing.Point(20, 15);
+            this.titleLabel.Location = new System.Drawing.Point(7, 7);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(310, 32);
+            this.titleLabel.Size = new System.Drawing.Size(298, 32);
             this.titleLabel.TabIndex = 0;
-            this.titleLabel.Text = "🚀 PWAMP Control Panel";
+            this.titleLabel.Text = "WAMPoon Control Panel";
             // 
             // subtitleLabel
             // 
             this.subtitleLabel.AutoSize = true;
             this.subtitleLabel.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.subtitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.subtitleLabel.Location = new System.Drawing.Point(67, 47);
+            this.subtitleLabel.Location = new System.Drawing.Point(9, 41);
             this.subtitleLabel.Name = "subtitleLabel";
             this.subtitleLabel.Size = new System.Drawing.Size(337, 19);
             this.subtitleLabel.TabIndex = 1;
@@ -317,6 +317,17 @@ namespace Frostybee.Pwamp.UI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Server Management";
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.logsGroupBox);
+            this.panel1.Location = new System.Drawing.Point(12, 415);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(758, 372);
+            this.panel1.TabIndex = 10;
+            // 
             // _apacheServerModule
             // 
             this._apacheServerModule.BackColor = System.Drawing.Color.White;
@@ -335,17 +346,6 @@ namespace Frostybee.Pwamp.UI
             this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
             this._mySqlServerModule.TabIndex = 7;
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.logsGroupBox);
-            this.panel1.Location = new System.Drawing.Point(12, 415);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(758, 372);
-            this.panel1.TabIndex = 10;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -358,7 +358,7 @@ namespace Frostybee.Pwamp.UI
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "PWAMP Control Panel";
+            this.Text = "WAMPoon Control Panel";
             this.logsGroupBox.ResumeLayout(false);
             this.logTabControl.ResumeLayout(false);
             this.outputTab.ResumeLayout(false);

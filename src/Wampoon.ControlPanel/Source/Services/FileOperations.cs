@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Frostybee.Pwamp.Interfaces;
+using Wampoon.ControlPanel.Interfaces;
 
-namespace Frostybee.Pwamp.Services
+namespace Wampoon.ControlPanel.Services
 {
     public class FileOperations : IFileOperations
     {

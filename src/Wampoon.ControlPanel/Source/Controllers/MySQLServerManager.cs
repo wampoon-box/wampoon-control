@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Enums;
+using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.Enums;
 
-namespace Frostybee.Pwamp.Controllers
+namespace Wampoon.ControlPanel.Controllers
 {
     internal class MySQLServerManager : ServerManagerBase
     {

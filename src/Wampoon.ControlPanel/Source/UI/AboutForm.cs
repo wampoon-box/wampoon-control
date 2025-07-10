@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using Frostybee.Pwamp.Helpers;
+using Wampoon.ControlPanel.Helpers;
 
-namespace Frostybee.Pwamp.UI
+namespace Wampoon.ControlPanel.UI
 {
     public partial class AboutForm : Form
     {
@@ -20,7 +20,7 @@ namespace Frostybee.Pwamp.UI
             appNameLabel.Text = AppConstants.APP_NAME;
             appVersionLabel.Text = $"Version {AppConstants.APP_VERSION}";
             copyrightLabel.Text = "Copyright © 2025 - frostybee";
-            descriptionLabel.Text = "A comprehensive control panel for managing Apache and MySQL servers in the PWAMP (Portable Windows Apache MySQL PHP) environment.";
+            descriptionLabel.Text = "A comprehensive control panel for managing Apache and MySQL servers in the WAMPoon (Portable Windows Apache MySQL PHP) environment.";
         }
 
         private void GitHubRepoButton_Click(object sender, EventArgs e)

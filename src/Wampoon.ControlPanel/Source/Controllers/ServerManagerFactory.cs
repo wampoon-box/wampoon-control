@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Frostybee.Pwamp.Helpers;
-using static Frostybee.Pwamp.Helpers.ErrorLogHelper;
+using Wampoon.ControlPanel.Helpers;
+using static Wampoon.ControlPanel.Helpers.ErrorLogHelper;
 
-namespace Frostybee.Pwamp.Controllers
+namespace Wampoon.ControlPanel.Controllers
 {
     /// <summary>
     /// Extension methods for ServerManagerBase to work with the path manager.

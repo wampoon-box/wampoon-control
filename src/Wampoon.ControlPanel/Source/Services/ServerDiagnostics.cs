@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Frostybee.Pwamp.Enums;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Interfaces;
-using Frostybee.Pwamp.Models;
+using Wampoon.ControlPanel.Enums;
+using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.Interfaces;
+using Wampoon.ControlPanel.Models;
 
-namespace Frostybee.Pwamp.Services
+namespace Wampoon.ControlPanel.Services
 {
     public class ServerDiagnostics
     {
@@ -51,7 +51,7 @@ namespace Frostybee.Pwamp.Services
                 var apacheDefinition = ServerDefinitions.GetByName(PackageType.Apache.ToServerName());
                 var diagnosticLines = CreateApacheDiagnosticLines(apacheDefinition);
                 
-                var logDir = Path.Combine(_pathResolver.ApplicationDirectory, "pwamp-logs");
+                var logDir = Path.Combine(_pathResolver.ApplicationDirectory, "wampoon-logs");
                 var logFile = Path.Combine(logDir, "apache-diagnostics.log");
                 
                 if (!_fileOperations.DirectoryExists(logDir))
