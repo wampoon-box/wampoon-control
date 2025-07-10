@@ -127,7 +127,7 @@ namespace Wampoon.ControlPanel.UI
             this.errorTab.Location = new System.Drawing.Point(4, 24);
             this.errorTab.Name = "errorTab";
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.errorTab.Size = new System.Drawing.Size(732, 321);
+            this.errorTab.Size = new System.Drawing.Size(823, 370);
             this.errorTab.TabIndex = 1;
             this.errorTab.Text = "MariaDB Logs";
             this.errorTab.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@ namespace Wampoon.ControlPanel.UI
             this._rtxtErrorLog.Name = "_rtxtErrorLog";
             this._rtxtErrorLog.ReadOnly = true;
             this._rtxtErrorLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtErrorLog.Size = new System.Drawing.Size(726, 315);
+            this._rtxtErrorLog.Size = new System.Drawing.Size(817, 364);
             this._rtxtErrorLog.TabIndex = 0;
             this._rtxtErrorLog.Text = "";
             // 
@@ -151,7 +151,7 @@ namespace Wampoon.ControlPanel.UI
             this.accessTab.Location = new System.Drawing.Point(4, 24);
             this.accessTab.Name = "accessTab";
             this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(732, 321);
+            this.accessTab.Size = new System.Drawing.Size(823, 370);
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
@@ -160,7 +160,7 @@ namespace Wampoon.ControlPanel.UI
             // 
             this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(234)))), ((int)(((byte)(238)))));
+            this.headerPanel.BackColor = System.Drawing.Color.MidnightBlue;
             this.headerPanel.Controls.Add(this.titleLabel);
             this.headerPanel.Controls.Add(this.subtitleLabel);
             this.headerPanel.Controls.Add(this.bannerIcon);
@@ -173,8 +173,8 @@ namespace Wampoon.ControlPanel.UI
             // 
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
-            this.titleLabel.Location = new System.Drawing.Point(86, 8);
+            this.titleLabel.ForeColor = System.Drawing.Color.White;
+            this.titleLabel.Location = new System.Drawing.Point(95, 8);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(298, 32);
             this.titleLabel.TabIndex = 0;
@@ -184,8 +184,8 @@ namespace Wampoon.ControlPanel.UI
             // 
             this.subtitleLabel.AutoSize = true;
             this.subtitleLabel.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.subtitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(99)))));
-            this.subtitleLabel.Location = new System.Drawing.Point(88, 42);
+            this.subtitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(213)))), ((int)(((byte)(219)))));
+            this.subtitleLabel.Location = new System.Drawing.Point(97, 42);
             this.subtitleLabel.Name = "subtitleLabel";
             this.subtitleLabel.Size = new System.Drawing.Size(345, 19);
             this.subtitleLabel.TabIndex = 1;
@@ -194,7 +194,7 @@ namespace Wampoon.ControlPanel.UI
             // bannerIcon
             // 
             this.bannerIcon.BackColor = System.Drawing.Color.Transparent;
-            this.bannerIcon.Location = new System.Drawing.Point(27, 11);
+            this.bannerIcon.Location = new System.Drawing.Point(37, 11);
             this.bannerIcon.Name = "bannerIcon";
             this.bannerIcon.Size = new System.Drawing.Size(40, 40);
             this.bannerIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -224,7 +224,7 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.grpHelpers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
-            this.grpHelpers.Location = new System.Drawing.Point(25, 241);
+            this.grpHelpers.Location = new System.Drawing.Point(25, 250);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
             this.grpHelpers.Size = new System.Drawing.Size(813, 76);
@@ -332,7 +332,7 @@ namespace Wampoon.ControlPanel.UI
             // _apacheServerModule
             // 
             this._apacheServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this._apacheServerModule.Location = new System.Drawing.Point(19, 27);
+            this._apacheServerModule.Location = new System.Drawing.Point(10, 27);
             this._apacheServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._apacheServerModule.Name = "_apacheServerModule";
             this._apacheServerModule.Size = new System.Drawing.Size(335, 178);
@@ -341,7 +341,7 @@ namespace Wampoon.ControlPanel.UI
             // _mySqlServerModule
             // 
             this._mySqlServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this._mySqlServerModule.Location = new System.Drawing.Point(380, 27);
+            this._mySqlServerModule.Location = new System.Drawing.Point(419, 23);
             this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._mySqlServerModule.Name = "_mySqlServerModule";
             this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);

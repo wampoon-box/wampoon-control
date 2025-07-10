@@ -139,10 +139,10 @@ namespace Wampoon.ControlPanel.UI
                 bannerIcon.Image = bitmap;
                 
                 // Update banner title with version if available
-                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                if (version != null)
+                var version = SystemHelper.GetFormattedInstallerVersion();
+                if (!string.IsNullOrEmpty(version))
                 {
-                    titleLabel.Text = $"WAMPoon Control Panel v{version.Major}.{version.Minor}";
+                    titleLabel.Text = $"WAMPoon Control Panel {version}";
                 }
             }
             catch
