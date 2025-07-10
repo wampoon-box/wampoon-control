@@ -142,17 +142,55 @@ namespace Frostybee.Pwamp.UI
         {
             if (control == null) return;
             
-            var logEntry = includeTimestamp 
-                ? $"[{DateTime.Now:HH:mm:ss}] [{module}] {message}"
-                : $"[{module}] {message}";
-            
             if (control.InvokeRequired)
             {
-                control.Invoke(new Action(() => AddLogInternal(control, logEntry, logType)));
+                control.Invoke(new Action(() => AddLogToControlInternal(control, module, message, logType, includeTimestamp)));
             }
             else
             {
-                AddLogInternal(control, logEntry, logType);
+                AddLogToControlInternal(control, module, message, logType, includeTimestamp);
+            }
+        }
+
+        private void AddLogToControlInternal(RichTextBox control, string module, string message, LogType logType, bool includeTimestamp)
+        {
+            if (control == null) return;
+
+            Color messageColor = UiHelper.GetLogColor(logType);
+            
+            control.SelectionStart = control.TextLength;
+            control.SelectionLength = 0;
+
+            if (includeTimestamp)
+            {
+                // Add timestamp in gray.
+                var timestamp = DateTime.Now.ToString("HH:mm:ss");
+                control.SelectionColor = Color.Gray;
+                control.AppendText($"[{timestamp}] ");
+            }
+
+            // Add module in blue.
+            control.SelectionColor = Color.Blue;
+            control.AppendText($"[{module}] ");
+
+            // Add message in the log type color.
+            control.SelectionColor = messageColor;
+            control.AppendText($"{message}");
+
+            // Add new line.
+            control.AppendText(Environment.NewLine);
+
+            // Reset color.
+            control.SelectionColor = control.ForeColor;
+            control.ScrollToCaret();
+
+            // Limit log size.
+            if (control.Lines.Length > MAX_LOG_LINES)
+            {
+                var lines = control.Lines;
+                var newLines = new string[TRIMMED_LOG_LINES];
+                Array.Copy(lines, lines.Length - TRIMMED_LOG_LINES, newLines, 0, TRIMMED_LOG_LINES);
+                control.Lines = newLines;
             }
         }
 
@@ -172,28 +210,7 @@ namespace Frostybee.Pwamp.UI
         }
 
 
-        private void AddLogInternal(RichTextBox txtLogControl, string logEntry, LogType logType)
-        {
-            if (txtLogControl == null) return;
-
-            Color textColor = UiHelper.GetLogColor(logType);
-
-            txtLogControl.SelectionStart = txtLogControl.TextLength;
-            txtLogControl.SelectionLength = 0;
-            txtLogControl.SelectionColor = textColor;
-            txtLogControl.AppendText(logEntry + Environment.NewLine);
-            txtLogControl.SelectionColor = txtLogControl.ForeColor;
-            txtLogControl.ScrollToCaret();
-
-            // Limit log size.
-            if (txtLogControl.Lines.Length > MAX_LOG_LINES)
-            {
-                var lines = txtLogControl.Lines;
-                var newLines = new string[TRIMMED_LOG_LINES];
-                Array.Copy(lines, lines.Length - TRIMMED_LOG_LINES, newLines, 0, TRIMMED_LOG_LINES);
-                txtLogControl.Lines = newLines;
-            }            
-        }        
+        
 
         private void BtnOpenExplorer_Click(object sender, EventArgs e)
         {
