@@ -206,7 +206,7 @@ namespace Wampoon.ControlPanel.UI
         
         public void AddMySqlLog(string log, LogType logType = LogType.Default)
         {
-            AddLogToControl(_rtxtErrorLog, "MySQL", log, logType, false);
+            AddLogToControl(_rtxtErrorLog, "MariaDB", log, logType, false);
         }
 
 

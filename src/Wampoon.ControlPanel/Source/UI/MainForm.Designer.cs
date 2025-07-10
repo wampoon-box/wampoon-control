@@ -127,7 +127,7 @@ namespace Wampoon.ControlPanel.UI
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
             this.errorTab.Size = new System.Drawing.Size(732, 321);
             this.errorTab.TabIndex = 1;
-            this.errorTab.Text = "MySQL Logs";
+            this.errorTab.Text = "MariaDB Logs";
             this.errorTab.UseVisualStyleBackColor = true;
             // 
             // _rtxtErrorLog
@@ -184,9 +184,9 @@ namespace Wampoon.ControlPanel.UI
             this.subtitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(99)))));
             this.subtitleLabel.Location = new System.Drawing.Point(9, 41);
             this.subtitleLabel.Name = "subtitleLabel";
-            this.subtitleLabel.Size = new System.Drawing.Size(337, 19);
+            this.subtitleLabel.Size = new System.Drawing.Size(345, 19);
             this.subtitleLabel.TabIndex = 1;
-            this.subtitleLabel.Text = "Monitor and control your Apache and MySQL servers";
+            this.subtitleLabel.Text = "Monitor and control your Apache and MariaDB servers";
             // 
             // panel2
             // 
