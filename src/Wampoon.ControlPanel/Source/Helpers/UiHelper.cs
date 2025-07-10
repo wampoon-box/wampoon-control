@@ -1,4 +1,4 @@
-﻿using Frostybee.Pwamp.Enums;
+﻿using Wampoon.ControlPanel.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,33 +7,61 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp.Helpers
+namespace Wampoon.ControlPanel.Helpers
 {
     
     internal class UiHelper
     {
+        // Enhanced color palette for better readability.
+        public static class Colors
+        {
+            // Main background colors - slightly darker than default.
+            public static readonly Color MainBackground = Color.FromArgb(240, 242, 245);
+            public static readonly Color PanelBackground = Color.FromArgb(230, 234, 238);
+            public static readonly Color CardBackground = Color.FromArgb(255, 255, 255);
+            
+            // Text colors.
+            public static readonly Color PrimaryText = Color.FromArgb(31, 41, 55);
+            public static readonly Color SecondaryText = Color.FromArgb(75, 85, 99);
+            public static readonly Color MutedText = Color.FromArgb(107, 114, 128);
+
+            // Log colors with better contrast.
+            public static readonly Color LogError = Color.FromArgb(220, 38, 38);
+            public static readonly Color LogSuccess = Color.FromArgb(22, 163, 74);
+            public static readonly Color LogInfo = Color.FromArgb(0, 255, 255);
+            public static readonly Color LogWarning = Color.FromArgb(245, 158, 11);
+            public static readonly Color LogDebug = Color.FromArgb(107, 114, 128);
+            public static readonly Color LogDefault = Color.FromArgb(31, 41, 55);
+            
+            // Module name color (different from LogInfo)
+            public static readonly Color LogModule = Color.FromArgb(37, 99, 235);
+
+            // Log background colors.
+            public static readonly Color LogBackground = Color.FromArgb(17, 24, 39);
+            public static readonly Color LogBackgroundLight = Color.FromArgb(249, 250, 251);
+        }
         internal static Color GetLogColor(LogType logType)
         {
             Color textColor;
             switch (logType)
             {
                 case LogType.Error:
-                    textColor = Color.Red;
+                    textColor = Colors.LogError;
                     break;
                 case LogType.Info:
-                    textColor = Color.Blue;
+                    textColor = Colors.LogInfo;
                     break;
                 case LogType.Success:
-                    textColor = Color.Green;
+                    textColor = Colors.LogSuccess;
                     break;
                 case LogType.Warning:
-                    textColor = Color.Orange;
+                    textColor = Colors.LogWarning;
                     break;
                 case LogType.DebugDetails:
-                    textColor = Color.DarkGray;
+                    textColor = Colors.LogDebug;
                     break;
                 default:
-                    textColor = Color.Black;
+                    textColor = Colors.LogDefault;
                     break;
             }
             return textColor;
@@ -99,17 +127,17 @@ namespace Frostybee.Pwamp.Helpers
 
         internal static void ApplyLeftBorderToButton(Button button, Color borderColor)
         {
-            // Keep the button's existing flat appearance but clear its border
+            // Keep the button's existing flat appearance but clear its border.
             button.FlatAppearance.BorderSize = 0;
-            
-            // Store the border color in the button's Tag property
+
+            // Store the border color in the button's Tag property.
             button.Tag = borderColor;
-            
-            // Remove any existing paint handler and add the new one
+
+            // Remove any existing paint handler and add the new one.
             button.Paint -= Button_Paint;
             button.Paint += Button_Paint;
-            
-            // Force the button to repaint
+
+            // Force the button to repaint.
             button.Invalidate();
         }
 
@@ -130,7 +158,7 @@ namespace Frostybee.Pwamp.Helpers
                     int radius = AppConstants.UI.BUTTON_BORDER_RADIUS;
                     int height = button.Height;
 
-                    // Create the rounded left border path - draw over the existing button
+                    // Create the rounded left border path - draw over the existing button.
                     if (height > radius * 2)
                     {
                         path.AddArc(0, 0, radius * 2, radius * 2, 180, 90);
@@ -144,7 +172,7 @@ namespace Frostybee.Pwamp.Helpers
                     }
                     else
                     {
-                        // Fallback for very small buttons - just draw a simple left border
+                        // Fallback for very small buttons - just draw a simple left border.
                         Rectangle borderRect = new Rectangle(0, 0, borderWidth, height);
                         e.Graphics.FillRectangle(borderBrush, borderRect);
                     }

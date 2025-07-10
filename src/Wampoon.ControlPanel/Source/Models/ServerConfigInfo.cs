@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Frostybee.Pwamp.Models
+namespace Wampoon.ControlPanel.Models
 {
     /// <summary>
     /// Information about a server's configuration file.

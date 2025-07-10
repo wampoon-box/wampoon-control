@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Frostybee.Pwamp.Interfaces
+namespace Wampoon.ControlPanel.Interfaces
 {
     public interface IFileOperations
     {

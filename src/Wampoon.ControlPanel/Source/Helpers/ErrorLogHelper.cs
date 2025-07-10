@@ -1,4 +1,4 @@
-﻿using Frostybee.Pwamp.UI;
+﻿using Wampoon.ControlPanel.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp.Helpers
+namespace Wampoon.ControlPanel.Helpers
 {
 
     internal static class ErrorLogHelper

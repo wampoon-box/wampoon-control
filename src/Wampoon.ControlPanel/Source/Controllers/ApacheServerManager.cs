@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Frostybee.Pwamp.Helpers.ErrorLogHelper;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.Enums;
+using static Wampoon.ControlPanel.Helpers.ErrorLogHelper;
+using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.Enums;
 
-namespace Frostybee.Pwamp.Controllers
+namespace Wampoon.ControlPanel.Controllers
 {
     internal class ApacheServerManager : ServerManagerBase
     {

@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Frostybee.Pwamp.Helpers;
+using Wampoon.ControlPanel.Helpers;
 
-namespace Frostybee.Pwamp.Models
+namespace Wampoon.ControlPanel.Models
 {
     public class Settings
     {

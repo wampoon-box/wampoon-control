@@ -7,13 +7,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Frostybee.Pwamp.Models;
-using Frostybee.Pwamp.Controllers;
-using Frostybee.Pwamp.Enums;
-using Frostybee.Pwamp.Helpers;
-using static Frostybee.Pwamp.Helpers.ErrorLogHelper;
+using Wampoon.ControlPanel.Models;
+using Wampoon.ControlPanel.Controllers;
+using Wampoon.ControlPanel.Enums;
+using Wampoon.ControlPanel.Helpers;
+using static Wampoon.ControlPanel.Helpers.ErrorLogHelper;
 
-namespace Frostybee.Pwamp.Controls
+namespace Wampoon.ControlPanel.Controls
 {
     internal partial class ApacheControl : ServerControlBase, IDisposable
     {

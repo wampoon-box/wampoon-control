@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp.UI
+namespace Wampoon.ControlPanel.UI
 {
     partial class AboutForm
     {
@@ -85,7 +85,7 @@ namespace Frostybee.Pwamp.UI
             this.appNameLabel.Name = "appNameLabel";
             this.appNameLabel.Size = new System.Drawing.Size(172, 30);
             this.appNameLabel.TabIndex = 0;
-            this.appNameLabel.Text = "PWAMP Admin";
+            this.appNameLabel.Text = "WAMPoon Control Panel";
             // 
             // appVersionLabel
             // 
@@ -117,7 +117,7 @@ namespace Frostybee.Pwamp.UI
             this.descriptionLabel.Name = "descriptionLabel";
             this.descriptionLabel.Size = new System.Drawing.Size(414, 50);
             this.descriptionLabel.TabIndex = 3;
-            this.descriptionLabel.Text = "A comprehensive control panel for managing Apache and MySQL servers in the PWAMP " +
+            this.descriptionLabel.Text = "A comprehensive control panel for managing Apache and MySQL servers in the WAMPoon " +
     "environment.";
             // 
             // linksGroupBox
@@ -208,7 +208,7 @@ namespace Frostybee.Pwamp.UI
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About - PWAMP Admin";
+            this.Text = "About - WAMPoon Admin";
             this.mainPanel.ResumeLayout(false);
             this.appInfoGroupBox.ResumeLayout(false);
             this.appInfoGroupBox.PerformLayout();

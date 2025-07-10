@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Frostybee.Pwamp.Enums
+namespace Wampoon.ControlPanel.Enums
 {
     public enum ServerStatus
     {

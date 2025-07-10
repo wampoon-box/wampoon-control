@@ -1,4 +1,4 @@
-namespace Frostybee.Pwamp.UI
+namespace Wampoon.ControlPanel.UI
 {
     partial class ErrorReportForm
     {

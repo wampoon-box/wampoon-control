@@ -35,7 +35,7 @@ namespace Frostybee.Forms.UI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 400);
             this.StartPosition = FormStartPosition.CenterParent;
-            this.Text = "PWAMP Settings";
+            this.Text = "WAMPoon Settings";
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

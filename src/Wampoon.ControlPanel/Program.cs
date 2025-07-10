@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Frostybee.Pwamp.Helpers;
-using Frostybee.Pwamp.UI;
+using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.UI;
 
-namespace Frostybee.Pwamp
+namespace Wampoon.ControlPanel
 {
     internal static class Program
     {

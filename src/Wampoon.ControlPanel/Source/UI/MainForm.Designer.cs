@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Frostybee.Pwamp.UI
+namespace Wampoon.ControlPanel.UI
 {
     partial class MainForm
     {
@@ -49,8 +49,8 @@ namespace Frostybee.Pwamp.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this._apacheServerModule = new Frostybee.Pwamp.Controls.ApacheControl();
-            this._mySqlServerModule = new Frostybee.Pwamp.Controls.MySqlControl();
+            this._apacheServerModule = new Wampoon.ControlPanel.Controls.ApacheControl();
+            this._mySqlServerModule = new Wampoon.ControlPanel.Controls.MySqlControl();
             this.panel1 = new System.Windows.Forms.Panel();
             this.logsGroupBox.SuspendLayout();
             this.logTabControl.SuspendLayout();
@@ -70,7 +70,7 @@ namespace Frostybee.Pwamp.UI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.logsGroupBox.Controls.Add(this.logTabControl);
             this.logsGroupBox.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.logsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.logsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.logsGroupBox.Location = new System.Drawing.Point(9, 3);
             this.logsGroupBox.Name = "logsGroupBox";
             this.logsGroupBox.Size = new System.Drawing.Size(746, 379);
@@ -106,10 +106,10 @@ namespace Frostybee.Pwamp.UI
             // 
             // _rtxtActionsLog
             // 
-            this._rtxtActionsLog.BackColor = System.Drawing.Color.Black;
+            this._rtxtActionsLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(39)))));
             this._rtxtActionsLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._rtxtActionsLog.Font = new System.Drawing.Font("Consolas", 10F);
-            this._rtxtActionsLog.ForeColor = System.Drawing.Color.Black;
+            this._rtxtActionsLog.Font = new System.Drawing.Font("Cascadia Code", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._rtxtActionsLog.ForeColor = System.Drawing.Color.White;
             this._rtxtActionsLog.Location = new System.Drawing.Point(3, 3);
             this._rtxtActionsLog.Name = "_rtxtActionsLog";
             this._rtxtActionsLog.ReadOnly = true;
@@ -132,10 +132,10 @@ namespace Frostybee.Pwamp.UI
             // 
             // _rtxtErrorLog
             // 
-            this._rtxtErrorLog.BackColor = System.Drawing.Color.White;
+            this._rtxtErrorLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this._rtxtErrorLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._rtxtErrorLog.Font = new System.Drawing.Font("Consolas", 10F);
-            this._rtxtErrorLog.ForeColor = System.Drawing.Color.Red;
+            this._rtxtErrorLog.Font = new System.Drawing.Font("Cascadia Code", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._rtxtErrorLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
             this._rtxtErrorLog.Location = new System.Drawing.Point(3, 3);
             this._rtxtErrorLog.Name = "_rtxtErrorLog";
             this._rtxtErrorLog.ReadOnly = true;
@@ -158,7 +158,7 @@ namespace Frostybee.Pwamp.UI
             // 
             this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(234)))), ((int)(((byte)(238)))));
             this.headerPanel.Controls.Add(this.titleLabel);
             this.headerPanel.Controls.Add(this.subtitleLabel);
             this.headerPanel.Location = new System.Drawing.Point(21, 7);
@@ -170,19 +170,19 @@ namespace Frostybee.Pwamp.UI
             // 
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.titleLabel.Location = new System.Drawing.Point(20, 15);
+            this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
+            this.titleLabel.Location = new System.Drawing.Point(7, 7);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(310, 32);
+            this.titleLabel.Size = new System.Drawing.Size(298, 32);
             this.titleLabel.TabIndex = 0;
-            this.titleLabel.Text = "🚀 PWAMP Control Panel";
+            this.titleLabel.Text = "WAMPoon Control Panel";
             // 
             // subtitleLabel
             // 
             this.subtitleLabel.AutoSize = true;
             this.subtitleLabel.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.subtitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.subtitleLabel.Location = new System.Drawing.Point(67, 47);
+            this.subtitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(99)))));
+            this.subtitleLabel.Location = new System.Drawing.Point(9, 41);
             this.subtitleLabel.Name = "subtitleLabel";
             this.subtitleLabel.Size = new System.Drawing.Size(337, 19);
             this.subtitleLabel.TabIndex = 1;
@@ -204,14 +204,14 @@ namespace Frostybee.Pwamp.UI
             // 
             this.grpHelpers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpHelpers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.grpHelpers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(234)))), ((int)(((byte)(238)))));
             this.grpHelpers.Controls.Add(this.btnQuit);
             this.grpHelpers.Controls.Add(this.btnStartAllServers);
             this.grpHelpers.Controls.Add(this.btnAbout);
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.grpHelpers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.grpHelpers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.grpHelpers.Location = new System.Drawing.Point(18, 320);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
@@ -304,11 +304,11 @@ namespace Frostybee.Pwamp.UI
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(234)))), ((int)(((byte)(238)))));
             this.groupBox1.Controls.Add(this._apacheServerModule);
             this.groupBox1.Controls.Add(this._mySqlServerModule);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.groupBox1.Location = new System.Drawing.Point(19, 90);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
@@ -319,7 +319,7 @@ namespace Frostybee.Pwamp.UI
             // 
             // _apacheServerModule
             // 
-            this._apacheServerModule.BackColor = System.Drawing.Color.White;
+            this._apacheServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this._apacheServerModule.Location = new System.Drawing.Point(19, 27);
             this._apacheServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._apacheServerModule.Name = "_apacheServerModule";
@@ -328,7 +328,7 @@ namespace Frostybee.Pwamp.UI
             // 
             // _mySqlServerModule
             // 
-            this._mySqlServerModule.BackColor = System.Drawing.Color.White;
+            this._mySqlServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this._mySqlServerModule.Location = new System.Drawing.Point(380, 27);
             this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._mySqlServerModule.Name = "_mySqlServerModule";
@@ -350,7 +350,7 @@ namespace Frostybee.Pwamp.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(802, 802);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
@@ -358,7 +358,7 @@ namespace Frostybee.Pwamp.UI
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "PWAMP Control Panel";
+            this.Text = "WAMPoon Control Panel";
             this.logsGroupBox.ResumeLayout(false);
             this.logTabControl.ResumeLayout(false);
             this.outputTab.ResumeLayout(false);
