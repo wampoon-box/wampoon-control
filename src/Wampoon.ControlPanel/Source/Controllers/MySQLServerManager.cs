@@ -70,7 +70,7 @@ namespace Wampoon.ControlPanel.Controllers
                     return false;
                 }
 
-                LogMessage($"Stopping..");
+                LogMessage($"Stopping...");
 
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {

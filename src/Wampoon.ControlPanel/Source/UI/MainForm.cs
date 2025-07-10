@@ -163,14 +163,14 @@ namespace Wampoon.ControlPanel.UI
 
             if (includeTimestamp)
             {
-                // Add timestamp in gray.
+                // Add timestamp in muted color.
                 var timestamp = DateTime.Now.ToString("HH:mm:ss");
-                control.SelectionColor = Color.Gray;
+                control.SelectionColor = UiHelper.Colors.MutedText;
                 control.AppendText($"[{timestamp}] ");
             }
 
-            // Add module in blue.
-            control.SelectionColor = Color.Blue;
+            // Add module in dedicated module color.
+            control.SelectionColor = UiHelper.Colors.LogModule;
             control.AppendText($"[{module}] ");
 
             // Add message in the log type color.
@@ -180,8 +180,8 @@ namespace Wampoon.ControlPanel.UI
             // Add new line.
             control.AppendText(Environment.NewLine);
 
-            // Reset color.
-            control.SelectionColor = control.ForeColor;
+            // Reset color to default based on background.
+            control.SelectionColor = control.BackColor == UiHelper.Colors.LogBackground ? Color.White : UiHelper.Colors.LogDefault;
             control.ScrollToCaret();
 
             // Limit log size.
