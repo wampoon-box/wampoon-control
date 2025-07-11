@@ -7,7 +7,7 @@
     <ProjectGuid>{5EE00C4C-1062-4353-8170-E119B1F4F48E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Frostybee.PwampAdmin</RootNamespace>
-    <AssemblyName>WampooControl</AssemblyName>
+    <AssemblyName>WampoonControl</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -38,6 +38,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>full_size_app_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -143,6 +146,7 @@
     <EmbeddedResource Include="Source\UI\Controls\ServerControlBase.resx">
       <DependentUpon>ServerControlBase.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="Notes.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

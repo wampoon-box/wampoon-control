@@ -75,7 +75,7 @@ namespace Wampoon.ControlPanel.UI
             this.logsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.logsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.logsGroupBox.Name = "logsGroupBox";
-            this.logsGroupBox.Size = new System.Drawing.Size(837, 428);
+            this.logsGroupBox.Size = new System.Drawing.Size(727, 290);
             this.logsGroupBox.TabIndex = 0;
             this.logsGroupBox.TabStop = false;
             this.logsGroupBox.Text = "📋 Server Logs";
@@ -92,7 +92,7 @@ namespace Wampoon.ControlPanel.UI
             this.logTabControl.Location = new System.Drawing.Point(6, 24);
             this.logTabControl.Name = "logTabControl";
             this.logTabControl.SelectedIndex = 0;
-            this.logTabControl.Size = new System.Drawing.Size(831, 398);
+            this.logTabControl.Size = new System.Drawing.Size(715, 260);
             this.logTabControl.TabIndex = 1;
             // 
             // outputTab
@@ -102,7 +102,7 @@ namespace Wampoon.ControlPanel.UI
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTab.Size = new System.Drawing.Size(823, 370);
+            this.outputTab.Size = new System.Drawing.Size(707, 232);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
@@ -116,7 +116,7 @@ namespace Wampoon.ControlPanel.UI
             this._rtxtActionsLog.Name = "_rtxtActionsLog";
             this._rtxtActionsLog.ReadOnly = true;
             this._rtxtActionsLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtActionsLog.Size = new System.Drawing.Size(817, 364);
+            this._rtxtActionsLog.Size = new System.Drawing.Size(701, 226);
             this._rtxtActionsLog.TabIndex = 0;
             this._rtxtActionsLog.Text = "";
             // 
@@ -127,7 +127,7 @@ namespace Wampoon.ControlPanel.UI
             this.errorTab.Location = new System.Drawing.Point(4, 24);
             this.errorTab.Name = "errorTab";
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.errorTab.Size = new System.Drawing.Size(823, 370);
+            this.errorTab.Size = new System.Drawing.Size(711, 232);
             this.errorTab.TabIndex = 1;
             this.errorTab.Text = "MariaDB Logs";
             this.errorTab.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@ namespace Wampoon.ControlPanel.UI
             this._rtxtErrorLog.Name = "_rtxtErrorLog";
             this._rtxtErrorLog.ReadOnly = true;
             this._rtxtErrorLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtErrorLog.Size = new System.Drawing.Size(817, 364);
+            this._rtxtErrorLog.Size = new System.Drawing.Size(705, 226);
             this._rtxtErrorLog.TabIndex = 0;
             this._rtxtErrorLog.Text = "";
             // 
@@ -151,7 +151,7 @@ namespace Wampoon.ControlPanel.UI
             this.accessTab.Location = new System.Drawing.Point(4, 24);
             this.accessTab.Name = "accessTab";
             this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(823, 370);
+            this.accessTab.Size = new System.Drawing.Size(711, 232);
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
@@ -166,7 +166,7 @@ namespace Wampoon.ControlPanel.UI
             this.headerPanel.Controls.Add(this.bannerIcon);
             this.headerPanel.Location = new System.Drawing.Point(0, 1);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(883, 71);
+            this.headerPanel.Size = new System.Drawing.Size(1010, 71);
             this.headerPanel.TabIndex = 8;
             // 
             // titleLabel
@@ -209,7 +209,7 @@ namespace Wampoon.ControlPanel.UI
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Location = new System.Drawing.Point(12, 75);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(850, 326);
+            this.panel2.Size = new System.Drawing.Size(731, 326);
             this.panel2.TabIndex = 9;
             // 
             // grpHelpers
@@ -224,10 +224,10 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.grpHelpers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
-            this.grpHelpers.Location = new System.Drawing.Point(25, 250);
+            this.grpHelpers.Location = new System.Drawing.Point(10, 241);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
-            this.grpHelpers.Size = new System.Drawing.Size(813, 76);
+            this.grpHelpers.Size = new System.Drawing.Size(721, 76);
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "⚡ Quick Actions";
@@ -240,7 +240,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuit.ForeColor = System.Drawing.Color.White;
-            this.btnQuit.Location = new System.Drawing.Point(621, 27);
+            this.btnQuit.Location = new System.Drawing.Point(581, 27);
             this.btnQuit.Name = "btnQuit";
             this.btnQuit.Size = new System.Drawing.Size(94, 37);
             this.btnQuit.TabIndex = 4;
@@ -256,7 +256,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStartAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStartAllServers.Location = new System.Drawing.Point(253, 27);
+            this.btnStartAllServers.Location = new System.Drawing.Point(213, 27);
             this.btnStartAllServers.Name = "btnStartAllServers";
             this.btnStartAllServers.Size = new System.Drawing.Size(94, 37);
             this.btnStartAllServers.TabIndex = 1;
@@ -272,7 +272,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
-            this.btnAbout.Location = new System.Drawing.Point(521, 27);
+            this.btnAbout.Location = new System.Drawing.Point(481, 27);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(94, 37);
             this.btnAbout.TabIndex = 3;
@@ -288,7 +288,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStopAllServers.Location = new System.Drawing.Point(357, 27);
+            this.btnStopAllServers.Location = new System.Drawing.Point(317, 27);
             this.btnStopAllServers.Name = "btnStopAllServers";
             this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
             this.btnStopAllServers.TabIndex = 2;
@@ -321,10 +321,10 @@ namespace Wampoon.ControlPanel.UI
             this.groupBox1.Controls.Add(this._mySqlServerModule);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
-            this.groupBox1.Location = new System.Drawing.Point(27, 12);
+            this.groupBox1.Location = new System.Drawing.Point(10, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
-            this.groupBox1.Size = new System.Drawing.Size(812, 219);
+            this.groupBox1.Size = new System.Drawing.Size(721, 219);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Server Management";
@@ -341,7 +341,7 @@ namespace Wampoon.ControlPanel.UI
             // _mySqlServerModule
             // 
             this._mySqlServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this._mySqlServerModule.Location = new System.Drawing.Point(419, 23);
+            this._mySqlServerModule.Location = new System.Drawing.Point(374, 27);
             this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._mySqlServerModule.Name = "_mySqlServerModule";
             this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
@@ -355,15 +355,15 @@ namespace Wampoon.ControlPanel.UI
             this.panel1.Controls.Add(this.logsGroupBox);
             this.panel1.Location = new System.Drawing.Point(13, 417);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(849, 421);
+            this.panel1.Size = new System.Drawing.Size(976, 419);
             this.panel1.TabIndex = 10;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(882, 850);
+            this.ClientSize = new System.Drawing.Size(746, 722);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.panel2);

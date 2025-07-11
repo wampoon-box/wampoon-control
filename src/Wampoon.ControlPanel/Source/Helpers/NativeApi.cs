@@ -51,6 +51,16 @@ namespace Wampoon.ControlPanel.Helpers
         [DllImport("user32.dll")]
         internal static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
+        [DllImport("shcore.dll")]
+        internal static extern int SetProcessDpiAwareness(ProcessDpiAwareness value);
+
         internal delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+        internal enum ProcessDpiAwareness
+        {
+            ProcessDpiUnaware = 0,
+            ProcessSystemDpiAware = 1,
+            ProcessPerMonitorDpiAware = 2
+        }
     }
 }

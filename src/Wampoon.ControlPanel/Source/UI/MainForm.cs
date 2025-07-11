@@ -31,7 +31,7 @@ namespace Wampoon.ControlPanel.UI
 
             Instance = this;
 
-            MinimumSize = new Size(850, 790);
+            MinimumSize = new Size(766, 761);
             StartPosition = FormStartPosition.Manual;
             CenterToScreen();
             SizeGripStyle = SizeGripStyle.Show;
