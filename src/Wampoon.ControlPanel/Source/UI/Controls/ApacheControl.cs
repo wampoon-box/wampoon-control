@@ -198,7 +198,7 @@ namespace Wampoon.ControlPanel.Controls
                 var configContent = new StringBuilder();
                 configContent.AppendLine(string.Format("Define SRVROOT \"{0}\"", _apacheDirectory));
                 configContent.AppendLine(string.Format("Define DOCROOT \"{0}\"", ServerPathManager.ApacheDocumentRoot));
-                configContent.AppendLine(string.Format("Define PWAMP_APPS_DIR \"{0}\"", ServerPathManager.AppsDirectory));
+                configContent.AppendLine(string.Format("Define WAMPOON_APPS_DIR \"{0}\"", ServerPathManager.AppsDirectory));
 
                 // Write the configuration to the file.
                 File.WriteAllText(_customConfigPath, configContent.ToString(), Encoding.UTF8);
