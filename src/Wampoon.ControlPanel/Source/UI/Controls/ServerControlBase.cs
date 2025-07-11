@@ -45,8 +45,13 @@ namespace Wampoon.ControlPanel.Controls
         {
             contextMenuTools.Items.Clear();
             
-            var configItem = contextMenuTools.Items.Add("📄 Open Config File");
+            var configItem = contextMenuTools.Items.Add("📄 View Config File (Read-Only)");
             configItem.Click += (s, e) => OpenConfigFile();
+            
+            var configLocationItem = contextMenuTools.Items.Add("📁 Open Config File Location");
+            configLocationItem.Click += (s, e) => OpenConfigFileLocation();
+            
+            contextMenuTools.Items.Add("-"); // Separator.
             
             var errorLogItem = contextMenuTools.Items.Add("📋 View Error Logs");
             errorLogItem.Click += (s, e) => OpenErrorLogs();
@@ -234,10 +239,50 @@ namespace Wampoon.ControlPanel.Controls
         protected virtual void OpenConfigFile()
         {
             var configPath = ServerPathManager.GetConfigPath(ServiceName);
-            OpenServerFile(configPath, "configuration file");
+            OpenServerFile(configPath, "configuration file", true); // Open config files in read-only mode
+        }
+
+        protected virtual void OpenConfigFileLocation()
+        {
+            try
+            {
+                var configPath = ServerPathManager.GetConfigPath(ServiceName);
+                if (string.IsNullOrEmpty(configPath))
+                {
+                    LogMessage("Configuration file path not configured.", LogType.Warning);
+                    MessageBox.Show($"Configuration file path not configured for {ServiceName}.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (System.IO.File.Exists(configPath))
+                {
+                    // Open Explorer and select the config file
+                    SystemHelper.ExecuteFile("explorer.exe", $"/select,\"{configPath}\"", System.Diagnostics.ProcessWindowStyle.Normal);
+                    LogMessage($"Opened configuration file location: {System.IO.Path.GetDirectoryName(configPath)}", LogType.Info);
+                }
+                else
+                {
+                    LogMessage($"Configuration file not found: {configPath}", LogType.Warning);
+                    MessageBox.Show($"Configuration file not found: {configPath}", "File Not Found", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error opening configuration file location: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening configuration file location: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         protected virtual void OpenServerFile(string filePath, string fileTypeDisplayName)
+        {
+            OpenServerFile(filePath, fileTypeDisplayName, false);
+        }
+
+        protected virtual void OpenServerFile(string filePath, string fileTypeDisplayName, bool readOnly)
         {
             try
             {
@@ -251,8 +296,15 @@ namespace Wampoon.ControlPanel.Controls
 
                 if (System.IO.File.Exists(filePath))
                 {
-                    SystemHelper.ExecuteFile("notepad.exe", filePath, System.Diagnostics.ProcessWindowStyle.Normal);
-                    LogMessage($"Opened {fileTypeDisplayName.ToLower()}: {filePath}", LogType.Info);
+                    if (readOnly)
+                    {
+                        OpenFileReadOnly(filePath, fileTypeDisplayName);
+                    }
+                    else
+                    {
+                        SystemHelper.ExecuteFile("notepad.exe", filePath, System.Diagnostics.ProcessWindowStyle.Normal);
+                        LogMessage($"Opened {fileTypeDisplayName.ToLower()}: {filePath}", LogType.Info);
+                    }
                 }
                 else
                 {
@@ -266,6 +318,53 @@ namespace Wampoon.ControlPanel.Controls
                 LogExceptionInfo(ex);
                 LogMessage($"Error opening {fileTypeDisplayName.ToLower()}: {ex.Message}", LogType.Error);
                 MessageBox.Show($"Error opening {fileTypeDisplayName.ToLower()}: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OpenFileReadOnly(string filePath, string fileTypeDisplayName)
+        {
+            string tempPath = null;
+            try
+            {
+                // Create a temporary directory and preserve the original filename
+                string tempDir = System.IO.Path.GetTempPath();
+                string originalFileName = System.IO.Path.GetFileName(filePath);
+                string tempFileName = $"{System.IO.Path.GetFileNameWithoutExtension(originalFileName)}_readonly{System.IO.Path.GetExtension(originalFileName)}";
+                tempPath = System.IO.Path.Combine(tempDir, tempFileName);
+                
+                // If temp file exists, remove it first (it might be read-only)
+                if (System.IO.File.Exists(tempPath))
+                {
+                    System.IO.File.SetAttributes(tempPath, System.IO.FileAttributes.Normal);
+                    System.IO.File.Delete(tempPath);
+                }
+                
+                System.IO.File.Copy(filePath, tempPath, true);
+                
+                // Set the temporary file as read-only
+                System.IO.File.SetAttributes(tempPath, System.IO.File.GetAttributes(tempPath) | System.IO.FileAttributes.ReadOnly);
+                
+                // Open the read-only copy
+                SystemHelper.ExecuteFile("notepad.exe", tempPath, System.Diagnostics.ProcessWindowStyle.Normal);
+                LogMessage($"Opened {fileTypeDisplayName.ToLower()} (read-only): {originalFileName}", LogType.Info);
+            }
+            catch (Exception ex)
+            {
+                // Clean up temp file if something went wrong
+                if (!string.IsNullOrEmpty(tempPath) && System.IO.File.Exists(tempPath))
+                {
+                    try
+                    {
+                        System.IO.File.SetAttributes(tempPath, System.IO.FileAttributes.Normal);
+                        System.IO.File.Delete(tempPath);
+                    }
+                    catch { }
+                }
+                
+                LogExceptionInfo(ex);
+                LogMessage($"Error opening {fileTypeDisplayName.ToLower()} in read-only mode: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening {fileTypeDisplayName.ToLower()} in read-only mode: {ex.Message}", "Error", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

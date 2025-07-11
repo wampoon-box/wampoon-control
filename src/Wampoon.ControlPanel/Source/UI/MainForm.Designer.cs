@@ -75,7 +75,7 @@ namespace Wampoon.ControlPanel.UI
             this.logsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.logsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.logsGroupBox.Name = "logsGroupBox";
-            this.logsGroupBox.Size = new System.Drawing.Size(727, 290);
+            this.logsGroupBox.Size = new System.Drawing.Size(736, 287);
             this.logsGroupBox.TabIndex = 0;
             this.logsGroupBox.TabStop = false;
             this.logsGroupBox.Text = "📋 Server Logs";
@@ -92,7 +92,7 @@ namespace Wampoon.ControlPanel.UI
             this.logTabControl.Location = new System.Drawing.Point(6, 24);
             this.logTabControl.Name = "logTabControl";
             this.logTabControl.SelectedIndex = 0;
-            this.logTabControl.Size = new System.Drawing.Size(715, 260);
+            this.logTabControl.Size = new System.Drawing.Size(724, 257);
             this.logTabControl.TabIndex = 1;
             // 
             // outputTab
@@ -102,7 +102,7 @@ namespace Wampoon.ControlPanel.UI
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTab.Size = new System.Drawing.Size(707, 232);
+            this.outputTab.Size = new System.Drawing.Size(716, 229);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
@@ -116,7 +116,7 @@ namespace Wampoon.ControlPanel.UI
             this._rtxtActionsLog.Name = "_rtxtActionsLog";
             this._rtxtActionsLog.ReadOnly = true;
             this._rtxtActionsLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtActionsLog.Size = new System.Drawing.Size(701, 226);
+            this._rtxtActionsLog.Size = new System.Drawing.Size(710, 223);
             this._rtxtActionsLog.TabIndex = 0;
             this._rtxtActionsLog.Text = "";
             // 
@@ -127,7 +127,7 @@ namespace Wampoon.ControlPanel.UI
             this.errorTab.Location = new System.Drawing.Point(4, 24);
             this.errorTab.Name = "errorTab";
             this.errorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.errorTab.Size = new System.Drawing.Size(711, 232);
+            this.errorTab.Size = new System.Drawing.Size(707, 232);
             this.errorTab.TabIndex = 1;
             this.errorTab.Text = "MariaDB Logs";
             this.errorTab.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@ namespace Wampoon.ControlPanel.UI
             this._rtxtErrorLog.Name = "_rtxtErrorLog";
             this._rtxtErrorLog.ReadOnly = true;
             this._rtxtErrorLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtErrorLog.Size = new System.Drawing.Size(705, 226);
+            this._rtxtErrorLog.Size = new System.Drawing.Size(701, 226);
             this._rtxtErrorLog.TabIndex = 0;
             this._rtxtErrorLog.Text = "";
             // 
@@ -151,7 +151,7 @@ namespace Wampoon.ControlPanel.UI
             this.accessTab.Location = new System.Drawing.Point(4, 24);
             this.accessTab.Name = "accessTab";
             this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(711, 232);
+            this.accessTab.Size = new System.Drawing.Size(707, 232);
             this.accessTab.TabIndex = 2;
             this.accessTab.Text = "Access Logs";
             this.accessTab.UseVisualStyleBackColor = true;
@@ -166,7 +166,7 @@ namespace Wampoon.ControlPanel.UI
             this.headerPanel.Controls.Add(this.bannerIcon);
             this.headerPanel.Location = new System.Drawing.Point(0, 1);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(1010, 71);
+            this.headerPanel.Size = new System.Drawing.Size(1019, 71);
             this.headerPanel.TabIndex = 8;
             // 
             // titleLabel
@@ -209,7 +209,7 @@ namespace Wampoon.ControlPanel.UI
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Location = new System.Drawing.Point(12, 75);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(731, 326);
+            this.panel2.Size = new System.Drawing.Size(740, 326);
             this.panel2.TabIndex = 9;
             // 
             // grpHelpers
@@ -227,7 +227,7 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.Location = new System.Drawing.Point(10, 241);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
-            this.grpHelpers.Size = new System.Drawing.Size(721, 76);
+            this.grpHelpers.Size = new System.Drawing.Size(730, 76);
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "⚡ Quick Actions";
@@ -324,7 +324,7 @@ namespace Wampoon.ControlPanel.UI
             this.groupBox1.Location = new System.Drawing.Point(10, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
-            this.groupBox1.Size = new System.Drawing.Size(721, 219);
+            this.groupBox1.Size = new System.Drawing.Size(730, 219);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Server Management";
@@ -355,7 +355,7 @@ namespace Wampoon.ControlPanel.UI
             this.panel1.Controls.Add(this.logsGroupBox);
             this.panel1.Location = new System.Drawing.Point(13, 417);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(976, 419);
+            this.panel1.Size = new System.Drawing.Size(985, 416);
             this.panel1.TabIndex = 10;
             // 
             // MainForm
@@ -363,7 +363,7 @@ namespace Wampoon.ControlPanel.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(746, 722);
+            this.ClientSize = new System.Drawing.Size(755, 719);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.panel2);
