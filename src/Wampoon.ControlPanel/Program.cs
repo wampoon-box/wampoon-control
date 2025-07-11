@@ -35,7 +35,23 @@ namespace Wampoon.ControlPanel
 
             try
             {
-                // No other instance is running, proceed with application startup.
+                // Set DPI awareness before initializing the application.
+                try
+                {
+                    int result = NativeApi.SetProcessDpiAwareness(NativeApi.ProcessDpiAwareness.ProcessPerMonitorDpiAware);
+                    if (result != 0) // S_OK is 0, non-zero indicates failure
+                    {
+                        // Fall back to system DPI awareness if per-monitor fails.
+                        result = NativeApi.SetProcessDpiAwareness(NativeApi.ProcessDpiAwareness.ProcessSystemDpiAware);
+                        // Continue regardless of second attempt result.
+                    }
+                }
+                catch
+                {
+                    // If API calls throw exceptions, continue without DPI awareness.
+                }
+
+                // No other instance is running, proceed with application startup.                
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());

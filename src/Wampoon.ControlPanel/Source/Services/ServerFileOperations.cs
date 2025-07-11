@@ -17,6 +17,11 @@ namespace Wampoon.ControlPanel.Services
 
         public bool OpenConfigFile(string serverName)
         {
+            return OpenConfigFile(serverName, true); // Default to read-only for config files.
+        }
+
+        public bool OpenConfigFile(string serverName, bool readOnly)
+        {
             try
             {
                 var configPath = _pathResolver.GetConfigPath(serverName);
@@ -25,10 +30,65 @@ namespace Wampoon.ControlPanel.Services
                     return false;
                 }
 
-                return _fileOperations.StartProcess(configPath);
+                if (readOnly)
+                {
+                    return OpenFileReadOnly(configPath);
+                }
+                else
+                {
+                    return _fileOperations.StartProcess(configPath);
+                }
             }
             catch
             {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Opens a config file in read-only mode.
+        /// We want to prevent users from unintentionally tempering with the content of a server config file.
+        /// </summary>
+        /// <param name="filePath">The path of the server config file to be opened.</param>
+        /// <returns></returns>
+        private bool OpenFileReadOnly(string filePath)
+        {
+            string tempPath = null;
+            try
+            {
+                // Create a temporary directory and preserve the original filename.
+                string tempDir = System.IO.Path.GetTempPath();
+                string originalFileName = System.IO.Path.GetFileName(filePath);
+                string tempFileName = $"{System.IO.Path.GetFileNameWithoutExtension(originalFileName)}_readonly{System.IO.Path.GetExtension(originalFileName)}";
+                tempPath = System.IO.Path.Combine(tempDir, tempFileName);
+
+                // If temp file exists, remove it first (it might be read-only).
+                if (System.IO.File.Exists(tempPath))
+                {
+                    System.IO.File.SetAttributes(tempPath, System.IO.FileAttributes.Normal);
+                    System.IO.File.Delete(tempPath);
+                }
+                
+                System.IO.File.Copy(filePath, tempPath, true);
+
+                // Set the temporary file as read-only.
+                System.IO.File.SetAttributes(tempPath, System.IO.File.GetAttributes(tempPath) | System.IO.FileAttributes.ReadOnly);
+
+                // Open the read-only copy.
+                return _fileOperations.StartProcess(tempPath);
+            }
+            catch
+            {
+                // Clean up temp file if something went wrong.
+                if (!string.IsNullOrEmpty(tempPath) && System.IO.File.Exists(tempPath))
+                {
+                    try
+                    {
+                        System.IO.File.SetAttributes(tempPath, System.IO.FileAttributes.Normal);
+                        System.IO.File.Delete(tempPath);
+                    }
+                    catch { }
+                }
                 return false;
             }
         }
@@ -43,6 +103,26 @@ namespace Wampoon.ControlPanel.Services
                 }
 
                 return _fileOperations.StartProcess(filePath);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool OpenConfigFileLocation(string serverName)
+        {
+            try
+            {
+                var configPath = _pathResolver.GetConfigPath(serverName);
+                if (string.IsNullOrEmpty(configPath) || !_fileOperations.FileExists(configPath))
+                {
+                    return false;
+                }
+
+                // Open the directory containing the config file.
+                var directoryPath = System.IO.Path.GetDirectoryName(configPath);
+                return _fileOperations.StartProcess(directoryPath);
             }
             catch
             {
