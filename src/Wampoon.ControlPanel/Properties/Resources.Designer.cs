@@ -39,7 +39,7 @@ namespace Wampoon.ControlPanel.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Wampoon.ControlPanelAdmin.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Wampoon.ControlPanel.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,12 +61,22 @@ namespace Wampoon.ControlPanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] pwamp_icon {
+        internal static System.Drawing.Bitmap close_16 {
             get {
-                object obj = ResourceManager.GetObject("pwamp-icon", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("close-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap close_64 {
+            get {
+                object obj = ResourceManager.GetObject("close-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -76,6 +86,16 @@ namespace Wampoon.ControlPanel.Properties {
         internal static System.Drawing.Bitmap quit_48 {
             get {
                 object obj = ResourceManager.GetObject("quit-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap restore_16 {
+            get {
+                object obj = ResourceManager.GetObject("restore-16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -107,6 +127,16 @@ namespace Wampoon.ControlPanel.Properties {
             get {
                 object obj = ResourceManager.GetObject("stop-64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] wampoon {
+            get {
+                object obj = ResourceManager.GetObject("wampoon", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

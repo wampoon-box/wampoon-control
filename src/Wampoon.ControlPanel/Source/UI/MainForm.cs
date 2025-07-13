@@ -63,35 +63,19 @@ namespace Wampoon.ControlPanel.UI
 
         private void SetFromIcon()
         {
-            try
-            {
-                byte[] pwamp_icon = Properties.Resources.pwamp_icon;
-                using (MemoryStream ms = new MemoryStream(pwamp_icon))
-                using (Bitmap bitmap = new Bitmap(ms))
-                {
-                    _iconHandle = bitmap.GetHicon();
-                    this.Icon = Icon.FromHandle(_iconHandle);
-                }
-            }
-            catch (Exception)
-            {
-            }
+            
         }
 
         private void InitializeNotifyIcon()
         {
             _notifyIcon = new NotifyIcon();
             _notifyIcon.Text = "WAMPoon Control Panel";
-            _notifyIcon.Visible = false;
+            _notifyIcon.Visible = true;  // Make it visible immediately for testing
 
+            // Set the icon - try the form's icon first, then fallback to system icon
             try
             {
-                byte[] pwamp_icon = Properties.Resources.pwamp_icon;
-                using (MemoryStream ms = new MemoryStream(pwamp_icon))
-                using (Bitmap bitmap = new Bitmap(ms))
-                {
-                    _notifyIcon.Icon = Icon.FromHandle(bitmap.GetHicon());
-                }
+                _notifyIcon.Icon = this.Icon ?? SystemIcons.Application;
             }
             catch (Exception)
             {
@@ -99,11 +83,7 @@ namespace Wampoon.ControlPanel.UI
             }
 
             _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
-
-            var contextMenu = new ContextMenuStrip();
-            contextMenu.Items.Add("Restore", null, (s, e) => RestoreFromTray());
-            contextMenu.Items.Add("Exit", null, (s, e) => ExitApplication());
-            _notifyIcon.ContextMenuStrip = contextMenu;
+            _notifyIcon.ContextMenuStrip = trayContextMenuStrip;
         }
 
         private void InitializeBanner()
@@ -159,22 +139,23 @@ namespace Wampoon.ControlPanel.UI
 
         private void RestoreFromTray()
         {
-            Show();
-            WindowState = FormWindowState.Normal;
-            _notifyIcon.Visible = false;
-            BringToFront();
-        }
-
-        private void ExitApplication()
-        {
+           
             // Bring form to front so user can see any confirmation dialogs
             if (WindowState == FormWindowState.Minimized || !Visible)
             {
                 Show();
+                _notifyIcon.Visible = false;
                 WindowState = FormWindowState.Normal;
                 BringToFront();
+                TopMost = true;
+                TopMost = false;
                 Activate();
             }
+        }
+
+        private void ExitApplication()
+        {
+            RestoreFromTray();
 
             var exitEventArgs = new FormClosingEventArgs(CloseReason.ApplicationExitCall, false);
             MainForm_FormClosing(this, exitEventArgs);
@@ -282,7 +263,9 @@ namespace Wampoon.ControlPanel.UI
                     e.Cancel = true;
                     Hide();
                     _notifyIcon.Visible = true;
-                    //_notifyIcon.ShowBalloonTip(300, "WAMPoon Control Panel", "Application minimized to system tray", ToolTipIcon.Info);
+                    AddLog("Application hidden to system tray", LogType.Info);
+                    // Force refresh the tray icon
+                    _notifyIcon.Text = "WAMPoon Control Panel - Running";
                     return;
                 }
                 if (WindowState != FormWindowState.Normal)
@@ -467,6 +450,17 @@ namespace Wampoon.ControlPanel.UI
             TopMost = true;
             TopMost = false;
         }
+
+        private void restoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RestoreFromTray();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExitApplication();
+        }
+
 
     }
 }
