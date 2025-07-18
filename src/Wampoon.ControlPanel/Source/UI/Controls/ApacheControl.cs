@@ -166,6 +166,7 @@ namespace Wampoon.ControlPanel.Controls
             _customConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
 
             ApplyCustomConfiguration();
+            UpdatePhpExtensionDir();
         }
 
         /// <summary>
@@ -296,6 +297,88 @@ namespace Wampoon.ControlPanel.Controls
         /// Checks if the httpd-alias.conf file exists.
         /// </summary>
         public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
+
+        /// <summary>
+        /// Updates the PHP extension_dir setting in php.ini to use the absolute path.
+        /// </summary>
+        private void UpdatePhpExtensionDir()
+        {
+            try
+            {
+                LogMessage("Updating php.ini extension_dir setting...", LogType.Info);
+                
+                // Get the php.ini file path.
+                var phpBaseDir = ServerPathManager.GetServerBaseDirectory(PackageType.PHP.ToServerName());
+                var phpIniPath = Path.Combine(phpBaseDir, "php.ini");
+                
+                // Check if php.ini exists
+                if (!File.Exists(phpIniPath))
+                {
+                    LogMessage($"PHP ini file not found: {phpIniPath}", LogType.Warning);
+                    return;
+                }
+                
+                // Get the PHP ext directory path.
+                var phpExtDir = Path.Combine(phpBaseDir, "ext");
+                
+                // Ensure the ext directory exists.
+                if (!Directory.Exists(phpExtDir))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(phpExtDir);
+                        LogMessage($"Created PHP ext directory: {phpExtDir}", LogType.Info);
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorLogHelper.LogExceptionInfo(ex);
+                        LogMessage($"Failed to create PHP ext directory: {ex.Message}", LogType.Error);
+                        return;
+                    }
+                }
+                
+                // Read the current php.ini content.
+                var phpIniContent = File.ReadAllText(phpIniPath);
+                
+                // Update the extension_dir setting.
+                // Look for existing extension_dir lines and replace them.
+                var lines = phpIniContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                bool extensionDirUpdated = false;
+                
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    var line = lines[i].Trim();
+                    
+                    // Check if this line contains extension_dir setting (commented or uncommented).
+                    if (line.StartsWith("extension_dir", StringComparison.OrdinalIgnoreCase) || 
+                        line.StartsWith(";extension_dir", StringComparison.OrdinalIgnoreCase))
+                    {
+                        lines[i] = $"extension_dir = \"{phpExtDir}\"";
+                        extensionDirUpdated = true;
+                        break;
+                    }
+                }
+                
+                // If no extension_dir line was found, add one.
+                if (!extensionDirUpdated)
+                {
+                    var updatedContent = phpIniContent + Environment.NewLine + $"extension_dir = \"{phpExtDir}\"";
+                    File.WriteAllText(phpIniPath, updatedContent);
+                }
+                else
+                {
+                    var updatedContent = string.Join(Environment.NewLine, lines);
+                    File.WriteAllText(phpIniPath, updatedContent);
+                }
+                
+                LogMessage($"✓ Updated php.ini extension_dir to: {phpExtDir}", LogType.Info);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogHelper.LogExceptionInfo(ex);
+                LogMessage($"✗ Failed to update php.ini extension_dir: {ex.Message}", LogType.Error);
+            }
+        }
 
         #endregion
 

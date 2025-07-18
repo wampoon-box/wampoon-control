@@ -62,7 +62,7 @@ namespace Wampoon.ControlPanel.Models
         /// </summary>
         public static ServerDefinitionInfo[] GetAll()
         {
-            return new ServerDefinitionInfo[] { Apache, MariaDB , phpMyAdmin};
+            return new ServerDefinitionInfo[] { Apache, MariaDB, php, phpMyAdmin};
         }
 
         /// <summary>
