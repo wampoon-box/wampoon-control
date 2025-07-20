@@ -16,7 +16,7 @@ namespace Wampoon.ControlPanel.Helpers
     public static class PhpConfigurationHelper
     {
         /// <summary>
-        /// Updates PHP ini settings including extension_dir, curl.cainfo, and browscap to use absolute paths.
+        /// Updates PHP ini settings including extension_dir, curl.cainfo, browscap, and session.save_path to use absolute paths.
         /// </summary>
         /// <param name="logAction">Optional action to log messages during the process</param>
         /// <returns>True if the update was successful, false otherwise</returns>
@@ -48,6 +48,9 @@ namespace Wampoon.ControlPanel.Helpers
                 var browscapPath = Path.Combine(phpBaseDir, "extras", "browscap.ini").Replace('\\', '/');
                 var browscapExists = File.Exists(browscapPath.Replace('/', '\\'));
                 
+                // Get the absolute path to sessions directory.
+                var sessionsPath = Path.Combine(phpBaseDir, "sessions").Replace('\\', '/');
+                
                 // Read the current php.ini content.
                 var phpIniContent = File.ReadAllText(phpIniPath);
                 
@@ -56,6 +59,7 @@ namespace Wampoon.ControlPanel.Helpers
                 bool extensionDirUpdated = false;
                 bool curlCaInfoUpdated = false;
                 bool browscapUpdated = false;
+                bool sessionSavePathUpdated = false;
                 
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -82,6 +86,13 @@ namespace Wampoon.ControlPanel.Helpers
                         lines[i] = $"browscap = \"{browscapPath}\"";
                         browscapUpdated = true;
                     }
+                    // Check if this line contains session.save_path setting (commented or uncommented).
+                    else if (!sessionSavePathUpdated && (line.StartsWith("session.save_path", StringComparison.OrdinalIgnoreCase) || 
+                        line.StartsWith(";session.save_path", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        lines[i] = $"session.save_path = \"{sessionsPath}\"";
+                        sessionSavePathUpdated = true;
+                    }
                 }
                 
                 // Add any missing settings at the end.
@@ -98,6 +109,10 @@ namespace Wampoon.ControlPanel.Helpers
                 {
                     additionalLines.Add($"browscap = \"{browscapPath}\"");
                 }
+                if (!sessionSavePathUpdated)
+                {
+                    additionalLines.Add($"session.save_path = \"{sessionsPath}\"");
+                }
                 
                 // Write the updated content.
                 var updatedContent = string.Join(Environment.NewLine, lines);
@@ -108,11 +123,12 @@ namespace Wampoon.ControlPanel.Helpers
                 
                 File.WriteAllText(phpIniPath, updatedContent);
                 
-                //logAction?.Invoke($"✓ Updated php.ini extension_dir to: {phpExtDir}", LogType.Info);
-                //logAction?.Invoke($"✓ Updated php.ini curl.cainfo to: {curlCaBundlePath}", LogType.Info);
+                logAction?.Invoke($"✓ Updated php.ini extension_dir to: {phpExtDir}", LogType.Info);
+                logAction?.Invoke($"✓ Updated php.ini curl.cainfo to: {curlCaBundlePath}", LogType.Info);
+                logAction?.Invoke($"✓ Updated php.ini session.save_path to: {sessionsPath}", LogType.Info);
                 if (browscapExists)
                 {
-                  //  logAction?.Invoke($"✓ Updated php.ini browscap to: {browscapPath}", LogType.Info);
+                    logAction?.Invoke($"✓ Updated php.ini browscap to: {browscapPath}", LogType.Info);
                 }
                 else
                 {
