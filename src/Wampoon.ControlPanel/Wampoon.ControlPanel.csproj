@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5EE00C4C-1062-4353-8170-E119B1F4F48E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Frostybee.PwampAdmin</RootNamespace>
+    <RootNamespace>Wampoon.ControlPanel</RootNamespace>
     <AssemblyName>WampoonControl</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -37,7 +37,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>full_size_app_icon.ico</ApplicationIcon>
+    <ApplicationIcon>wampoon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -58,6 +58,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Source\Controllers\ApacheServerManager.cs" />
     <Compile Include="Source\Controllers\MySQLServerManager.cs" />
     <Compile Include="Source\Controllers\ServerManagerBase.cs" />
@@ -66,6 +76,7 @@
     <Compile Include="Source\Enums\Enums.cs" />
     <Compile Include="Source\Helpers\AppConstants.cs" />
     <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
+    <Compile Include="Source\Helpers\PhpConfigurationHelper.cs" />
     <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />
     <Compile Include="Source\Interfaces\IFileOperations.cs" />
@@ -118,16 +129,14 @@
     <Compile Include="Source\Models\Settings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Source\UI\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,12 +172,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Assets\close-64.png" />
     <Content Include="Assets\quit-48.png" />
+    <Resource Include="wampoon.ico" />
     <None Include="Assets\start-24.png" />
     <Content Include="Assets\start-48.png" />
     <Content Include="Assets\stop-64.png" />
+    <Content Include="Assets\wampoon.ico" />
     <Content Include="full_size_app_icon.ico" />
-    <Content Include="pwamp-icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

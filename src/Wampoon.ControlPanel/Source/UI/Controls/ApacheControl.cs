@@ -166,6 +166,7 @@ namespace Wampoon.ControlPanel.Controls
             _customConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
 
             ApplyCustomConfiguration();
+            PhpConfigurationHelper.UpdatePhpIniSettings(LogMessage);
         }
 
         /// <summary>
@@ -296,6 +297,7 @@ namespace Wampoon.ControlPanel.Controls
         /// Checks if the httpd-alias.conf file exists.
         /// </summary>
         public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
+
 
         #endregion
 
