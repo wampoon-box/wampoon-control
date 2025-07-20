@@ -76,6 +76,7 @@
     <Compile Include="Source\Enums\Enums.cs" />
     <Compile Include="Source\Helpers\AppConstants.cs" />
     <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
+    <Compile Include="Source\Helpers\PhpConfigurationHelper.cs" />
     <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />
     <Compile Include="Source\Interfaces\IFileOperations.cs" />
