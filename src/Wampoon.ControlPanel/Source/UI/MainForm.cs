@@ -306,11 +306,11 @@ namespace Wampoon.ControlPanel.UI
                 }
 
                 // Clean up notify icon.
-                if (_notifyIcon != null)
+                /*if (_notifyIcon != null)
                 {
                     _notifyIcon.Visible = false;
                     _notifyIcon.Dispose();
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -461,6 +461,16 @@ namespace Wampoon.ControlPanel.UI
             ExitApplication();
         }
 
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            if (_notifyIcon != null)
+            {
+                _notifyIcon.Visible = false;
+                _notifyIcon.Dispose();
+                _notifyIcon = null;
+            }
+            base.OnFormClosed(e);
+        }
 
     }
 }

@@ -123,9 +123,9 @@ namespace Wampoon.ControlPanel.Helpers
                 
                 File.WriteAllText(phpIniPath, updatedContent);
                 
-                logAction?.Invoke($"✓ Updated php.ini extension_dir to: {phpExtDir}", LogType.Info);
-                logAction?.Invoke($"✓ Updated php.ini curl.cainfo to: {curlCaBundlePath}", LogType.Info);
-                logAction?.Invoke($"✓ Updated php.ini session.save_path to: {sessionsPath}", LogType.Info);
+                //logAction?.Invoke($"✓ Updated php.ini extension_dir to: {phpExtDir}", LogType.Info);
+                //logAction?.Invoke($"✓ Updated php.ini curl.cainfo to: {curlCaBundlePath}", LogType.Info);
+                //logAction?.Invoke($"✓ Updated php.ini session.save_path to: {sessionsPath}", LogType.Info);
                 if (browscapExists)
                 {
                     logAction?.Invoke($"✓ Updated php.ini browscap to: {browscapPath}", LogType.Info);
