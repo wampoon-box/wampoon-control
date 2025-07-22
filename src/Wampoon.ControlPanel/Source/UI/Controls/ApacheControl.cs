@@ -27,7 +27,7 @@ namespace Wampoon.ControlPanel.Controls
         {
             ServiceName = PackageType.Apache.ToServerName();
             DisplayName = "Apache HTTP Server";
-            PortNumber = AppConstants.Ports.APACHE_DEFAULT;
+            PortNumber = AppConstants.Ports.APACHE_DEFAULT; // Will be updated in InitializeModule()
             lblServerIcon.Text = "🌐";            
             btnServerAdmin.Text = "localhost";
         }
@@ -46,6 +46,9 @@ namespace Wampoon.ControlPanel.Controls
                 // the application has been moved to a different directory/drive.
                 UpdateApacheConfig();
 
+                // Read port from Apache config file
+                UpdatePortFromConfig();
+
                 // Initialize log paths using ServerPathManager.
                 var logsDirectory = ServerPathManager.GetSpecialPath(PackageType.Apache.ToServerName(), "Logs");
                 if (!string.IsNullOrEmpty(logsDirectory))
@@ -63,9 +66,8 @@ namespace Wampoon.ControlPanel.Controls
                 //_apacheManager.StatusChanged += HandleServerLogMessage;
                 //ServerManager = _apacheManager;
 
-                //TODO: Default admin URI for Apache. Might need to add the port number. 
-                //ServerAdminUri = $"http://localhost:{PortNumber}/"; 
-                ServerAdminUri = AppConstants.Urls.LOCALHOST_HTTP;
+                // Set admin URI with the actual port number
+                ServerAdminUri = PortNumber == 80 ? AppConstants.Urls.LOCALHOST_HTTP : $"http://localhost:{PortNumber}/";
                 UpdateStatus(CurrentStatus);
             }
             catch (Exception ex)
@@ -301,6 +303,39 @@ namespace Wampoon.ControlPanel.Controls
 
 
         #endregion
+
+        /// <summary>
+        /// Updates the port number by reading from Apache configuration file.
+        /// </summary>
+        private void UpdatePortFromConfig()
+        {
+            try
+            {
+                var configPath = ServerPathManager.GetConfigPath(PackageType.Apache.ToServerName());
+                if (!string.IsNullOrEmpty(configPath))
+                {
+                    var configuredPort = ApacheConfigParser.GetPrimaryHttpPort(configPath, LogMessage);
+                    if (configuredPort != PortNumber)
+                    {
+                        LogMessage($"Port updated from Apache config: {PortNumber} -> {configuredPort}", LogType.Info);
+                        PortNumber = configuredPort;
+                    }
+                    else
+                    {
+                        LogMessage($"Using configured Apache port: {PortNumber}", LogType.Info);
+                    }
+                }
+                else
+                {
+                    LogMessage($"Apache config file not found, using default port: {PortNumber}", LogType.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogHelper.LogExceptionInfo(ex);
+                LogMessage($"Error reading Apache config, using default port {PortNumber}: {ex.Message}", LogType.Warning);
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

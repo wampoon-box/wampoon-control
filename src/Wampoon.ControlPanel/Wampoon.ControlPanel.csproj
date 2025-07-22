@@ -74,8 +74,10 @@
     <Compile Include="Source\Controllers\ServerManagerFactory.cs" />
     <Compile Include="Source\Controllers\ServerPathManager.cs" />
     <Compile Include="Source\Enums\Enums.cs" />
+    <Compile Include="Source\Helpers\ApacheConfigParser.cs" />
     <Compile Include="Source\Helpers\AppConstants.cs" />
     <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
+    <Compile Include="Source\Helpers\MySqlConfigParser.cs" />
     <Compile Include="Source\Helpers\PhpConfigurationHelper.cs" />
     <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />

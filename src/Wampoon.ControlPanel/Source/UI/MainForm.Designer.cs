@@ -55,9 +55,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this._apacheServerModule = new Wampoon.ControlPanel.Controls.ApacheControl();
             this._mySqlServerModule = new Wampoon.ControlPanel.Controls.MySqlControl();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.trayContextMenuStrip.SuspendLayout();
             this.logsGroupBox.SuspendLayout();
             this.logTabControl.SuspendLayout();
@@ -263,7 +263,7 @@ namespace Wampoon.ControlPanel.UI
             // 
             // btnQuit
             // 
-            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(73)))));
+            this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(83)))));
             this.btnQuit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnQuit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -311,7 +311,7 @@ namespace Wampoon.ControlPanel.UI
             // 
             // btnStopAllServers
             // 
-            this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(73)))));
+            this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(43)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStopAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -358,17 +358,6 @@ namespace Wampoon.ControlPanel.UI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Server Management";
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.logsGroupBox);
-            this.panel1.Location = new System.Drawing.Point(12, 417);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(985, 416);
-            this.panel1.TabIndex = 10;
-            // 
             // _apacheServerModule
             // 
             this._apacheServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -386,6 +375,17 @@ namespace Wampoon.ControlPanel.UI
             this._mySqlServerModule.Name = "_mySqlServerModule";
             this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
             this._mySqlServerModule.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.logsGroupBox);
+            this.panel1.Location = new System.Drawing.Point(12, 417);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(985, 416);
+            this.panel1.TabIndex = 10;
             // 
             // MainForm
             // 

@@ -22,7 +22,7 @@ namespace Wampoon.ControlPanel.Controls
         {
             ServiceName = PackageType.MariaDB.ToServerName();
             DisplayName = "MariaDB Server";
-            // Default MySQL port, change if needed.
+            // Default MySQL port, will be updated in InitializeModule()
             PortNumber = AppConstants.Ports.MYSQL_DEFAULT; 
             lblServerIcon.Text = "🗄️"; 
             btnServerAdmin.Text = "phpMyAdmin";
@@ -34,6 +34,10 @@ namespace Wampoon.ControlPanel.Controls
             {
                 LogMessage($"Initializing server settings... ", LogType.Info);
                 lblServerTitle.Text = DisplayName;
+                
+                // Read port from MySQL config file
+                UpdatePortFromConfig();
+                
                 // Default admin URL, might need to adjust it to make it use the actual port number.
                 ServerAdminUri = AppConstants.Urls.PHPMYADMIN_URL;
 
@@ -90,6 +94,40 @@ namespace Wampoon.ControlPanel.Controls
                 UpdateStatus(ServerStatus.Stopped);
             }
         }
+
+        /// <summary>
+        /// Updates the port number by reading from MySQL configuration file.
+        /// </summary>
+        private void UpdatePortFromConfig()
+        {
+            try
+            {
+                var configPath = ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName());
+                if (!string.IsNullOrEmpty(configPath))
+                {
+                    var configuredPort = MySqlConfigParser.ParsePort(configPath, LogMessage);
+                    if (configuredPort != PortNumber)
+                    {
+                        LogMessage($"Port updated from MySQL config: {PortNumber} -> {configuredPort}", LogType.Info);
+                        PortNumber = configuredPort;
+                    }
+                    else
+                    {
+                        LogMessage($"Using configured MySQL port: {PortNumber}", LogType.Info);
+                    }
+                }
+                else
+                {
+                    LogMessage($"MySQL config file not found, using default port: {PortNumber}", LogType.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogHelper.LogExceptionInfo(ex);
+                LogMessage($"Error reading MySQL config, using default port {PortNumber}: {ex.Message}", LogType.Warning);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

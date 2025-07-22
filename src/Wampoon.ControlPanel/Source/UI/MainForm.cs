@@ -19,7 +19,7 @@ namespace Wampoon.ControlPanel.UI
 
         public static MainForm Instance { get; private set; }
         private IntPtr _iconHandle = IntPtr.Zero;
-        private NotifyIcon _notifyIcon;
+        private NotifyIcon _notifyIcon;        
         
         private const int MAX_LOG_LINES = 1000;
         private const int TRIMMED_LOG_LINES = 500;
