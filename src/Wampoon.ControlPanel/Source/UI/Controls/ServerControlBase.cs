@@ -437,7 +437,8 @@ namespace Wampoon.ControlPanel.Controls
 
         protected bool CheckPort(int port, bool showDialog = true)
         {
-            if (NetworkPortHelper.IsPortInUse(port))
+            // Use retry logic for port checking, especially after force stops
+            if (NetworkPortHelper.IsPortInUseWithRetry(port))
             {
                 if (showDialog)
                 {
