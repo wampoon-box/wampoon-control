@@ -71,7 +71,7 @@ namespace Wampoon.ControlPanel.Controls
         {
             try
             {
-                if (!CheckPort(PortNumber, false))
+                if (!CheckPort(PortNumber, true))
                 {
                     return;
                 }
