@@ -75,6 +75,20 @@ namespace Wampoon.ControlPanel.Controllers
         {
             try
             {
+                //LogMessage($"StartAsync called. Current process state: {(_serverProcess == null ? "null" : (_serverProcess.HasExited ? "exited" : "running"))}", LogType.Debug);
+                
+                // Clean up any previous failed process before starting
+                if (_serverProcess != null && _serverProcess.HasExited)
+                {
+                    try
+                    {
+                        //LogMessage($"Cleaning up exited process (PID: {_serverProcess.Id})", LogType.Debug);
+                        _serverProcess.Dispose();
+                        _serverProcess = null;
+                    }
+                    catch { }
+                }
+
                 if (IsRunning)
                 {
                     LogMessage($"Is already running!");
@@ -220,6 +234,13 @@ namespace Wampoon.ControlPanel.Controllers
                 if (exited)
                 {
                     LogMessage($"Forcefully stopped...");
+                    // Clean up the process after force stop
+                    try
+                    {
+                        _serverProcess.Dispose();
+                        _serverProcess = null;
+                    }
+                    catch { }
                     return true;
                 }
                 else

@@ -310,6 +310,7 @@ namespace Wampoon.ControlPanel.Controls
                     _apacheManager.OnLogServerMessage -= HandleServerLog;
                     _apacheManager.Dispose();
                     _apacheManager = null;
+                    ServerManager = null; // Clear base class reference too.
                 }
             }
             base.Dispose(disposing);
