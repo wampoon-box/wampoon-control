@@ -21,7 +21,7 @@ namespace Wampoon.ControlPanel.Controls
         // Apache and phpMyAdmin-related paths.
         private string _apacheDirectory;
         private string _customConfigPath;
-        private string _httpdAliasConfigPath;
+        //private string _httpdAliasConfigPath;
         
         public ApacheControl()
         {
@@ -138,7 +138,7 @@ namespace Wampoon.ControlPanel.Controls
                 }
                               
 
-                base.BtnStart_Click(sender, e);
+                await Task.Run(() => base.BtnStart_Click(sender, e));
             }
             catch (Exception ex)
             {
@@ -164,6 +164,7 @@ namespace Wampoon.ControlPanel.Controls
                 throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
             }            
             _customConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
+            //_httpdAliasConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, "httpd-aliases.conf");
 
             ApplyCustomConfiguration();
             PhpConfigurationHelper.UpdatePhpIniSettings(LogMessage);
@@ -296,7 +297,7 @@ namespace Wampoon.ControlPanel.Controls
         /// <summary>
         /// Checks if the httpd-alias.conf file exists.
         /// </summary>
-        public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
+        //public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
 
 
         #endregion

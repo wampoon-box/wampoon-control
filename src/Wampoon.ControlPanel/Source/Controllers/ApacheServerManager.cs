@@ -142,7 +142,6 @@ namespace Wampoon.ControlPanel.Controllers
                     LogError($"Error cleaning up console resources: {ex.Message}");
                 }
             }
-            return false;
         }
 
     }

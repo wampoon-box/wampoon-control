@@ -81,9 +81,9 @@ namespace Wampoon.ControlPanel.Controls
                     return;
                 }
 
-                base.BtnStart_Click(sender, e);
+                await Task.Run(() => base.BtnStart_Click(sender, e));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //ExceptionHandlerUtils.HandleUIException(ex, "starting", ServiceName, this);
                 btnStart.Enabled = true;
