@@ -77,12 +77,12 @@ namespace Wampoon.ControlPanel.UI
             this.restoreToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.trayContextMenuStrip.Name = "trayContextMenuStrip";
-            this.trayContextMenuStrip.Size = new System.Drawing.Size(181, 70);
+            this.trayContextMenuStrip.Size = new System.Drawing.Size(114, 48);
             // 
             // restoreToolStripMenuItem
             // 
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
-            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.restoreToolStripMenuItem.Text = "Restore";
             this.restoreToolStripMenuItem.Click += new System.EventHandler(this.restoreToolStripMenuItem_Click);
             // 
@@ -90,7 +90,7 @@ namespace Wampoon.ControlPanel.UI
             // 
             this.exitToolStripMenuItem.Image = global::Wampoon.ControlPanel.Properties.Resources.quit_48;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -189,13 +189,13 @@ namespace Wampoon.ControlPanel.UI
             // 
             this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.headerPanel.BackColor = System.Drawing.Color.MidnightBlue;
+            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(70)))), ((int)(((byte)(130)))));
             this.headerPanel.Controls.Add(this.titleLabel);
             this.headerPanel.Controls.Add(this.subtitleLabel);
             this.headerPanel.Controls.Add(this.bannerIcon);
             this.headerPanel.Location = new System.Drawing.Point(0, 1);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(1019, 71);
+            this.headerPanel.Size = new System.Drawing.Size(752, 71);
             this.headerPanel.TabIndex = 8;
             // 
             // titleLabel
@@ -269,9 +269,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuit.ForeColor = System.Drawing.Color.White;
-            this.btnQuit.Location = new System.Drawing.Point(581, 27);
+            this.btnQuit.Location = new System.Drawing.Point(615, 27);
             this.btnQuit.Name = "btnQuit";
-            this.btnQuit.Size = new System.Drawing.Size(94, 37);
+            this.btnQuit.Size = new System.Drawing.Size(94, 35);
             this.btnQuit.TabIndex = 4;
             this.btnQuit.Text = "Quit";
             this.btnQuit.UseVisualStyleBackColor = false;
@@ -287,7 +287,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
             this.btnStartAllServers.Location = new System.Drawing.Point(213, 27);
             this.btnStartAllServers.Name = "btnStartAllServers";
-            this.btnStartAllServers.Size = new System.Drawing.Size(94, 37);
+            this.btnStartAllServers.Size = new System.Drawing.Size(94, 35);
             this.btnStartAllServers.TabIndex = 1;
             this.btnStartAllServers.Text = "Start All";
             this.btnStartAllServers.UseVisualStyleBackColor = false;
@@ -295,15 +295,15 @@ namespace Wampoon.ControlPanel.UI
             // 
             // btnAbout
             // 
-            this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(185)))));
             this.btnAbout.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAbout.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
-            this.btnAbout.Location = new System.Drawing.Point(481, 27);
+            this.btnAbout.Location = new System.Drawing.Point(509, 27);
             this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Size = new System.Drawing.Size(94, 37);
+            this.btnAbout.Size = new System.Drawing.Size(94, 35);
             this.btnAbout.TabIndex = 3;
             this.btnAbout.Text = "About";
             this.btnAbout.UseVisualStyleBackColor = false;
@@ -317,9 +317,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStopAllServers.Location = new System.Drawing.Point(317, 27);
+            this.btnStopAllServers.Location = new System.Drawing.Point(320, 27);
             this.btnStopAllServers.Name = "btnStopAllServers";
-            this.btnStopAllServers.Size = new System.Drawing.Size(94, 37);
+            this.btnStopAllServers.Size = new System.Drawing.Size(94, 35);
             this.btnStopAllServers.TabIndex = 2;
             this.btnStopAllServers.Text = "Stop All";
             this.btnStopAllServers.UseVisualStyleBackColor = false;
@@ -333,9 +333,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnOpenExplorer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenExplorer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnOpenExplorer.ForeColor = System.Drawing.Color.White;
-            this.btnOpenExplorer.Location = new System.Drawing.Point(31, 27);
+            this.btnOpenExplorer.Location = new System.Drawing.Point(18, 27);
             this.btnOpenExplorer.Name = "btnOpenExplorer";
-            this.btnOpenExplorer.Size = new System.Drawing.Size(116, 37);
+            this.btnOpenExplorer.Size = new System.Drawing.Size(116, 35);
             this.btnOpenExplorer.TabIndex = 0;
             this.btnOpenExplorer.Text = "Open Web Root";
             this.btnOpenExplorer.UseVisualStyleBackColor = false;
@@ -364,7 +364,7 @@ namespace Wampoon.ControlPanel.UI
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.logsGroupBox);
-            this.panel1.Location = new System.Drawing.Point(13, 417);
+            this.panel1.Location = new System.Drawing.Point(12, 417);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(985, 416);
             this.panel1.TabIndex = 10;

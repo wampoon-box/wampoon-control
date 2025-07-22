@@ -102,7 +102,7 @@
             this.lblStatus.Size = new System.Drawing.Size(79, 24);
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "STOPPED";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblServerInfo
             // 
