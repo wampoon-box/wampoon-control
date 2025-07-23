@@ -461,6 +461,37 @@ namespace Wampoon.ControlPanel.UI
             ExitApplication();
         }
 
+        private void BtnPortConfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var portDialog = new PortSettingsDialog())
+                {
+                    if (portDialog.ShowDialog(this) == DialogResult.OK)
+                    {
+                        AddLog("Port configuration dialog completed successfully", LogType.Info);
+                        
+                        // Refresh both server modules to show updated port numbers
+                        try
+                        {
+                            _apacheServerModule.RefreshPortFromConfig();
+                            _mySqlServerModule.RefreshPortFromConfig();
+                            AddLog("Server modules refreshed with new port configurations", LogType.Info);
+                        }
+                        catch (Exception refreshEx)
+                        {
+                            AddLog($"Warning: Could not refresh server modules: {refreshEx.Message}", LogType.Warning);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error opening Port Configuration dialog: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening Port Configuration dialog", this);
+            }
+        }
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             if (_notifyIcon != null)

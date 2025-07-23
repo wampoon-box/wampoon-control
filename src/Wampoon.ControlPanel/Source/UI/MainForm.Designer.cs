@@ -53,6 +53,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStartAllServers = new System.Windows.Forms.Button();
             this.btnAbout = new System.Windows.Forms.Button();
             this.btnStopAllServers = new System.Windows.Forms.Button();
+            this.btnPortConfig = new System.Windows.Forms.Button();
             this.btnOpenExplorer = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this._apacheServerModule = new Wampoon.ControlPanel.Controls.ApacheControl();
@@ -250,6 +251,7 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.Controls.Add(this.btnStartAllServers);
             this.grpHelpers.Controls.Add(this.btnAbout);
             this.grpHelpers.Controls.Add(this.btnStopAllServers);
+            this.grpHelpers.Controls.Add(this.btnPortConfig);
             this.grpHelpers.Controls.Add(this.btnOpenExplorer);
             this.grpHelpers.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.grpHelpers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
@@ -285,7 +287,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStartAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStartAllServers.Location = new System.Drawing.Point(211, 27);
+            this.btnStartAllServers.Location = new System.Drawing.Point(266, 27);
             this.btnStartAllServers.Name = "btnStartAllServers";
             this.btnStartAllServers.Size = new System.Drawing.Size(94, 35);
             this.btnStartAllServers.TabIndex = 1;
@@ -301,7 +303,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
-            this.btnAbout.Location = new System.Drawing.Point(503, 27);
+            this.btnAbout.Location = new System.Drawing.Point(478, 27);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(94, 35);
             this.btnAbout.TabIndex = 3;
@@ -317,7 +319,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
-            this.btnStopAllServers.Location = new System.Drawing.Point(326, 27);
+            this.btnStopAllServers.Location = new System.Drawing.Point(366, 27);
             this.btnStopAllServers.Name = "btnStopAllServers";
             this.btnStopAllServers.Size = new System.Drawing.Size(94, 35);
             this.btnStopAllServers.TabIndex = 2;
@@ -340,6 +342,22 @@ namespace Wampoon.ControlPanel.UI
             this.btnOpenExplorer.Text = "Open Web Root";
             this.btnOpenExplorer.UseVisualStyleBackColor = false;
             this.btnOpenExplorer.Click += new System.EventHandler(this.BtnOpenExplorer_Click);
+            // 
+            // btnPortConfig
+            // 
+            this.btnPortConfig.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnPortConfig.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPortConfig.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnPortConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPortConfig.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnPortConfig.ForeColor = System.Drawing.Color.White;
+            this.btnPortConfig.Location = new System.Drawing.Point(148, 27);
+            this.btnPortConfig.Name = "btnPortConfig";
+            this.btnPortConfig.Size = new System.Drawing.Size(100, 35);
+            this.btnPortConfig.TabIndex = 4;
+            this.btnPortConfig.Text = "Port Config";
+            this.btnPortConfig.UseVisualStyleBackColor = false;
+            this.btnPortConfig.Click += new System.EventHandler(this.BtnPortConfig_Click);
             // 
             // groupBox1
             // 
@@ -439,6 +457,7 @@ namespace Wampoon.ControlPanel.UI
         private Button btnStartAllServers;
         private Button btnStopAllServers;
         private Button btnAbout;
+        private Button btnPortConfig;
         private Button btnQuit;
         private Panel panel1;
         private ContextMenuStrip trayContextMenuStrip;

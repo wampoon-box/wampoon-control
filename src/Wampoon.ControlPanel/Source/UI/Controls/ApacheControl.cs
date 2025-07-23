@@ -305,6 +305,20 @@ namespace Wampoon.ControlPanel.Controls
         #endregion
 
         /// <summary>
+        /// Refreshes the port number by re-reading from Apache configuration file.
+        /// </summary>
+        public void RefreshPortFromConfig()
+        {
+            UpdatePortFromConfig();
+            
+            // Update the admin URI with the new port
+            ServerAdminUri = PortNumber == 80 ? AppConstants.Urls.LOCALHOST_HTTP : $"http://localhost:{PortNumber}/";
+            
+            // Force UI update
+            Invalidate();
+        }
+
+        /// <summary>
         /// Updates the port number by reading from Apache configuration file.
         /// </summary>
         private void UpdatePortFromConfig()
@@ -314,26 +328,35 @@ namespace Wampoon.ControlPanel.Controls
                 var configPath = ServerPathManager.GetConfigPath(PackageType.Apache.ToServerName());
                 if (!string.IsNullOrEmpty(configPath))
                 {
-                    var configuredPort = ApacheConfigParser.GetPrimaryHttpPort(configPath, LogMessage);
+                    var configuredPort = ApacheConfigManager.GetPrimaryHttpPort(configPath, LogMessage);
                     if (configuredPort != PortNumber)
                     {
                         LogMessage($"Port updated from Apache config: {PortNumber} -> {configuredPort}", LogType.Info);
                         PortNumber = configuredPort;
+                        
+                        // Store the port in ServerPathManager for other modules to access
+                        ServerPathManager.SetServerPort("Apache", configuredPort);
                     }
                     else
                     {
                         LogMessage($"Using configured Apache port: {PortNumber}", LogType.Info);
+                        // Still store the port even if it matches default
+                        ServerPathManager.SetServerPort("Apache", PortNumber);
                     }
                 }
                 else
                 {
                     LogMessage($"Apache config file not found, using default port: {PortNumber}", LogType.Warning);
+                    // Store default port
+                    ServerPathManager.SetServerPort("Apache", PortNumber);
                 }
             }
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
                 LogMessage($"Error reading Apache config, using default port {PortNumber}: {ex.Message}", LogType.Warning);
+                // Store default port even on error
+                ServerPathManager.SetServerPort("Apache", PortNumber);
             }
         }
 

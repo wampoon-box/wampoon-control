@@ -128,7 +128,7 @@ namespace Wampoon.ControlPanel.Helpers
                 //logAction?.Invoke($"✓ Updated php.ini session.save_path to: {sessionsPath}", LogType.Info);
                 if (browscapExists)
                 {
-                    logAction?.Invoke($"✓ Updated php.ini browscap to: {browscapPath}", LogType.Info);
+                    //logAction?.Invoke($"✓ Updated php.ini browscap to: {browscapPath}", LogType.Info);
                 }
                 else
                 {

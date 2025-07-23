@@ -38,8 +38,11 @@ namespace Wampoon.ControlPanel.Controls
                 // Read port from MySQL config file
                 UpdatePortFromConfig();
                 
-                // Default admin URL, might need to adjust it to make it use the actual port number.
-                ServerAdminUri = AppConstants.Urls.PHPMYADMIN_URL;
+                // Set phpMyAdmin URL using Apache port from ServerPathManager
+                var apachePort = ServerPathManager.ApachePort;
+                ServerAdminUri = apachePort == 80 
+                    ? AppConstants.Urls.PHPMYADMIN_URL 
+                    : $"http://localhost:{apachePort}/phpmyadmin";
 
                 EnsureServerManagerInitialized();
 
@@ -96,6 +99,23 @@ namespace Wampoon.ControlPanel.Controls
         }
 
         /// <summary>
+        /// Refreshes the port number by re-reading from MySQL configuration file.
+        /// </summary>
+        public void RefreshPortFromConfig()
+        {
+            UpdatePortFromConfig();
+            
+            // Update phpMyAdmin URL with potentially new Apache port
+            var apachePort = ServerPathManager.ApachePort;
+            ServerAdminUri = apachePort == 80 
+                ? AppConstants.Urls.PHPMYADMIN_URL 
+                : $"http://localhost:{apachePort}/phpmyadmin";
+            
+            // Force UI update
+            Invalidate();
+        }
+
+        /// <summary>
         /// Updates the port number by reading from MySQL configuration file.
         /// </summary>
         private void UpdatePortFromConfig()
@@ -105,26 +125,35 @@ namespace Wampoon.ControlPanel.Controls
                 var configPath = ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName());
                 if (!string.IsNullOrEmpty(configPath))
                 {
-                    var configuredPort = MySqlConfigParser.ParsePort(configPath, LogMessage);
+                    var configuredPort = MySqlConfigManager.ParsePort(configPath, LogMessage);
                     if (configuredPort != PortNumber)
                     {
                         LogMessage($"Port updated from MySQL config: {PortNumber} -> {configuredPort}", LogType.Info);
                         PortNumber = configuredPort;
+                        
+                        // Store the port in ServerPathManager for consistency
+                        ServerPathManager.SetServerPort("MariaDB", configuredPort);
                     }
                     else
                     {
                         LogMessage($"Using configured MySQL port: {PortNumber}", LogType.Info);
+                        // Still store the port even if it matches default
+                        ServerPathManager.SetServerPort("MariaDB", PortNumber);
                     }
                 }
                 else
                 {
                     LogMessage($"MySQL config file not found, using default port: {PortNumber}", LogType.Warning);
+                    // Store default port
+                    ServerPathManager.SetServerPort("MariaDB", PortNumber);
                 }
             }
             catch (Exception ex)
             {
                 ErrorLogHelper.LogExceptionInfo(ex);
                 LogMessage($"Error reading MySQL config, using default port {PortNumber}: {ex.Message}", LogType.Warning);
+                // Store default port even on error
+                ServerPathManager.SetServerPort("MariaDB", PortNumber);
             }
         }
 
