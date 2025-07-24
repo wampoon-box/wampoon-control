@@ -46,7 +46,7 @@ namespace Wampoon.ControlPanel.Helpers
                 }
             }
             
-            return IsPortInUse(port);
+            return true;
         }
     }
 }

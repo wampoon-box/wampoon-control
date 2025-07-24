@@ -5,24 +5,12 @@ using System.Windows.Forms;
 using Wampoon.ControlPanel.Controllers;
 using Wampoon.ControlPanel.Enums;
 using Wampoon.ControlPanel.Helpers;
-using Wampoon.ControlPanel.Models;
+
 
 namespace Wampoon.ControlPanel.UI
 {
     public partial class PortSettingsDialog : Form
     {
-        private NumericUpDown nudApachePort;
-        private NumericUpDown nudMySqlPort;
-        private Label lblApachePort;
-        private Label lblMySqlPort;
-        private Label lblApacheStatus;
-        private Label lblMySqlStatus;
-        private Button btnOK;
-        private Button btnCancel;
-        private Button btnValidate;
-        private RichTextBox rtxtLog;
-        private CheckBox chkRestartServers;
-
         private int _originalApachePort;
         private int _originalMySqlPort;
 
@@ -32,142 +20,6 @@ namespace Wampoon.ControlPanel.UI
             LoadCurrentPorts();
         }
 
-        private void InitializeComponent()
-        {
-            this.nudApachePort = new NumericUpDown();
-            this.nudMySqlPort = new NumericUpDown();
-            this.lblApachePort = new Label();
-            this.lblMySqlPort = new Label();
-            this.lblApacheStatus = new Label();
-            this.lblMySqlStatus = new Label();
-            this.btnOK = new Button();
-            this.btnCancel = new Button();
-            this.btnValidate = new Button();
-            this.rtxtLog = new RichTextBox();
-            this.chkRestartServers = new CheckBox();
-            this.SuspendLayout();
-
-            // 
-            // PortSettingsDialog
-            // 
-            this.Text = "Port Configuration";
-            this.Size = new Size(500, 600);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.ShowIcon = false;
-
-            // 
-            // lblApachePort
-            // 
-            this.lblApachePort.Text = "Apache HTTP Port:";
-            this.lblApachePort.Location = new Point(20, 20);
-            this.lblApachePort.Size = new Size(120, 23);
-            this.lblApachePort.TextAlign = ContentAlignment.MiddleLeft;
-
-            // 
-            // nudApachePort
-            // 
-            this.nudApachePort.Location = new Point(150, 20);
-            this.nudApachePort.Size = new Size(80, 23);
-            this.nudApachePort.Minimum = 1;
-            this.nudApachePort.Maximum = 65535;
-            this.nudApachePort.Value = 80;
-            this.nudApachePort.ValueChanged += NudApachePort_ValueChanged;
-
-            // 
-            // lblApacheStatus
-            // 
-            this.lblApacheStatus.Location = new Point(240, 20);
-            this.lblApacheStatus.Size = new Size(200, 23);
-            this.lblApacheStatus.TextAlign = ContentAlignment.MiddleLeft;
-            this.lblApacheStatus.ForeColor = Color.Gray;
-
-            // 
-            // lblMySqlPort
-            // 
-            this.lblMySqlPort.Text = "MySQL/MariaDB Port:";
-            this.lblMySqlPort.Location = new Point(20, 60);
-            this.lblMySqlPort.Size = new Size(120, 23);
-            this.lblMySqlPort.TextAlign = ContentAlignment.MiddleLeft;
-
-            // 
-            // nudMySqlPort
-            // 
-            this.nudMySqlPort.Location = new Point(150, 60);
-            this.nudMySqlPort.Size = new Size(80, 23);
-            this.nudMySqlPort.Minimum = 1;
-            this.nudMySqlPort.Maximum = 65535;
-            this.nudMySqlPort.Value = 3306;
-            this.nudMySqlPort.ValueChanged += NudMySqlPort_ValueChanged;
-
-            // 
-            // lblMySqlStatus
-            // 
-            this.lblMySqlStatus.Location = new Point(240, 60);
-            this.lblMySqlStatus.Size = new Size(200, 23);
-            this.lblMySqlStatus.TextAlign = ContentAlignment.MiddleLeft;
-            this.lblMySqlStatus.ForeColor = Color.Gray;
-
-            // 
-            // btnValidate
-            // 
-            this.btnValidate.Text = "Validate Ports";
-            this.btnValidate.Location = new Point(20, 100);
-            this.btnValidate.Size = new Size(100, 30);
-            this.btnValidate.Click += BtnValidate_Click;
-
-            // 
-            // chkRestartServers
-            // 
-            this.chkRestartServers.Text = "Restart servers automatically after applying changes";
-            this.chkRestartServers.Location = new Point(130, 105);
-            this.chkRestartServers.Size = new Size(340, 20);
-            this.chkRestartServers.Checked = true;
-
-            // 
-            // rtxtLog
-            // 
-            this.rtxtLog.Location = new Point(20, 140);
-            this.rtxtLog.Size = new Size(440, 360);
-            this.rtxtLog.ReadOnly = true;
-            this.rtxtLog.BackColor = Color.Black;
-            this.rtxtLog.ForeColor = Color.White;
-            this.rtxtLog.Font = new Font("Consolas", 9F);
-
-            // 
-            // btnOK
-            // 
-            this.btnOK.Text = "Apply Changes";
-            this.btnOK.Location = new Point(280, 520);
-            this.btnOK.Size = new Size(100, 30);
-            this.btnOK.DialogResult = DialogResult.OK;
-            this.btnOK.Click += BtnOK_Click;
-
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.Location = new Point(390, 520);
-            this.btnCancel.Size = new Size(70, 30);
-            this.btnCancel.DialogResult = DialogResult.Cancel;
-
-            // Add controls to form
-            this.Controls.Add(this.lblApachePort);
-            this.Controls.Add(this.nudApachePort);
-            this.Controls.Add(this.lblApacheStatus);
-            this.Controls.Add(this.lblMySqlPort);
-            this.Controls.Add(this.nudMySqlPort);
-            this.Controls.Add(this.lblMySqlStatus);
-            this.Controls.Add(this.btnValidate);
-            this.Controls.Add(this.chkRestartServers);
-            this.Controls.Add(this.rtxtLog);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.btnCancel);
-
-            this.ResumeLayout(false);
-        }
 
         private void LoadCurrentPorts()
         {
@@ -198,7 +50,7 @@ namespace Wampoon.ControlPanel.UI
         private void ValidateApachePort()
         {
             var port = (int)nudApachePort.Value;
-            if (ApacheConfigManager.ValidatePort(port, null))
+            if (ApacheConfigManager.ValidatePort(port, null, _originalApachePort))
             {
                 lblApacheStatus.Text = "✓ Available";
                 lblApacheStatus.ForeColor = Color.Green;
@@ -213,7 +65,7 @@ namespace Wampoon.ControlPanel.UI
         private void ValidateMySqlPort()
         {
             var port = (int)nudMySqlPort.Value;
-            if (MySqlConfigManager.ValidatePort(port, null))
+            if (MySqlConfigManager.ValidatePort(port, null, _originalMySqlPort))
             {
                 lblMySqlStatus.Text = "✓ Available";
                 lblMySqlStatus.ForeColor = Color.Green;
@@ -233,10 +85,10 @@ namespace Wampoon.ControlPanel.UI
             var mysqlPort = (int)nudMySqlPort.Value;
 
             LogMessage($"Validating Apache port {apachePort}:", LogType.Info);
-            ApacheConfigManager.ValidatePort(apachePort, LogMessage);
+            ApacheConfigManager.ValidatePort(apachePort, LogMessage, _originalApachePort);
 
             LogMessage($"Validating MySQL port {mysqlPort}:", LogType.Info);
-            MySqlConfigManager.ValidatePort(mysqlPort, LogMessage);
+            MySqlConfigManager.ValidatePort(mysqlPort, LogMessage, _originalMySqlPort);
 
             LogMessage("=== Validation Complete ===", LogType.Info);
         }
@@ -249,8 +101,8 @@ namespace Wampoon.ControlPanel.UI
             // Validate both ports before applying
             LogMessage("=== Applying Port Changes ===", LogType.Info);
             
-            bool apacheValid = ApacheConfigManager.ValidatePort(apachePort, LogMessage);
-            bool mysqlValid = MySqlConfigManager.ValidatePort(mysqlPort, LogMessage);
+            bool apacheValid = ApacheConfigManager.ValidatePort(apachePort, LogMessage, _originalApachePort);
+            bool mysqlValid = MySqlConfigManager.ValidatePort(mysqlPort, LogMessage, _originalMySqlPort);
 
             if (!apacheValid || !mysqlValid)
             {
@@ -317,13 +169,14 @@ namespace Wampoon.ControlPanel.UI
                 {
                     LogMessage("=== All Changes Applied Successfully ===", LogType.Info);
                     
+                    string message = "Port configuration updated successfully!";
                     if (chkRestartServers.Checked)
                     {
-                        LogMessage("Note: Server restart may be required for changes to take effect", LogType.Warning);
+                        LogMessage("Important: Server restart required for changes to take effect", LogType.Warning);
+                        message += "\n\nIMPORTANT: You must restart the affected servers for the port changes to take effect.\nUse the Start/Stop buttons in the main window to restart the servers.";
                     }
 
-                    MessageBox.Show("Port configuration updated successfully!\n\nNote: You may need to restart the servers for changes to take effect.", 
-                        "Configuration Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(message, "Configuration Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {

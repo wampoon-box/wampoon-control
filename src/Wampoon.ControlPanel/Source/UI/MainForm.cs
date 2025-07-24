@@ -6,8 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Wampoon.ControlPanel.Helpers;
+using Wampoon.ControlPanel.Controllers;
 using Wampoon.ControlPanel.Enums;
+using Wampoon.ControlPanel.Helpers;
 using static Wampoon.ControlPanel.Helpers.ErrorLogHelper;
 
 namespace Wampoon.ControlPanel.UI
@@ -244,13 +245,24 @@ namespace Wampoon.ControlPanel.UI
         {
             try
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory;
-                SystemHelper.ExecuteFile("explorer.exe", path, ProcessWindowStyle.Normal);
+                string htdocsPath = ServerPathManager.ApacheDocumentRoot;
+                
+                if (Directory.Exists(htdocsPath))
+                {
+                    SystemHelper.ExecuteFile("explorer.exe", htdocsPath, ProcessWindowStyle.Normal);
+                    //AddLog($"Opened htdocs folder: {htdocsPath}", LogType.Info);
+                }
+                else
+                {
+                    AddLog($"htdocs folder not found at: {htdocsPath}", LogType.Warning);
+                    MessageBox.Show($"The htdocs folder was not found at:\n{htdocsPath}\n\nPlease ensure the folder exists.",
+                        "Folder Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {
-                AddLog($"Error opening file explorer: {ex.Message}", LogType.Error);
-                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening file explorer", this);
+                AddLog($"Error opening htdocs folder: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening htdocs folder", this);
             }
         }
 
@@ -462,6 +474,11 @@ namespace Wampoon.ControlPanel.UI
         }
 
         private void BtnPortConfig_Click(object sender, EventArgs e)
+        {
+            OpenPortConfigurationDialog();
+        }
+
+        public void OpenPortConfigurationDialog()
         {
             try
             {

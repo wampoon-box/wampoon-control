@@ -307,12 +307,15 @@ namespace Wampoon.ControlPanel.Controls
         /// <summary>
         /// Refreshes the port number by re-reading from Apache configuration file.
         /// </summary>
-        public void RefreshPortFromConfig()
+        public override void RefreshPortFromConfig()
         {
             UpdatePortFromConfig();
             
             // Update the admin URI with the new port
             ServerAdminUri = PortNumber == 80 ? AppConstants.Urls.LOCALHOST_HTTP : $"http://localhost:{PortNumber}/";
+            
+            // Update the port display in lblServerInfo
+            UpdatePortAndPid(CurrentStatus);
             
             // Force UI update
             Invalidate();

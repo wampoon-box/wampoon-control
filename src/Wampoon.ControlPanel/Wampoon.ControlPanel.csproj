@@ -105,6 +105,9 @@
     <Compile Include="Source\UI\Controls\ServerControlBase.Designer.cs">
       <DependentUpon>ServerControlBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Source\UI\PortSettingsDialog.Designer.cs">
+      <DependentUpon>PortSettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Source\UI\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Source\UI\Controls\ServerControlBase.resx">
       <DependentUpon>ServerControlBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\UI\PortSettingsDialog.resx">
+      <DependentUpon>PortSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="Notes.md" />

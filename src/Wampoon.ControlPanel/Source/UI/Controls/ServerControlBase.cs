@@ -52,15 +52,17 @@ namespace Wampoon.ControlPanel.Controls
             configLocationItem.Click += (s, e) => OpenConfigFileLocation();
             
             contextMenuTools.Items.Add("-"); // Separator.
-            
-            var errorLogItem = contextMenuTools.Items.Add("📋 View Error Logs");
-            errorLogItem.Click += (s, e) => OpenErrorLogs();
-            
-            var accessLogItem = contextMenuTools.Items.Add("📊 View Access Logs");
-            accessLogItem.Click += (s, e) => OpenAccessLogs();
+            var portConfigItem = contextMenuTools.Items.Add("⚙️ Port Configuration");
+            portConfigItem.Click += (s, e) => OpenPortConfiguration();
             
             contextMenuTools.Items.Add("-"); // Separator.
-            
+            var errorLogItem = contextMenuTools.Items.Add("📋 View Error Logs");
+            errorLogItem.Click += (s, e) => OpenErrorLogs();
+
+            var accessLogItem = contextMenuTools.Items.Add("📊 View Access Logs");
+            accessLogItem.Click += (s, e) => OpenAccessLogs();
+
+            contextMenuTools.Items.Add("-"); // Separator.
             var refreshItem = contextMenuTools.Items.Add("🔄 Refresh Status");
             refreshItem.Click += (s, e) => RefreshServerStatus();
         }
@@ -190,7 +192,7 @@ namespace Wampoon.ControlPanel.Controls
             pnlControls.Invalidate();
         }
 
-        private void UpdatePortAndPid(ServerStatus serverStatus)
+        protected void UpdatePortAndPid(ServerStatus serverStatus)
         {
             // Update detailed info.
             string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
@@ -403,6 +405,29 @@ namespace Wampoon.ControlPanel.Controls
             }
         }
 
+        protected virtual void OpenPortConfiguration()
+        {
+            try
+            {
+                // Get reference to main form through FindForm()
+                var mainForm = this.FindForm();
+                if (mainForm is MainForm form)
+                {
+                    // Call the existing port configuration method
+                    form.OpenPortConfigurationDialog();
+                }
+                else
+                {
+                    LogMessage("Could not access main form for port configuration", LogType.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error opening port configuration: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening port configuration", this);
+            }
+        }
+
         private void PnlControls_Paint(object sender, PaintEventArgs e)
         {
             try
@@ -493,6 +518,35 @@ namespace Wampoon.ControlPanel.Controls
         internal bool IsServerRunning()
         {
             return ServerManager != null && ServerManager.IsRunning;
+        }
+
+        /// <summary>
+        /// Refreshes the port number from the current configuration and updates the display.
+        /// </summary>
+        public virtual void RefreshPortFromConfig()
+        {
+            try
+            {
+                // Get the current port from ServerPathManager based on service name
+                if (ServiceName == "Apache")
+                {
+                    PortNumber = ServerPathManager.ApachePort;
+                }
+                else if (ServiceName == "MariaDB")
+                {
+                    PortNumber = ServerPathManager.MySqlPort;
+                }
+
+                // Update the display with the new port number
+                UpdatePortAndPid(CurrentStatus);
+                
+                LogMessage($"Port refreshed from config: {PortNumber}", LogType.Info);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error refreshing port from config: {ex.Message}", LogType.Error);
+            }
         }
 
         private Color GetLeftBorderColor()

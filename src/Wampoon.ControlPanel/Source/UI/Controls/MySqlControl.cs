@@ -101,7 +101,7 @@ namespace Wampoon.ControlPanel.Controls
         /// <summary>
         /// Refreshes the port number by re-reading from MySQL configuration file.
         /// </summary>
-        public void RefreshPortFromConfig()
+        public override void RefreshPortFromConfig()
         {
             UpdatePortFromConfig();
             
@@ -110,6 +110,9 @@ namespace Wampoon.ControlPanel.Controls
             ServerAdminUri = apachePort == 80 
                 ? AppConstants.Urls.PHPMYADMIN_URL 
                 : $"http://localhost:{apachePort}/phpmyadmin";
+            
+            // Update the port display in lblServerInfo
+            UpdatePortAndPid(CurrentStatus);
             
             // Force UI update
             Invalidate();

@@ -465,8 +465,9 @@ namespace Wampoon.ControlPanel.Helpers
         /// </summary>
         /// <param name="port">Port number to validate</param>
         /// <param name="logAction">Optional logging action</param>
+        /// <param name="currentPort">Current Apache port to exclude from in-use check</param>
         /// <returns>True if port is valid and available, false otherwise</returns>
-        public static bool ValidatePort(int port, Action<string, LogType> logAction = null)
+        public static bool ValidatePort(int port, Action<string, LogType> logAction = null, int currentPort = 0)
         {
             // Check port range.
             if (port <= 0 || port > 65535)
@@ -482,18 +483,26 @@ namespace Wampoon.ControlPanel.Helpers
             }
 
             // Check if port is available using existing NetworkPortHelper.
-            try
+            // Skip the check if this is the current port for this service.
+            if (port != currentPort)
             {
-                if (NetworkPortHelper.IsPortInUse(port))
+                try
                 {
-                    logAction?.Invoke($"Port {port} is already in use by another application", LogType.Error);
-                    return false;
+                    if (NetworkPortHelper.IsPortInUse(port))
+                    {
+                        logAction?.Invoke($"Port {port} is already in use by another application", LogType.Error);
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logAction?.Invoke($"Error checking port availability: {ex.Message}", LogType.Warning);
+                    // Continue validation even if port check fails.
                 }
             }
-            catch (Exception ex)
+            else
             {
-                logAction?.Invoke($"Error checking port availability: {ex.Message}", LogType.Warning);
-                // Continue validation even if port check fails.
+                logAction?.Invoke($"Port {port} is the current Apache port", LogType.Info);
             }
 
             logAction?.Invoke($"Port {port} is available", LogType.Info);

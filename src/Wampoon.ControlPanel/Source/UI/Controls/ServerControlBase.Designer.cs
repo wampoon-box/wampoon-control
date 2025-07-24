@@ -139,7 +139,7 @@
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStop.ForeColor = System.Drawing.Color.White;
-            this.btnStop.Location = new System.Drawing.Point(168, 70);
+            this.btnStop.Location = new System.Drawing.Point(183, 70);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(121, 35);
             this.btnStop.TabIndex = 5;
@@ -169,7 +169,7 @@
             this.btnTools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTools.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnTools.ForeColor = System.Drawing.Color.White;
-            this.btnTools.Location = new System.Drawing.Point(168, 115);
+            this.btnTools.Location = new System.Drawing.Point(183, 115);
             this.btnTools.Name = "btnTools";
             this.btnTools.Size = new System.Drawing.Size(121, 35);
             this.btnTools.TabIndex = 8;
