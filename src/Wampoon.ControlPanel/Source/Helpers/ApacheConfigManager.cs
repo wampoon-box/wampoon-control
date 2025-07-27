@@ -86,6 +86,9 @@ namespace Wampoon.ControlPanel.Helpers
                 // Convert Windows path to Unix-style path for Apache configuration
                 var unixStylePath = wampoonRootDir.Replace('\\', '/');
                 
+                // Ensure required temp directories exist
+                EnsureTempDirectoriesExist(wampoonRootDir, logAction);
+                
                 // Process existing lines and update defines if found.
                 foreach (string line in lines)
                 {
@@ -236,6 +239,46 @@ namespace Wampoon.ControlPanel.Helpers
 
             logAction?.Invoke($"Port {port} is available", LogType.Info);
             return true;
+        }
+
+        /// <summary>
+        /// Ensures that required temporary directories exist under {appBaseDir}/apps/temp.
+        /// Creates the temp directory and subdirectories: apache_logs, mysql_logs, php_logs, pma_tmp, uploads, and sessions.
+        /// </summary>
+        /// <param name="appBaseDir">The application base directory path</param>
+        /// <param name="logAction">Optional logging action</param>
+        private static void EnsureTempDirectoriesExist(string appBaseDir, Action<string, LogType> logAction = null)
+        {
+            try
+            {
+                // Define the temp directory path.
+                var tempDir = Path.Combine(appBaseDir, "apps", "temp");
+                
+                // Required subdirectories
+                var requiredSubDirs = new[] { "apache_logs", "mariadb_logs", "php_logs", "pma_tmp", "uploads", "sessions" };
+
+                // Create main temp directory if it doesn't exist.
+                if (!Directory.Exists(tempDir))
+                {
+                    Directory.CreateDirectory(tempDir);
+                    logAction?.Invoke($"Created temp directory: {tempDir}", LogType.Info);
+                }
+                
+                // Create each required subdirectory.
+                foreach (var subDir in requiredSubDirs)
+                {
+                    var subDirPath = Path.Combine(tempDir, subDir);
+                    if (!Directory.Exists(subDirPath))
+                    {
+                        Directory.CreateDirectory(subDirPath);
+                        logAction?.Invoke($"Created temp subdirectory: {subDirPath}", LogType.Info);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logAction?.Invoke($"Error creating temp directories: {ex.Message}", LogType.Warning);
+            }
         }
     }
 }
