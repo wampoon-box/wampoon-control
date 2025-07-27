@@ -171,7 +171,7 @@ namespace Wampoon.ControlPanel.Controls
             UpdatePortFromConfig();
             
             ApplyCustomConfiguration();
-            PhpConfigurationHelper.UpdatePhpIniSettings(LogMessage);
+            //PhpConfigurationHelper.UpdatePhpIniSettings(LogMessage);
         }
 
         /// <summary>
