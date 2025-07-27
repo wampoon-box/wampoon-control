@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Wampoon.ControlPanel.Controllers;
 using Wampoon.ControlPanel.Enums;
@@ -119,33 +120,20 @@ namespace Wampoon.ControlPanel.UI
                 // Update Apache port if changed.
                 if (apachePort != _originalApachePort)
                 {
-                    var apacheConfigPath = ServerPathManager.GetConfigPath(PackageType.Apache.ToServerName());
-
-                    // Get virtual host config path.
+                    // Get the variables file path
                     var apacheBaseDir = ServerPathManager.GetServerBaseDirectory(PackageType.Apache.ToServerName());
-                    var vhostConfigPath = ApacheConfigManager.GetVirtualHostConfigPath(apacheBaseDir);
+                    var variablesFilePath = Path.Combine(apacheBaseDir, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
 
-                    // Log virtual host config status.
-                    if (ApacheConfigManager.IsValidVirtualHostConfig(vhostConfigPath))
-                    {
-                        LogMessage($"Found virtual host config: {Path.GetFileName(vhostConfigPath)}", LogType.Info);
-                    }
-                    else
-                    {
-                        LogMessage($"Virtual host config not found or invalid: {vhostConfigPath}", LogType.Warning);
-                        LogMessage("Port update will proceed with main config only", LogType.Warning);
-                    }
-                    
-                    // Use atomic update for both main config and virtual hosts
-                    if (ApacheConfigManager.UpdatePortWithVirtualHosts(apacheConfigPath, vhostConfigPath, apachePort, LogMessage))
+                    // Update the port in the httpd-wampoon-variables.conf file using ApacheConfigManager
+                    if (ApacheConfigManager.UpdatePortInVariablesFile(variablesFilePath, apachePort, LogMessage))
                     {
                         ServerPathManager.SetServerPort("Apache", apachePort);
-                        LogMessage($"Apache port updated successfully to {apachePort} (including virtual hosts)", LogType.Info);
+                        LogMessage($"Apache port updated successfully to {apachePort} in variables file", LogType.Info);
                     }
                     else
                     {
                         success = false;
-                        LogMessage($"Failed to update Apache port and virtual hosts", LogType.Error);
+                        LogMessage($"Failed to update Apache port in variables file", LogType.Error);
                     }
                 }
 

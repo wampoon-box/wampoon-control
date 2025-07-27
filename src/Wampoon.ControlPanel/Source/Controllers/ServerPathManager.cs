@@ -29,6 +29,7 @@ namespace Wampoon.ControlPanel.Controllers
 
         public static string AppsDirectory => _pathResolver.AppsDirectory;
         public static string ApacheDocumentRoot => _pathResolver.ApacheDocumentRoot;
+        public static string AppBaseDirectory => _pathResolver.ApplicationDirectory;
 
         public static ServerPathInfo GetServerPath(string serverName) => _pathResolver.GetServerPath(serverName);
         public static string GetExecutablePath(string serverName) => _pathResolver.GetExecutablePath(serverName);

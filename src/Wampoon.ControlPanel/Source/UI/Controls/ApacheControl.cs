@@ -44,10 +44,8 @@ namespace Wampoon.ControlPanel.Controls
                 
                 // We need to update the Apache and phpMyAdmin paths to ensure they are properly set up in case
                 // the application has been moved to a different directory/drive.
+                // Note: UpdateApacheConfig() now calls UpdatePortFromConfig() internally
                 UpdateApacheConfig();
-
-                // Read port from Apache config file
-                UpdatePortFromConfig();
 
                 // Initialize log paths using ServerPathManager.
                 var logsDirectory = ServerPathManager.GetSpecialPath(PackageType.Apache.ToServerName(), "Logs");
@@ -168,6 +166,10 @@ namespace Wampoon.ControlPanel.Controls
             _customConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
             //_httpdAliasConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, "httpd-aliases.conf");
 
+            // Read the existing port from the variables file BEFORE applying configuration
+            // This ensures we don't overwrite the configured port with the default
+            UpdatePortFromConfig();
+            
             ApplyCustomConfiguration();
             PhpConfigurationHelper.UpdatePhpIniSettings(LogMessage);
         }
@@ -178,43 +180,7 @@ namespace Wampoon.ControlPanel.Controls
         /// <returns>True if the configuration file was created successfully, false otherwise.</returns>
         private bool ApplyCustomConfiguration()
         {
-            try
-            {
-                // Ensure the conf directory exists.
-                var confDirectory = Path.GetDirectoryName(_customConfigPath);
-                if (!Directory.Exists(confDirectory))
-                {
-                    try
-                    {
-                        Directory.CreateDirectory(confDirectory);
-                    }
-                    catch (IOException)
-                    {
-                        // Directory might have been created by another thread, check again.
-                        if (!Directory.Exists(confDirectory))
-                        {
-                            throw;
-                        }
-                    }
-                }
-
-                // Create the custom configuration content.
-                var configContent = new StringBuilder();
-                configContent.AppendLine(string.Format("Define SRVROOT \"{0}\"", _apacheDirectory));
-                configContent.AppendLine(string.Format("Define DOCROOT \"{0}\"", ServerPathManager.ApacheDocumentRoot));
-                configContent.AppendLine(string.Format("Define WAMPOON_APPS_DIR \"{0}\"", ServerPathManager.AppsDirectory));
-
-                // Write the configuration to the file.
-                File.WriteAllText(_customConfigPath, configContent.ToString(), Encoding.UTF8);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ErrorLogHelper.LogExceptionInfo(ex);
-                LogMessage(string.Format("Error creating custom Apache configuration: {0}", ex.Message), LogType.Error);
-                return false;
-            }
+            return ApacheConfigManager.UpdateVariablesFile(_customConfigPath, ServerPathManager.AppBaseDirectory, PortNumber, LogMessage);
         }
         
 
@@ -302,6 +268,19 @@ namespace Wampoon.ControlPanel.Controls
         //public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
 
 
+        /// <summary>
+        /// Updates the PORT_NUMBER define in the httpd-wampoon-variables.conf file.
+        /// </summary>
+        /// <param name="newPort">The new port number to set.</param>
+        public void UpdatePortNumberInConfig(int newPort)
+        {
+            // Update the PortNumber property first
+            PortNumber = newPort;
+            
+            // Update the port in the variables file using ApacheConfigManager
+            ApacheConfigManager.UpdatePortInVariablesFile(_customConfigPath, newPort, LogMessage);
+        }
+
         #endregion
 
         /// <summary>
@@ -322,35 +301,26 @@ namespace Wampoon.ControlPanel.Controls
         }
 
         /// <summary>
-        /// Updates the port number by reading from Apache configuration file.
+        /// Updates the port number by reading from httpd-wampoon-variables.conf file.
         /// </summary>
         private void UpdatePortFromConfig()
         {
             try
             {
-                var configPath = ServerPathManager.GetConfigPath(PackageType.Apache.ToServerName());
-                if (!string.IsNullOrEmpty(configPath))
+                var configuredPort = ApacheConfigManager.GetPortFromVariablesFile(_customConfigPath, LogMessage);
+                
+                if (configuredPort != PortNumber)
                 {
-                    var configuredPort = ApacheConfigManager.GetPrimaryHttpPort(configPath, LogMessage);
-                    if (configuredPort != PortNumber)
-                    {
-                        LogMessage($"Port updated from Apache config: {PortNumber} -> {configuredPort}", LogType.Info);
-                        PortNumber = configuredPort;
-                        
-                        // Store the port in ServerPathManager for other modules to access
-                        ServerPathManager.SetServerPort("Apache", configuredPort);
-                    }
-                    else
-                    {
-                        LogMessage($"Using configured Apache port: {PortNumber}", LogType.Info);
-                        // Still store the port even if it matches default
-                        ServerPathManager.SetServerPort("Apache", PortNumber);
-                    }
+                    LogMessage($"Port updated from variables file: {PortNumber} -> {configuredPort}", LogType.Info);
+                    PortNumber = configuredPort;
+                    
+                    // Store the port in ServerPathManager for other modules to access
+                    ServerPathManager.SetServerPort("Apache", configuredPort);
                 }
                 else
                 {
-                    LogMessage($"Apache config file not found, using default port: {PortNumber}", LogType.Warning);
-                    // Store default port
+                    LogMessage($"Using configured Apache port from variables file: {PortNumber}", LogType.Info);
+                    // Still store the port even if it matches default
                     ServerPathManager.SetServerPort("Apache", PortNumber);
                 }
             }
