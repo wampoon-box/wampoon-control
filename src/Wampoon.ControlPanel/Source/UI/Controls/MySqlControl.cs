@@ -11,6 +11,7 @@ using Wampoon.ControlPanel.Controllers;
 using Wampoon.ControlPanel.Enums;
 using Wampoon.ControlPanel.Helpers;
 using static Wampoon.ControlPanel.Helpers.ErrorLogHelper;
+using System.IO;
 
 namespace Wampoon.ControlPanel.Controls
 {
@@ -37,6 +38,15 @@ namespace Wampoon.ControlPanel.Controls
                 
                 // Read port from MySQL config file
                 UpdatePortFromConfig();
+                
+                // Initialize log paths using the new temp directory structure.
+                var appBaseDirectory = ServerPathManager.AppBaseDirectory;
+                if (!string.IsNullOrEmpty(appBaseDirectory))
+                {
+                    var mariaDbLogsDirectory = Path.Combine(appBaseDirectory, "apps", "temp", "mariadb_logs");
+                    MariaDbErrorLogPath = Path.Combine(mariaDbLogsDirectory, AppConstants.MARIADB_ERROR_LOG);
+                    LogMessage($"MariaDB error log path: {MariaDbErrorLogPath}", LogType.Info);
+                }
                 
                 // Set phpMyAdmin URL using Apache port from ServerPathManager
                 var apachePort = ServerPathManager.ApachePort;
@@ -71,6 +81,25 @@ namespace Wampoon.ControlPanel.Controls
                 ServerPathManager.GetExecutablePath(PackageType.MariaDB.ToServerName()),
                 ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName()));
             ServerManager = _mysqlManager;
+        }
+
+        protected override void SetupToolsMenu()
+        {
+            contextMenuTools.Items.Clear();
+            
+            var configItem = contextMenuTools.Items.Add("📄 View Config File (Read-Only)");
+            configItem.Click += (s, e) => OpenConfigFile();
+            
+            var configLocationItem = contextMenuTools.Items.Add("📁 Open Config File Location");
+            configLocationItem.Click += (s, e) => OpenConfigFileLocation();
+            
+            contextMenuTools.Items.Add("-"); // Separator.
+            var portConfigItem = contextMenuTools.Items.Add("⚙️ Port Configuration");
+            portConfigItem.Click += (s, e) => OpenPortConfiguration();
+            
+            contextMenuTools.Items.Add("-"); // Separator.
+            var mariaDbErrorLogItem = contextMenuTools.Items.Add("🗄️ View MariaDB Error Logs");
+            mariaDbErrorLogItem.Click += (s, e) => OpenMariaDbErrorLogs();
         }
 
 

@@ -11,9 +11,11 @@ namespace Wampoon.ControlPanel.Helpers
         public const string APP_LOG_FILE = "error.log";
         
         // Log file names.
-        public const string APACHE_ERROR_LOG = "error.log";
-        public const string APACHE_ACCESS_LOG = "access.log";
+        public const string APACHE_ERROR_LOG = "apache_error.log";
+        public const string APACHE_ACCESS_LOG = "apache_access.log";
         public const string APACHE_DIAGNOSTICS_LOG = "apache-diagnostics.log";
+        public const string PHP_ERROR_LOG = "php_error.log";
+        public const string MARIADB_ERROR_LOG = "mariadb_error.log";
 
         // Network Configuration.
         public static class Ports

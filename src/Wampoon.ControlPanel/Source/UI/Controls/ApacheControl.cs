@@ -47,12 +47,18 @@ namespace Wampoon.ControlPanel.Controls
                 // Note: UpdateApacheConfig() now calls UpdatePortFromConfig() internally
                 UpdateApacheConfig();
 
-                // Initialize log paths using ServerPathManager.
-                var logsDirectory = ServerPathManager.GetSpecialPath(PackageType.Apache.ToServerName(), "Logs");
-                if (!string.IsNullOrEmpty(logsDirectory))
+                // Initialize log paths using the new temp directory structure.
+                var appBaseDirectory = ServerPathManager.AppBaseDirectory;
+                if (!string.IsNullOrEmpty(appBaseDirectory))
                 {
-                    ErrorLogPath = Path.Combine(logsDirectory, AppConstants.APACHE_ERROR_LOG);
-                    AccessLogPath = Path.Combine(logsDirectory, AppConstants.APACHE_ACCESS_LOG);
+                    var apacheLogsDirectory = Path.Combine(appBaseDirectory, "apps", "temp", "apache_logs");
+                    var phpLogsDirectory = Path.Combine(appBaseDirectory, "apps", "temp", "php_logs");
+                    
+                    ErrorLogPath = Path.Combine(apacheLogsDirectory, AppConstants.APACHE_ERROR_LOG);
+                    AccessLogPath = Path.Combine(apacheLogsDirectory, AppConstants.APACHE_ACCESS_LOG);
+                    PhpErrorLogPath = Path.Combine(phpLogsDirectory, AppConstants.PHP_ERROR_LOG);
+                    
+                    //LogMessage($"Log paths - Apache Error: {ErrorLogPath}, Apache Access: {AccessLogPath}, PHP Error: {PhpErrorLogPath}", LogType.Info);
                 }
 
                 EnsureServerManagerInitialized();
