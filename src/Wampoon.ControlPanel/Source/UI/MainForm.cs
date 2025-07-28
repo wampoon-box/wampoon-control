@@ -204,7 +204,7 @@ namespace Wampoon.ControlPanel.UI
 
             // Add message in the log type color.
             control.SelectionColor = messageColor;
-            control.AppendText($"{message}");
+            control.AppendText($"\t{message}");
 
             // Add new line.
             control.AppendText(Environment.NewLine);
