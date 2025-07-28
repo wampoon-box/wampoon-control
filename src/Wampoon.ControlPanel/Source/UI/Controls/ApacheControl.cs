@@ -275,7 +275,7 @@ namespace Wampoon.ControlPanel.Controls
 
 
         /// <summary>
-        /// Updates the PORT_NUMBER define in the httpd-wampoon-variables.conf file.
+        /// Updates the PORT_NUMBER defined in the httpd-wampoon-variables.conf file.
         /// </summary>
         /// <param name="newPort">The new port number to set.</param>
         public void UpdatePortNumberInConfig(int newPort)

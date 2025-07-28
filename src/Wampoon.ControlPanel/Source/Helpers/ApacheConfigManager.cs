@@ -29,7 +29,7 @@ namespace Wampoon.ControlPanel.Helpers
                             var parts = trimmedLine.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                             if (parts.Length >= 3 && int.TryParse(parts[2], out int port))
                             {
-                                logAction?.Invoke($"Read PORT_NUMBER from variables file: {port}", LogType.Info);
+                                //logAction?.Invoke($"Read PORT_NUMBER from variables file: {port}", LogType.Info);
                                 return port;
                             }
                         }
@@ -118,12 +118,13 @@ namespace Wampoon.ControlPanel.Helpers
                 if (!portNumberUpdated)
                 {
                     configContent.AppendLine(string.Format("Define PORT_NUMBER {0}", portNumber));
+                    logAction?.Invoke($"Updated variables file with PORT_NUMBER: {portNumber}", LogType.Info);
                 }
 
                 // Write the configuration to the file.
                 File.WriteAllText(variablesFilePath, configContent.ToString(), Encoding.UTF8);
 
-                logAction?.Invoke($"Updated variables file with PORT_NUMBER: {portNumber}", LogType.Info);
+                
                 return true;
             }
             catch (Exception ex)

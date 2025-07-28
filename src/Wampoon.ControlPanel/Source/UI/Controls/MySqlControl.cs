@@ -45,7 +45,7 @@ namespace Wampoon.ControlPanel.Controls
                 {
                     var mariaDbLogsDirectory = Path.Combine(appBaseDirectory, "apps", "temp", "mariadb_logs");
                     MariaDbErrorLogPath = Path.Combine(mariaDbLogsDirectory, AppConstants.MARIADB_ERROR_LOG);
-                    LogMessage($"MariaDB error log path: {MariaDbErrorLogPath}", LogType.Info);
+                    //LogMessage($"MariaDB error log path: {MariaDbErrorLogPath}", LogType.Info);
                 }
                 
                 // Set phpMyAdmin URL using Apache port from ServerPathManager

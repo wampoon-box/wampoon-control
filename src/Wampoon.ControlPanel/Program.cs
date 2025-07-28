@@ -24,6 +24,7 @@ namespace Wampoon.ControlPanel
             // Set up global exception handlers before running the application.
             SetupGlobalExceptionHandlers();
             
+            //throw new NotImplementedException();
             mutex = new Mutex(true, mutexName, out createdNew);
 
             if (!createdNew)
