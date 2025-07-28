@@ -8,12 +8,14 @@ namespace Wampoon.ControlPanel.Helpers
         public const string APP_VERSION = "1.0.0";
         public const string GITHUB_REPO_URI = "https://github.com/wampoon-box/wampoon-control";
         public const string APP_LOG_FOLDER = "wampoon-logs";
-        public const string APP_LOG_FILE = "error.log";
+        public const string APP_LOG_FILE = "wampoon-error.log";
         
         // Log file names.
-        public const string APACHE_ERROR_LOG = "error.log";
-        public const string APACHE_ACCESS_LOG = "access.log";
+        public const string APACHE_ERROR_LOG = "apache_error.log";
+        public const string APACHE_ACCESS_LOG = "apache_access.log";
         public const string APACHE_DIAGNOSTICS_LOG = "apache-diagnostics.log";
+        public const string PHP_ERROR_LOG = "php_error.log";
+        public const string MARIADB_ERROR_LOG = "mariadb_error.log";
 
         // Network Configuration.
         public static class Ports
@@ -60,7 +62,7 @@ namespace Wampoon.ControlPanel.Helpers
             public const string APACHE_BIN = "bin";
             public const string APACHE_LOGS = "logs";
             public const string MYSQL_DATA = "data";
-            public const string CUSTOM_CONFIG_NAME = "wampoon-custom-path.conf";
+            public const string CUSTOM_CONFIG_NAME = "httpd-wampoon-variables.conf";
         }
         
         // UI Constants

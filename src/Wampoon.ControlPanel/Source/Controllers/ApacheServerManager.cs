@@ -39,6 +39,10 @@ namespace Wampoon.ControlPanel.Controllers
 
         protected override ProcessStartInfo GetProcessStartInfo()
         {
+            // Set the environment variable BEFORE starting Apache
+            string wampoonRoot = ServerPathManager.AppBaseDirectory; 
+            Environment.SetEnvironmentVariable("WAMPOON_ROOT_DIR", wampoonRoot.Replace('\\', '/'));
+
             ProcessStartInfo startInfo = new ProcessStartInfo(_executablePath)
             {
                 // UseShellExecute = false is important for having a direct process handle
@@ -142,7 +146,6 @@ namespace Wampoon.ControlPanel.Controllers
                     LogError($"Error cleaning up console resources: {ex.Message}");
                 }
             }
-            return false;
         }
 
     }

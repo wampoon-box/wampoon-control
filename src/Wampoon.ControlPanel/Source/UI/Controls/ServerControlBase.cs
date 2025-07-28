@@ -20,6 +20,8 @@ namespace Wampoon.ControlPanel.Controls
         protected string ConfigFilePath { get; set; }
         protected string ErrorLogPath { get; set; }
         protected string AccessLogPath { get; set; }
+        protected string PhpErrorLogPath { get; set; }
+        protected string MariaDbErrorLogPath { get; set; }
         protected int PortNumber { get; set; }
         protected int ProcessId { get; set; }
         protected ServerStatus CurrentStatus { get; set; } = ServerStatus.Stopped;
@@ -41,7 +43,7 @@ namespace Wampoon.ControlPanel.Controls
             btnTools.Click += BtnTools_Click;
         }
 
-        protected void SetupToolsMenu()
+        protected virtual void SetupToolsMenu()
         {
             contextMenuTools.Items.Clear();
             
@@ -52,17 +54,18 @@ namespace Wampoon.ControlPanel.Controls
             configLocationItem.Click += (s, e) => OpenConfigFileLocation();
             
             contextMenuTools.Items.Add("-"); // Separator.
-            
-            var errorLogItem = contextMenuTools.Items.Add("📋 View Error Logs");
-            errorLogItem.Click += (s, e) => OpenErrorLogs();
-            
-            var accessLogItem = contextMenuTools.Items.Add("📊 View Access Logs");
-            accessLogItem.Click += (s, e) => OpenAccessLogs();
+            var portConfigItem = contextMenuTools.Items.Add("⚙️ Port Configuration");
+            portConfigItem.Click += (s, e) => OpenPortConfiguration();
             
             contextMenuTools.Items.Add("-"); // Separator.
-            
-            var refreshItem = contextMenuTools.Items.Add("🔄 Refresh Status");
-            refreshItem.Click += (s, e) => RefreshServerStatus();
+            var errorLogItem = contextMenuTools.Items.Add("📋 View Apache Error Logs");
+            errorLogItem.Click += (s, e) => OpenErrorLogs();
+
+            var accessLogItem = contextMenuTools.Items.Add("📊 View Apache Access Logs");
+            accessLogItem.Click += (s, e) => OpenAccessLogs();
+
+            var phpErrorLogItem = contextMenuTools.Items.Add("🐘 View PHP Error Logs");
+            phpErrorLogItem.Click += (s, e) => OpenPhpErrorLogs();
         }
 
         protected virtual void BtnTools_Click(object sender, EventArgs e)
@@ -190,7 +193,7 @@ namespace Wampoon.ControlPanel.Controls
             pnlControls.Invalidate();
         }
 
-        private void UpdatePortAndPid(ServerStatus serverStatus)
+        protected void UpdatePortAndPid(ServerStatus serverStatus)
         {
             // Update detailed info.
             string portInfo = PortNumber > 0 ? $"Port: {PortNumber}" : "Port: Not Set";
@@ -379,27 +382,37 @@ namespace Wampoon.ControlPanel.Controls
             OpenServerFile(AccessLogPath, "Access log");
         }
 
-        protected virtual void RefreshServerStatus()
+        protected virtual void OpenPhpErrorLogs()
+        {
+            OpenServerFile(PhpErrorLogPath, "PHP error log");
+        }
+
+        protected virtual void OpenMariaDbErrorLogs()
+        {
+            OpenServerFile(MariaDbErrorLogPath, "MariaDB error log");
+        }
+
+
+        protected virtual void OpenPortConfiguration()
         {
             try
             {
-                if (ServerManager != null)
+                // Get reference to main form through FindForm()
+                var mainForm = this.FindForm();
+                if (mainForm is MainForm form)
                 {
-                    bool isRunning = ServerManager.IsRunning;
-                    ProcessId = ServerManager.ProcessId.HasValue ? (int)ServerManager.ProcessId.Value : 0;
-                    
-                    UpdateStatus(isRunning ? ServerStatus.Running : ServerStatus.Stopped);
-                    
-                    btnStart.Enabled = !isRunning;
-                    btnStop.Enabled = isRunning;
-                    
-                    LogMessage("Server status refreshed.", LogType.Info);
+                    // Call the existing port configuration method
+                    form.OpenPortConfigurationDialog();
+                }
+                else
+                {
+                    LogMessage("Could not access main form for port configuration", LogType.Error);
                 }
             }
             catch (Exception ex)
             {
-                LogExceptionInfo(ex);
-                LogMessage($"Error refreshing server status: {ex.Message}", LogType.Error);
+                LogMessage($"Error opening port configuration: {ex.Message}", LogType.Error);
+                ErrorLogHelper.ShowErrorReport(ex, "Error occurred while opening port configuration", this);
             }
         }
 
@@ -437,7 +450,8 @@ namespace Wampoon.ControlPanel.Controls
 
         protected bool CheckPort(int port, bool showDialog = true)
         {
-            if (NetworkPortHelper.IsPortInUse(port))
+            // Use retry logic for port checking, especially after force stops
+            if (NetworkPortHelper.IsPortInUseWithRetry(port))
             {
                 if (showDialog)
                 {
@@ -492,6 +506,35 @@ namespace Wampoon.ControlPanel.Controls
         internal bool IsServerRunning()
         {
             return ServerManager != null && ServerManager.IsRunning;
+        }
+
+        /// <summary>
+        /// Refreshes the port number from the current configuration and updates the display.
+        /// </summary>
+        public virtual void RefreshPortFromConfig()
+        {
+            try
+            {
+                // Get the current port from ServerPathManager based on service name
+                if (ServiceName == "Apache")
+                {
+                    PortNumber = ServerPathManager.ApachePort;
+                }
+                else if (ServiceName == "MariaDB")
+                {
+                    PortNumber = ServerPathManager.MySqlPort;
+                }
+
+                // Update the display with the new port number
+                UpdatePortAndPid(CurrentStatus);
+                
+                LogMessage($"Port refreshed from config: {PortNumber}", LogType.Info);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error refreshing port from config: {ex.Message}", LogType.Error);
+            }
         }
 
         private Color GetLeftBorderColor()

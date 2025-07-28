@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Wampoon.ControlPanel.Models;
 using Wampoon.ControlPanel.Services;
+using Wampoon.ControlPanel.Helpers;
 
 namespace Wampoon.ControlPanel.Controllers
 {
@@ -14,6 +15,9 @@ namespace Wampoon.ControlPanel.Controllers
         private static readonly ServerPathResolver _pathResolver;
         private static readonly ServerFileOperations _fileOperations;
         private static readonly ServerDiagnostics _diagnostics;
+        
+        // Port storage for servers.
+        private static readonly Dictionary<string, int> _serverPorts = new Dictionary<string, int>();
 
         static ServerPathManager()
         {
@@ -25,6 +29,7 @@ namespace Wampoon.ControlPanel.Controllers
 
         public static string AppsDirectory => _pathResolver.AppsDirectory;
         public static string ApacheDocumentRoot => _pathResolver.ApacheDocumentRoot;
+        public static string AppBaseDirectory => _pathResolver.ApplicationDirectory;
 
         public static ServerPathInfo GetServerPath(string serverName) => _pathResolver.GetServerPath(serverName);
         public static string GetExecutablePath(string serverName) => _pathResolver.GetExecutablePath(serverName);
@@ -36,5 +41,49 @@ namespace Wampoon.ControlPanel.Controllers
 
 
         public static void LogApacheDiagnostics() => _diagnostics.LogApacheDiagnostics();
+
+        /// <summary>
+        /// Gets the port number for a specific server.
+        /// </summary>
+        /// <param name="serverName">Name of the server (e.g., "Apache", "MariaDB")</param>
+        /// <returns>Port number or default port if not set</returns>
+        public static int GetServerPort(string serverName)
+        {
+            if (_serverPorts.TryGetValue(serverName, out int port))
+            {
+                return port;
+            }
+
+            // Return default ports if not set
+            switch (serverName.ToLower())
+            {
+                case "apache":
+                    return AppConstants.Ports.APACHE_DEFAULT;
+                case "mariadb":
+                    return AppConstants.Ports.MYSQL_DEFAULT;
+                default:
+                    return 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the port number for a specific server.
+        /// </summary>
+        /// <param name="serverName">Name of the server (e.g., "Apache", "MariaDB")</param>
+        /// <param name="port">Port number to set</param>
+        public static void SetServerPort(string serverName, int port)
+        {
+            _serverPorts[serverName] = port;
+        }
+
+        /// <summary>
+        /// Gets the Apache server port number.
+        /// </summary>
+        public static int ApachePort => GetServerPort("Apache");
+
+        /// <summary>
+        /// Gets the MySQL/MariaDB server port number.
+        /// </summary>
+        public static int MySqlPort => GetServerPort("MariaDB");
     }    
 }

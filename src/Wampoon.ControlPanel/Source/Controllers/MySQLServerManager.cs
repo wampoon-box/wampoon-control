@@ -21,14 +21,15 @@ namespace Wampoon.ControlPanel.Controllers
 
         protected override ProcessStartInfo GetProcessStartInfo()
         {
+            CanMonitorOutput = false;
             return new ProcessStartInfo()
             {
                 FileName = _executablePath,
                 Arguments = GetStartArguments(),
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
+                RedirectStandardError = false,
+                RedirectStandardOutput = false,
                 WindowStyle = ProcessWindowStyle.Normal,
             };
         }
@@ -37,7 +38,16 @@ namespace Wampoon.ControlPanel.Controllers
         {
             if (!string.IsNullOrEmpty(_configPath))
             {
-                return string.Format("--defaults-file={0} --console", _configPath);
+                string wampoonRootDir = ServerPathManager.AppBaseDirectory.Replace('\\', '/');          
+                string maraiaDbLogsDir = $"{wampoonRootDir}/apps/temp/mariadb_logs";
+                //--console
+                return string.Format(
+                    "--defaults-file={0} --log-error={1} --slow_query_log_file={2} --general_log_file={3} ", 
+                    _configPath,
+                    $"{maraiaDbLogsDir}/mariadb_error.log",
+                    $"{maraiaDbLogsDir}/mysql_slow.log",
+                    $"{maraiaDbLogsDir}/mariadb-general.log"
+                    );
             }
             return string.Empty;
         }

@@ -21,13 +21,13 @@ namespace Wampoon.ControlPanel.Controls
         // Apache and phpMyAdmin-related paths.
         private string _apacheDirectory;
         private string _customConfigPath;
-        private string _httpdAliasConfigPath;
+        //private string _httpdAliasConfigPath;
         
         public ApacheControl()
         {
             ServiceName = PackageType.Apache.ToServerName();
             DisplayName = "Apache HTTP Server";
-            PortNumber = AppConstants.Ports.APACHE_DEFAULT;
+            PortNumber = AppConstants.Ports.APACHE_DEFAULT; // Will be updated in InitializeModule()
             lblServerIcon.Text = "🌐";            
             btnServerAdmin.Text = "localhost";
         }
@@ -44,14 +44,21 @@ namespace Wampoon.ControlPanel.Controls
                 
                 // We need to update the Apache and phpMyAdmin paths to ensure they are properly set up in case
                 // the application has been moved to a different directory/drive.
+                // Note: UpdateApacheConfig() now calls UpdatePortFromConfig() internally
                 UpdateApacheConfig();
 
-                // Initialize log paths using ServerPathManager.
-                var logsDirectory = ServerPathManager.GetSpecialPath(PackageType.Apache.ToServerName(), "Logs");
-                if (!string.IsNullOrEmpty(logsDirectory))
+                // Initialize log paths using the new temp directory structure.
+                var appBaseDirectory = ServerPathManager.AppBaseDirectory;
+                if (!string.IsNullOrEmpty(appBaseDirectory))
                 {
-                    ErrorLogPath = Path.Combine(logsDirectory, AppConstants.APACHE_ERROR_LOG);
-                    AccessLogPath = Path.Combine(logsDirectory, AppConstants.APACHE_ACCESS_LOG);
+                    var apacheLogsDirectory = Path.Combine(appBaseDirectory, "apps", "temp", "apache_logs");
+                    var phpLogsDirectory = Path.Combine(appBaseDirectory, "apps", "temp", "php_logs");
+                    
+                    ErrorLogPath = Path.Combine(apacheLogsDirectory, AppConstants.APACHE_ERROR_LOG);
+                    AccessLogPath = Path.Combine(apacheLogsDirectory, AppConstants.APACHE_ACCESS_LOG);
+                    PhpErrorLogPath = Path.Combine(phpLogsDirectory, AppConstants.PHP_ERROR_LOG);
+                    
+                    //LogMessage($"Log paths - Apache Error: {ErrorLogPath}, Apache Access: {AccessLogPath}, PHP Error: {PhpErrorLogPath}", LogType.Info);
                 }
 
                 EnsureServerManagerInitialized();
@@ -63,9 +70,8 @@ namespace Wampoon.ControlPanel.Controls
                 //_apacheManager.StatusChanged += HandleServerLogMessage;
                 //ServerManager = _apacheManager;
 
-                //TODO: Default admin URI for Apache. Might need to add the port number. 
-                //ServerAdminUri = $"http://localhost:{PortNumber}/"; 
-                ServerAdminUri = AppConstants.Urls.LOCALHOST_HTTP;
+                // Set admin URI with the actual port number
+                ServerAdminUri = PortNumber == 80 ? AppConstants.Urls.LOCALHOST_HTTP : $"http://localhost:{PortNumber}/";
                 UpdateStatus(CurrentStatus);
             }
             catch (Exception ex)
@@ -122,7 +128,7 @@ namespace Wampoon.ControlPanel.Controls
         {
             try
             {
-                if (!CheckPort(PortNumber, false))
+                if (!CheckPort(PortNumber, true))
                 {
                     return;
                 }
@@ -138,7 +144,7 @@ namespace Wampoon.ControlPanel.Controls
                 }
                               
 
-                base.BtnStart_Click(sender, e);
+                await Task.Run(() => base.BtnStart_Click(sender, e));
             }
             catch (Exception ex)
             {
@@ -164,9 +170,14 @@ namespace Wampoon.ControlPanel.Controls
                 throw new InvalidOperationException("Unable to determine Apache directory. Ensure that apache is installed...");
             }            
             _customConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
+            //_httpdAliasConfigPath = Path.Combine(_apacheDirectory, AppConstants.Directories.APACHE_CONF, "httpd-aliases.conf");
 
+            // Read the existing port from the variables file BEFORE applying configuration
+            // This ensures we don't overwrite the configured port with the default
+            UpdatePortFromConfig();
+            
             ApplyCustomConfiguration();
-            PhpConfigurationHelper.UpdatePhpIniSettings(LogMessage);
+            //PhpConfigurationHelper.UpdatePhpIniSettings(LogMessage);
         }
 
         /// <summary>
@@ -175,43 +186,7 @@ namespace Wampoon.ControlPanel.Controls
         /// <returns>True if the configuration file was created successfully, false otherwise.</returns>
         private bool ApplyCustomConfiguration()
         {
-            try
-            {
-                // Ensure the conf directory exists.
-                var confDirectory = Path.GetDirectoryName(_customConfigPath);
-                if (!Directory.Exists(confDirectory))
-                {
-                    try
-                    {
-                        Directory.CreateDirectory(confDirectory);
-                    }
-                    catch (IOException)
-                    {
-                        // Directory might have been created by another thread, check again.
-                        if (!Directory.Exists(confDirectory))
-                        {
-                            throw;
-                        }
-                    }
-                }
-
-                // Create the custom configuration content.
-                var configContent = new StringBuilder();
-                configContent.AppendLine(string.Format("Define SRVROOT \"{0}\"", _apacheDirectory));
-                configContent.AppendLine(string.Format("Define DOCROOT \"{0}\"", ServerPathManager.ApacheDocumentRoot));
-                configContent.AppendLine(string.Format("Define WAMPOON_APPS_DIR \"{0}\"", ServerPathManager.AppsDirectory));
-
-                // Write the configuration to the file.
-                File.WriteAllText(_customConfigPath, configContent.ToString(), Encoding.UTF8);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ErrorLogHelper.LogExceptionInfo(ex);
-                LogMessage(string.Format("Error creating custom Apache configuration: {0}", ex.Message), LogType.Error);
-                return false;
-            }
+            return ApacheConfigManager.UpdateVariablesFile(_customConfigPath, ServerPathManager.AppBaseDirectory, PortNumber, LogMessage);
         }
         
 
@@ -296,10 +271,73 @@ namespace Wampoon.ControlPanel.Controls
         /// <summary>
         /// Checks if the httpd-alias.conf file exists.
         /// </summary>
-        public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
+        //public bool HttpdAliasConfigExists => File.Exists(_httpdAliasConfigPath);
 
+
+        /// <summary>
+        /// Updates the PORT_NUMBER defined in the httpd-wampoon-variables.conf file.
+        /// </summary>
+        /// <param name="newPort">The new port number to set.</param>
+        public void UpdatePortNumberInConfig(int newPort)
+        {
+            // Update the PortNumber property first
+            PortNumber = newPort;
+            
+            // Update the port in the variables file using ApacheConfigManager
+            ApacheConfigManager.UpdatePortInVariablesFile(_customConfigPath, newPort, LogMessage);
+        }
 
         #endregion
+
+        /// <summary>
+        /// Refreshes the port number by re-reading from Apache configuration file.
+        /// </summary>
+        public override void RefreshPortFromConfig()
+        {
+            UpdatePortFromConfig();
+            
+            // Update the admin URI with the new port
+            ServerAdminUri = PortNumber == 80 ? AppConstants.Urls.LOCALHOST_HTTP : $"http://localhost:{PortNumber}/";
+            
+            // Update the port display in lblServerInfo
+            UpdatePortAndPid(CurrentStatus);
+            
+            // Force UI update
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Updates the port number by reading from httpd-wampoon-variables.conf file.
+        /// </summary>
+        private void UpdatePortFromConfig()
+        {
+            try
+            {
+                var configuredPort = ApacheConfigManager.GetPortFromVariablesFile(_customConfigPath, LogMessage);
+                
+                if (configuredPort != PortNumber)
+                {
+                    LogMessage($"Port updated from variables file: {PortNumber} -> {configuredPort}", LogType.Info);
+                    PortNumber = configuredPort;
+                    
+                    // Store the port in ServerPathManager for other modules to access
+                    ServerPathManager.SetServerPort("Apache", configuredPort);
+                }
+                else
+                {
+                    LogMessage($"Using configured Apache port from variables file: {PortNumber}", LogType.Info);
+                    // Still store the port even if it matches default
+                    ServerPathManager.SetServerPort("Apache", PortNumber);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogHelper.LogExceptionInfo(ex);
+                LogMessage($"Error reading Apache config, using default port {PortNumber}: {ex.Message}", LogType.Warning);
+                // Store default port even on error
+                ServerPathManager.SetServerPort("Apache", PortNumber);
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -310,6 +348,7 @@ namespace Wampoon.ControlPanel.Controls
                     _apacheManager.OnLogServerMessage -= HandleServerLog;
                     _apacheManager.Dispose();
                     _apacheManager = null;
+                    ServerManager = null; // Clear base class reference too.
                 }
             }
             base.Dispose(disposing);

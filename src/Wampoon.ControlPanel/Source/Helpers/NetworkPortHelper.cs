@@ -27,5 +27,26 @@ namespace Wampoon.ControlPanel.Helpers
 
             return tcpInUse || udpInUse;
         }
+
+        /// <summary>
+        /// Checks if a port is in use, with retry logic for recently force-stopped processes.
+        /// </summary>
+        public static bool IsPortInUseWithRetry(int port, int retryCount = 3, int delayMs = 1000)
+        {
+            for (int i = 0; i < retryCount; i++)
+            {
+                if (!IsPortInUse(port))
+                {
+                    return false;
+                }
+                
+                if (i < retryCount - 1) // Don't delay on the last iteration.
+                {
+                    System.Threading.Thread.Sleep(delayMs);
+                }
+            }
+            
+            return true;
+        }
     }
 }

@@ -75,6 +75,20 @@ namespace Wampoon.ControlPanel.Controllers
         {
             try
             {
+                //LogMessage($"StartAsync called. Current process state: {(_serverProcess == null ? "null" : (_serverProcess.HasExited ? "exited" : "running"))}", LogType.Debug);
+                
+                // Clean up any previous failed process before starting
+                if (_serverProcess != null && _serverProcess.HasExited)
+                {
+                    try
+                    {
+                        //LogMessage($"Cleaning up exited process (PID: {_serverProcess.Id})", LogType.Debug);
+                        _serverProcess.Dispose();
+                        _serverProcess = null;
+                    }
+                    catch { }
+                }
+
                 if (IsRunning)
                 {
                     LogMessage($"Is already running!");
@@ -109,6 +123,18 @@ namespace Wampoon.ControlPanel.Controllers
                     _serverProcess.BeginErrorReadLine();
                 }
 
+                _serverProcess.Exited += (sender, e) =>
+                {
+                    if (_serverProcess.ExitCode != 0)
+                    {
+                        LogError($"Error: {ServerName} closed unexpectedly. This may be due to a blocked port, missing dependencies, insufficient permissions, a crash, or an external shutdown. Open Task Manager to ensure there isn't another process with the same name already running. Also, please open and read the log files for more details about the error.\nIf you need further assistance, copy and post the entire log window on the support forums.");
+                    }
+                    else
+                    {
+                        LogMessage($"Has exited with code: {_serverProcess.ExitCode}");
+                    }
+                };
+
                 await Task.Delay(GetStartupDelay());
 
                 if (!IsRunning)
@@ -116,10 +142,6 @@ namespace Wampoon.ControlPanel.Controllers
                     LogError($"Failed to start, please try again! Exit code: {_serverProcess.ExitCode}");
                     return false;
                 }
-                _serverProcess.Exited += (sender, e) =>
-                {
-                    LogError($"Has exited with code: {_serverProcess.ExitCode}");
-                };
                 //TODO: Pass the process ID to the main form.
                 LogMessage($"Started successfully (PID: {_serverProcess.Id})", LogType.Success);
                 return true;
@@ -220,6 +242,13 @@ namespace Wampoon.ControlPanel.Controllers
                 if (exited)
                 {
                     LogMessage($"Forcefully stopped...");
+                    // Clean up the process after force stop
+                    try
+                    {
+                        _serverProcess.Dispose();
+                        _serverProcess = null;
+                    }
+                    catch { }
                     return true;
                 }
                 else

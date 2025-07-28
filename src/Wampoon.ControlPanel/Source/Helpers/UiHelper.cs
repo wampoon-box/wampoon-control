@@ -27,14 +27,15 @@ namespace Wampoon.ControlPanel.Helpers
 
             // Log colors with better contrast.
             public static readonly Color LogError = Color.FromArgb(220, 38, 38);
-            public static readonly Color LogSuccess = Color.FromArgb(22, 163, 74);
+            public static readonly Color LogSuccess = Color.FromArgb(12, 229, 44);
             public static readonly Color LogInfo = Color.FromArgb(0, 255, 255);
             public static readonly Color LogWarning = Color.FromArgb(245, 158, 11);
             public static readonly Color LogDebug = Color.FromArgb(107, 114, 128);
             public static readonly Color LogDefault = Color.FromArgb(31, 41, 55);
             
-            // Module name color (different from LogInfo)
-            public static readonly Color LogModule = Color.FromArgb(37, 99, 235);
+            // Module name color (different from LogInfo).
+            //public static readonly Color LogModule = Color.FromArgb(30, 250, 115);
+            public static readonly Color LogModule = Color.GreenYellow;
 
             // Log background colors.
             public static readonly Color LogBackground = Color.FromArgb(17, 24, 39);
