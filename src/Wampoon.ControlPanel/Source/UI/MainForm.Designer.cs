@@ -135,8 +135,10 @@ namespace Wampoon.ControlPanel.UI
             // 
             // _rtxtActionsLog
             // 
+            this._rtxtActionsLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._rtxtActionsLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(39)))));
-            this._rtxtActionsLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this._rtxtActionsLog.Font = new System.Drawing.Font("Cascadia Code", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._rtxtActionsLog.ForeColor = System.Drawing.Color.White;
             this._rtxtActionsLog.Location = new System.Drawing.Point(3, 3);
@@ -370,7 +372,7 @@ namespace Wampoon.ControlPanel.UI
             this.panel1.Controls.Add(this.logsGroupBox);
             this.panel1.Location = new System.Drawing.Point(12, 417);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(985, 416);
+            this.panel1.Size = new System.Drawing.Size(723, 282);
             this.panel1.TabIndex = 10;
             // 
             // MainForm
