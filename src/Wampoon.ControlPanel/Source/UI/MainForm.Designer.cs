@@ -40,7 +40,6 @@ namespace Wampoon.ControlPanel.UI
             this.logTabControl = new System.Windows.Forms.TabControl();
             this.outputTab = new System.Windows.Forms.TabPage();
             this._rtxtActionsLog = new System.Windows.Forms.RichTextBox();
-            this.accessTab = new System.Windows.Forms.TabPage();
             this._rtxtErrorLog = new System.Windows.Forms.RichTextBox();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
@@ -103,7 +102,7 @@ namespace Wampoon.ControlPanel.UI
             this.logsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.logsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.logsGroupBox.Name = "logsGroupBox";
-            this.logsGroupBox.Size = new System.Drawing.Size(736, 287);
+            this.logsGroupBox.Size = new System.Drawing.Size(1065, 393);
             this.logsGroupBox.TabIndex = 0;
             this.logsGroupBox.TabStop = false;
             this.logsGroupBox.Text = "📋 Server Logs";
@@ -114,12 +113,11 @@ namespace Wampoon.ControlPanel.UI
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.logTabControl.Controls.Add(this.outputTab);
-            this.logTabControl.Controls.Add(this.accessTab);
             this.logTabControl.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.logTabControl.Location = new System.Drawing.Point(6, 24);
             this.logTabControl.Name = "logTabControl";
             this.logTabControl.SelectedIndex = 0;
-            this.logTabControl.Size = new System.Drawing.Size(724, 257);
+            this.logTabControl.Size = new System.Drawing.Size(1053, 363);
             this.logTabControl.TabIndex = 1;
             // 
             // outputTab
@@ -129,35 +127,23 @@ namespace Wampoon.ControlPanel.UI
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTab.Size = new System.Drawing.Size(716, 229);
+            this.outputTab.Size = new System.Drawing.Size(1045, 335);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
             // _rtxtActionsLog
             // 
-            this._rtxtActionsLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this._rtxtActionsLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(24)))), ((int)(((byte)(39)))));
+            this._rtxtActionsLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this._rtxtActionsLog.Font = new System.Drawing.Font("Cascadia Code", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._rtxtActionsLog.ForeColor = System.Drawing.Color.White;
             this._rtxtActionsLog.Location = new System.Drawing.Point(3, 3);
             this._rtxtActionsLog.Name = "_rtxtActionsLog";
             this._rtxtActionsLog.ReadOnly = true;
             this._rtxtActionsLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtActionsLog.Size = new System.Drawing.Size(710, 223);
+            this._rtxtActionsLog.Size = new System.Drawing.Size(1039, 329);
             this._rtxtActionsLog.TabIndex = 0;
             this._rtxtActionsLog.Text = "";
-            // 
-            // accessTab
-            // 
-            this.accessTab.Location = new System.Drawing.Point(4, 24);
-            this.accessTab.Name = "accessTab";
-            this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(716, 229);
-            this.accessTab.TabIndex = 2;
-            this.accessTab.Text = "Access Logs";
-            this.accessTab.UseVisualStyleBackColor = true;
             // 
             // _rtxtErrorLog
             // 
@@ -183,7 +169,7 @@ namespace Wampoon.ControlPanel.UI
             this.headerPanel.Controls.Add(this.bannerIcon);
             this.headerPanel.Location = new System.Drawing.Point(0, 1);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(752, 71);
+            this.headerPanel.Size = new System.Drawing.Size(1081, 71);
             this.headerPanel.TabIndex = 8;
             // 
             // titleLabel
@@ -226,7 +212,7 @@ namespace Wampoon.ControlPanel.UI
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Location = new System.Drawing.Point(12, 75);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(740, 326);
+            this.panel2.Size = new System.Drawing.Size(1069, 326);
             this.panel2.TabIndex = 9;
             // 
             // grpHelpers
@@ -244,7 +230,7 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.Location = new System.Drawing.Point(10, 241);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
-            this.grpHelpers.Size = new System.Drawing.Size(730, 76);
+            this.grpHelpers.Size = new System.Drawing.Size(1059, 76);
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "⚡ Quick Actions";
@@ -341,7 +327,7 @@ namespace Wampoon.ControlPanel.UI
             this.groupBox1.Location = new System.Drawing.Point(10, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
-            this.groupBox1.Size = new System.Drawing.Size(730, 219);
+            this.groupBox1.Size = new System.Drawing.Size(1059, 219);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Servers Management";
@@ -372,7 +358,7 @@ namespace Wampoon.ControlPanel.UI
             this.panel1.Controls.Add(this.logsGroupBox);
             this.panel1.Location = new System.Drawing.Point(12, 417);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(723, 282);
+            this.panel1.Size = new System.Drawing.Size(1052, 388);
             this.panel1.TabIndex = 10;
             // 
             // MainForm
@@ -380,7 +366,7 @@ namespace Wampoon.ControlPanel.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(755, 719);
+            this.ClientSize = new System.Drawing.Size(1084, 825);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.panel2);
@@ -413,7 +399,6 @@ namespace Wampoon.ControlPanel.UI
         private RichTextBox _rtxtActionsLog;
         //private TabPage errorTab;
         private RichTextBox _rtxtErrorLog;
-        private TabPage accessTab;
         private Controls.MySqlControl _mySqlServerModule;
         private Panel headerPanel;
         private Label titleLabel;
