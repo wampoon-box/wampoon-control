@@ -186,7 +186,7 @@ namespace Wampoon.ControlPanel.Controls
         /// <returns>True if the configuration file was created successfully, false otherwise.</returns>
         private bool ApplyCustomConfiguration()
         {
-            return ApacheConfigManager.UpdateVariablesFile(_customConfigPath, ServerPathManager.AppBaseDirectory, PortNumber, LogMessage);
+            return ApacheConfigHelper.UpdateVariablesFile(_customConfigPath, ServerPathManager.AppBaseDirectory, PortNumber, LogMessage);
         }
         
 
@@ -284,7 +284,7 @@ namespace Wampoon.ControlPanel.Controls
             PortNumber = newPort;
             
             // Update the port in the variables file using ApacheConfigManager
-            ApacheConfigManager.UpdatePortInVariablesFile(_customConfigPath, newPort, LogMessage);
+            ApacheConfigHelper.UpdatePortInVariablesFile(_customConfigPath, newPort, LogMessage);
         }
 
         #endregion
@@ -313,7 +313,7 @@ namespace Wampoon.ControlPanel.Controls
         {
             try
             {
-                var configuredPort = ApacheConfigManager.GetPortFromVariablesFile(_customConfigPath, LogMessage);
+                var configuredPort = ApacheConfigHelper.GetPortFromVariablesFile(_customConfigPath, LogMessage);
                 
                 if (configuredPort != PortNumber)
                 {

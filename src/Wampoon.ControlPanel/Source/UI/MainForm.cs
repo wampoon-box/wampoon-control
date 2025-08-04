@@ -49,6 +49,7 @@ namespace Wampoon.ControlPanel.UI
             try
             {
                 SetFromIcon();
+                Text = AppConstants.APP_NAME;
                 // Attempt to initialize the service modules.
                 _apacheServerModule.InitializeModule();
                 _mySqlServerModule.InitializeModule();
@@ -70,10 +71,10 @@ namespace Wampoon.ControlPanel.UI
         private void InitializeNotifyIcon()
         {
             _notifyIcon = new NotifyIcon();
-            _notifyIcon.Text = "WAMPoon Control Panel";
-            _notifyIcon.Visible = true;  // Make it visible immediately for testing
+            _notifyIcon.Text = AppConstants.APP_NAME;
+            _notifyIcon.Visible = true;  // Make it visible immediately for testing.
 
-            // Set the icon - try the form's icon first, then fallback to system icon
+            // Set the icon - try the form's icon first, then fallback to system icon.
             try
             {
                 _notifyIcon.Icon = this.Icon ?? SystemIcons.Application;
@@ -91,7 +92,7 @@ namespace Wampoon.ControlPanel.UI
         {
             try
             {
-                // Create a professional icon using text since we don't have an image file
+                // Create a professional icon using text since we don't have an image file.
                 var bitmap = new Bitmap(40, 40);
                 using (var g = Graphics.FromImage(bitmap))
                 {
@@ -104,31 +105,31 @@ namespace Wampoon.ControlPanel.UI
                     {
                         g.FillEllipse(brush, 0, 0, 40, 40);
                     }
-                    
-                    // Add a subtle border
+
+                    // Add a subtle border.
                     using (var pen = new Pen(Color.FromArgb(29, 78, 216), 2))
                     {
                         g.DrawEllipse(pen, 1, 1, 38, 38);
                     }
-                    
-                    // Draw the "W" letter
+
+                    // Draw the "W" letter.
                     using (var font = new Font("Segoe UI", 18, FontStyle.Bold))
                     {
                         g.DrawString("W", font, new SolidBrush(Color.White), 10, 8);
                     }
                 }
                 bannerIcon.Image = bitmap;
-                
-                // Update banner title with version if available
+
+                // Update banner title with version if available.
                 var version = SystemHelper.GetFormattedInstallerVersion();
                 if (!string.IsNullOrEmpty(version))
                 {
-                    titleLabel.Text = $"WAMPoon Control Panel {version}";
+                    titleLabel.Text = $"Wampoon Control Panel {version}";
                 }
             }
             catch
             {
-                // If bitmap creation fails, hide the icon
+                // If bitmap creation fails, hide the icon.
                 bannerIcon.Visible = false;
             }
         }
@@ -140,8 +141,8 @@ namespace Wampoon.ControlPanel.UI
 
         private void RestoreFromTray()
         {
-           
-            // Bring form to front so user can see any confirmation dialogs
+
+            // Bring form to front so user can see any confirmation dialogs.
             if (WindowState == FormWindowState.Minimized || !Visible)
             {
                 Show();
@@ -277,7 +278,7 @@ namespace Wampoon.ControlPanel.UI
                     _notifyIcon.Visible = true;
                     AddLog("Application hidden to system tray", LogType.Info);
                     // Force refresh the tray icon
-                    _notifyIcon.Text = "WAMPoon Control Panel - Running";
+                    _notifyIcon.Text = $"{AppConstants.APP_NAME} - Running";
                     return;
                 }
                 if (WindowState != FormWindowState.Normal)

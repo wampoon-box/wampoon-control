@@ -51,7 +51,7 @@ namespace Wampoon.ControlPanel.UI
         private void ValidateApachePort()
         {
             var port = (int)nudApachePort.Value;
-            if (ApacheConfigManager.ValidatePort(port, null, _originalApachePort))
+            if (ApacheConfigHelper.ValidatePort(port, null, _originalApachePort))
             {
                 lblApacheStatus.Text = "✓ Available";
                 lblApacheStatus.ForeColor = Color.Green;
@@ -66,7 +66,7 @@ namespace Wampoon.ControlPanel.UI
         private void ValidateMySqlPort()
         {
             var port = (int)nudMySqlPort.Value;
-            if (MySqlConfigManager.ValidatePort(port, null, _originalMySqlPort))
+            if (MySqlConfigHelper.ValidatePort(port, null, _originalMySqlPort))
             {
                 lblMySqlStatus.Text = "✓ Available";
                 lblMySqlStatus.ForeColor = Color.Green;
@@ -86,10 +86,10 @@ namespace Wampoon.ControlPanel.UI
             var mysqlPort = (int)nudMySqlPort.Value;
 
             LogMessage($"Validating Apache port {apachePort}:", LogType.Info);
-            ApacheConfigManager.ValidatePort(apachePort, LogMessage, _originalApachePort);
+            ApacheConfigHelper.ValidatePort(apachePort, LogMessage, _originalApachePort);
 
             LogMessage($"Validating MySQL port {mysqlPort}:", LogType.Info);
-            MySqlConfigManager.ValidatePort(mysqlPort, LogMessage, _originalMySqlPort);
+            MySqlConfigHelper.ValidatePort(mysqlPort, LogMessage, _originalMySqlPort);
 
             LogMessage("=== Validation Complete ===", LogType.Info);
         }
@@ -102,8 +102,8 @@ namespace Wampoon.ControlPanel.UI
             // Validate both ports before applying
             LogMessage("=== Applying Port Changes ===", LogType.Info);
             
-            bool apacheValid = ApacheConfigManager.ValidatePort(apachePort, LogMessage, _originalApachePort);
-            bool mysqlValid = MySqlConfigManager.ValidatePort(mysqlPort, LogMessage, _originalMySqlPort);
+            bool apacheValid = ApacheConfigHelper.ValidatePort(apachePort, LogMessage, _originalApachePort);
+            bool mysqlValid = MySqlConfigHelper.ValidatePort(mysqlPort, LogMessage, _originalMySqlPort);
 
             if (!apacheValid || !mysqlValid)
             {
@@ -125,7 +125,7 @@ namespace Wampoon.ControlPanel.UI
                     var variablesFilePath = Path.Combine(apacheBaseDir, AppConstants.Directories.APACHE_CONF, AppConstants.Directories.CUSTOM_CONFIG_NAME);
 
                     // Update the port in the httpd-wampoon-variables.conf file using ApacheConfigManager
-                    if (ApacheConfigManager.UpdatePortInVariablesFile(variablesFilePath, apachePort, LogMessage))
+                    if (ApacheConfigHelper.UpdatePortInVariablesFile(variablesFilePath, apachePort, LogMessage))
                     {
                         ServerPathManager.SetServerPort("Apache", apachePort);
                         LogMessage($"Apache port updated successfully to {apachePort} in variables file", LogType.Info);
@@ -141,7 +141,7 @@ namespace Wampoon.ControlPanel.UI
                 if (mysqlPort != _originalMySqlPort)
                 {
                     var mysqlConfigPath = ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName());
-                    if (MySqlConfigManager.UpdatePort(mysqlConfigPath, mysqlPort, LogMessage))
+                    if (MySqlConfigHelper.UpdatePort(mysqlConfigPath, mysqlPort, LogMessage))
                     {
                         ServerPathManager.SetServerPort("MariaDB", mysqlPort);
                         LogMessage($"MySQL port updated successfully to {mysqlPort}", LogType.Info);

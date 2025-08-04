@@ -8,7 +8,7 @@ using Wampoon.ControlPanel.Enums;
 
 namespace Wampoon.ControlPanel.Helpers
 {
-    public static class MySqlConfigManager
+    public static class MySqlConfigHelper
     {
         private static readonly Regex PortRegex = new Regex(
             @"^\s*port\s*=\s*(?<port>\d+)\s*(?:#.*)?$",

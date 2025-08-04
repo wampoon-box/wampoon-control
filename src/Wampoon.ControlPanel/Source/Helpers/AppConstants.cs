@@ -4,8 +4,7 @@ namespace Wampoon.ControlPanel.Helpers
 {
     internal static class AppConstants
     {
-        public const string APP_NAME = "WAMPoon Control Panel";        
-        public const string APP_VERSION = "1.0.0";
+        public const string APP_NAME = "Wampoon Control Panel";                
         public const string GITHUB_REPO_URI = "https://github.com/wampoon-box/wampoon-control";
         public const string APP_LOG_FOLDER = "wampoon-logs";
         public const string APP_LOG_FILE = "wampoon-error.log";

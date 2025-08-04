@@ -163,7 +163,7 @@
             // 
             // btnTools
             // 
-            this.btnTools.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnTools.BackColor = System.Drawing.Color.Teal;
             this.btnTools.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTools.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
             this.btnTools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -173,7 +173,7 @@
             this.btnTools.Name = "btnTools";
             this.btnTools.Size = new System.Drawing.Size(121, 35);
             this.btnTools.TabIndex = 8;
-            this.btnTools.Text = "⚙️ Configs ▼";
+            this.btnTools.Text = "⚙️ Configs/Logs ▼";
             this.btnTools.UseVisualStyleBackColor = false;
             // 
             // contextMenuTools

@@ -5,7 +5,7 @@ using Wampoon.ControlPanel.Enums;
 
 namespace Wampoon.ControlPanel.Helpers
 {
-    public static class ApacheConfigManager
+    public static class ApacheConfigHelper
     {
 
         /// <summary>
