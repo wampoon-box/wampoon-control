@@ -14,18 +14,21 @@ namespace Wampoon.ControlPanel.Helpers
         {
             IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
 
-            // Check TCP
+            // Check TCP listeners - this is what matters for server startup
             var tcpListeners = ipGlobalProperties.GetActiveTcpListeners();
+            bool tcpListenerInUse = tcpListeners.Any(listener => listener.Port == port);
+
+            // Only check for established TCP connections, not TIME_WAIT or other transient states
             var tcpConnections = ipGlobalProperties.GetActiveTcpConnections();
+            bool tcpEstablishedInUse = tcpConnections.Any(connection => 
+                connection.LocalEndPoint.Port == port && 
+                connection.State == System.Net.NetworkInformation.TcpState.Established);
 
-            bool tcpInUse = tcpListeners.Any(listener => listener.Port == port) ||
-                            tcpConnections.Any(connection => connection.LocalEndPoint.Port == port);
-
-            // Check UDP
+            // Check UDP listeners
             var udpListeners = ipGlobalProperties.GetActiveUdpListeners();
             bool udpInUse = udpListeners.Any(listener => listener.Port == port);
 
-            return tcpInUse || udpInUse;
+            return tcpListenerInUse || tcpEstablishedInUse || udpInUse;
         }
 
         /// <summary>

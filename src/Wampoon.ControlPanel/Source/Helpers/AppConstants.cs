@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Wampoon.ControlPanel.Helpers
 {
@@ -87,7 +88,7 @@ namespace Wampoon.ControlPanel.Helpers
         // Message Templates.
         public static class Messages
         {
-            public const string PORT_IN_USE = "Port {0} is in use. {1} server cannot be started.";
+            public const string PORT_IN_USE = "Port {0} is in use. {1} server cannot be started. Open Task Manager to ensure there isn't another process with the same name already running. ";            
             public const string ERROR_STARTING = "Error starting {0}: {1}";
             public const string FAILED_TO_OPERATION = "Failed to {0}: {1}";
             public const string EXECUTABLE_NOT_FOUND = "Executable not found: {0}";
