@@ -486,7 +486,7 @@ namespace Wampoon.ControlPanel.Controls
             }
         }
 
-        protected bool CheckPort(int port, bool showDialog = true)
+        /*protected bool CheckPort(int port, bool showDialog = true)
         {
             // Use retry logic for port checking, especially after force stops
             if (NetworkPortHelper.IsPortInUseWithRetry(port))
@@ -499,7 +499,7 @@ namespace Wampoon.ControlPanel.Controls
                 return false;
             }
             return true;
-        }
+        }*/
 
         protected void HandleServerLog(object sender, ServerLogEventArgs e)
         {

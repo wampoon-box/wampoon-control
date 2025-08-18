@@ -182,7 +182,6 @@
     <Content Include="Assets\start-48.png" />
     <Content Include="Assets\stop-64.png" />
     <Content Include="Assets\wampoon.ico" />
-    <Content Include="full_size_app_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

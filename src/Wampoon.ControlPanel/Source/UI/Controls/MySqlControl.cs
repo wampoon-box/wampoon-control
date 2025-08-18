@@ -107,10 +107,10 @@ namespace Wampoon.ControlPanel.Controls
         {
             try
             {
-                if (!CheckPort(PortNumber, true))
+                /*if (!CheckPort(PortNumber, true))
                 {
                     return;
-                }
+                }*/
 
                 if (!EnsureServerManagerInitialized())
                 {
