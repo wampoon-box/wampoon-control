@@ -58,11 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\Resource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -74,10 +69,10 @@
     <Compile Include="Source\Controllers\ServerManagerFactory.cs" />
     <Compile Include="Source\Controllers\ServerPathManager.cs" />
     <Compile Include="Source\Enums\Enums.cs" />
-    <Compile Include="Source\Helpers\ApacheConfigManager.cs" />
+    <Compile Include="Source\Helpers\ApacheConfigHelper.cs" />
     <Compile Include="Source\Helpers\AppConstants.cs" />
     <Compile Include="Source\Helpers\ErrorLogHelper.cs" />
-    <Compile Include="Source\Helpers\MySqlConfigManager.cs" />
+    <Compile Include="Source\Helpers\MySqlConfigHelper.cs" />
     <Compile Include="Source\Helpers\PhpConfigurationHelper.cs" />
     <Compile Include="Source\Helpers\UiHelper.cs" />
     <Compile Include="Source\Helpers\NetworkPortHelper.cs" />
@@ -137,10 +132,6 @@
     <Compile Include="Source\Models\Settings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -187,10 +178,10 @@
     <Content Include="Assets\quit-48.png" />
     <Resource Include="wampoon.ico" />
     <None Include="Assets\start-24.png" />
+    <Content Include="Assets\restore-48.png" />
     <Content Include="Assets\start-48.png" />
     <Content Include="Assets\stop-64.png" />
     <Content Include="Assets\wampoon.ico" />
-    <Content Include="full_size_app_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

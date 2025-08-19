@@ -1,29 +1,25 @@
-# WAMPoon Control Panel
+# Wampoon Control Panel
 
-A lightweight Windows application for managing Apache and MySQL/MariaDB servers during web development. WAMPoon Control Panel eliminates the hassle of manually starting and stopping servers through command line interfaces.
+Wampoon Control Panel simplifies local web development by providing an easy-to-use interface to manage Apache and MariaDB servers, eliminating the need for manual command-line operations.
+
+> This application is designed for local development environments. Production servers require proper administration tools and security hardening. Use at your own risk.
 
 ## What It Does
 
-WAMPoon Control Panel gives you point-and-click control over your local development servers:
+Wampoon Control Panel lets you manage your local development servers effortlessly:
 
-- Start and stop Apache HTTP Server with a single click
-- Manage MySQL/MariaDB database server operations
-- Monitor server status in real-time through integrated logging
-- Control all servers at once or individually
-- Run quietly in your system tray when minimized
+* Start, stop, and restart Apache with a single click
+* Control MariaDB servers without the command line
+* Monitor server activity in real time
+* Manage all servers together or individually
+* Minimize to the system tray and run quietly in the background
 
-The application handles proper server shutdown procedures and prevents conflicts by ensuring only one instance runs at a time.
+**The application handles proper server shutdown procedures and prevents conflicts by ensuring only one instance runs at a time.**
 
 ## System Requirements
 
-**Operating System:** Windows 10 or later  
+**Operating System:** Windows 10 or later
 **Runtime:** .NET Framework 4.8 (already included in Windows 10 or later)  
-
-**Server Software:**
-- Apache HTTP Server 2.4 or newer
-- MariaDB 10.3 or newer (or compatible MySQL installation)
-- Properly configured httpd.conf and my.ini files
-
 
 ## Getting Started
 
@@ -35,16 +31,12 @@ The application handles proper server shutdown procedures and prevents conflicts
 
 Right-click the system tray icon for quick access to common functions when the window is minimized.
 
-
 ## Common Issues
 
-**Servers won't start:** Check if ports 80 (Apache) or 3306 (MySQL) are already in use by other applications.
-
-**"Server Not Found" errors:** Verify the installation paths in your application settings match your actual server locations.
-
-**Configuration problems:** Review your httpd.conf and my.ini files for syntax errors or invalid paths.
-
-**Need more details:** Check the diagnostic logs within the application or look for error files in the `wampoon-logs` directory. Enable debug logging for verbose troubleshooting output.
+- **Servers won't start:** Check if ports 80 (Apache) or 3306 (MySQL) are already in use by other applications.
+- **"Server Not Found" errors:** Verify the installation paths in your application settings match your actual server locations.
+- **Configuration problems:** Review your httpd.conf and my.ini files for syntax errors or invalid paths.
+- **Need more details:** Check the diagnostic logs within the application or look for error files in the `wampoon-logs` directory. Enable debug logging for verbose troubleshooting output.
 
 ## Building from Source
 
@@ -86,4 +78,3 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-> This tool is designed for local development environments. Production servers require proper administration tools and security hardening. Use at your own risk.

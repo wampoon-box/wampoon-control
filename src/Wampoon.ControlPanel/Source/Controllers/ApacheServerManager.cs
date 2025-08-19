@@ -39,7 +39,7 @@ namespace Wampoon.ControlPanel.Controllers
 
         protected override ProcessStartInfo GetProcessStartInfo()
         {
-            // Set the environment variable BEFORE starting Apache
+            // Set the environment variable required in httpd.conf and php.ini BEFORE starting Apache.
             string wampoonRoot = ServerPathManager.AppBaseDirectory; 
             Environment.SetEnvironmentVariable("WAMPOON_ROOT_DIR", wampoonRoot.Replace('\\', '/'));
 

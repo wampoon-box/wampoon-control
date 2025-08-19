@@ -40,9 +40,7 @@ namespace Wampoon.ControlPanel.UI
             this.logTabControl = new System.Windows.Forms.TabControl();
             this.outputTab = new System.Windows.Forms.TabPage();
             this._rtxtActionsLog = new System.Windows.Forms.RichTextBox();
-            this.errorTab = new System.Windows.Forms.TabPage();
             this._rtxtErrorLog = new System.Windows.Forms.RichTextBox();
-            this.accessTab = new System.Windows.Forms.TabPage();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.titleLabel = new System.Windows.Forms.Label();
             this.subtitleLabel = new System.Windows.Forms.Label();
@@ -55,14 +53,13 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenDocRoot = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this._apacheServerModule = new Wampoon.ControlPanel.Controls.ApacheControl();
             this._mySqlServerModule = new Wampoon.ControlPanel.Controls.MySqlControl();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.trayContextMenuStrip.SuspendLayout();
             this.logsGroupBox.SuspendLayout();
             this.logTabControl.SuspendLayout();
             this.outputTab.SuspendLayout();
-            this.errorTab.SuspendLayout();
             this.headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bannerIcon)).BeginInit();
             this.panel2.SuspendLayout();
@@ -81,6 +78,7 @@ namespace Wampoon.ControlPanel.UI
             // 
             // restoreToolStripMenuItem
             // 
+            this.restoreToolStripMenuItem.Image = global::Wampoon.ControlPanel.Properties.Resources.restore_48;
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
             this.restoreToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.restoreToolStripMenuItem.Text = "Restore";
@@ -104,7 +102,7 @@ namespace Wampoon.ControlPanel.UI
             this.logsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.logsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.logsGroupBox.Name = "logsGroupBox";
-            this.logsGroupBox.Size = new System.Drawing.Size(736, 287);
+            this.logsGroupBox.Size = new System.Drawing.Size(731, 287);
             this.logsGroupBox.TabIndex = 0;
             this.logsGroupBox.TabStop = false;
             this.logsGroupBox.Text = "📋 Server Logs";
@@ -115,13 +113,11 @@ namespace Wampoon.ControlPanel.UI
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.logTabControl.Controls.Add(this.outputTab);
-            this.logTabControl.Controls.Add(this.errorTab);
-            this.logTabControl.Controls.Add(this.accessTab);
             this.logTabControl.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.logTabControl.Location = new System.Drawing.Point(6, 24);
             this.logTabControl.Name = "logTabControl";
             this.logTabControl.SelectedIndex = 0;
-            this.logTabControl.Size = new System.Drawing.Size(724, 257);
+            this.logTabControl.Size = new System.Drawing.Size(719, 257);
             this.logTabControl.TabIndex = 1;
             // 
             // outputTab
@@ -131,7 +127,7 @@ namespace Wampoon.ControlPanel.UI
             this.outputTab.Location = new System.Drawing.Point(4, 24);
             this.outputTab.Name = "outputTab";
             this.outputTab.Padding = new System.Windows.Forms.Padding(3);
-            this.outputTab.Size = new System.Drawing.Size(716, 229);
+            this.outputTab.Size = new System.Drawing.Size(711, 229);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output Logs";
             // 
@@ -145,21 +141,9 @@ namespace Wampoon.ControlPanel.UI
             this._rtxtActionsLog.Name = "_rtxtActionsLog";
             this._rtxtActionsLog.ReadOnly = true;
             this._rtxtActionsLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this._rtxtActionsLog.Size = new System.Drawing.Size(710, 223);
+            this._rtxtActionsLog.Size = new System.Drawing.Size(705, 223);
             this._rtxtActionsLog.TabIndex = 0;
             this._rtxtActionsLog.Text = "";
-            // 
-            // errorTab
-            // 
-            this.errorTab.BackColor = System.Drawing.Color.White;
-            this.errorTab.Controls.Add(this._rtxtErrorLog);
-            this.errorTab.Location = new System.Drawing.Point(4, 24);
-            this.errorTab.Name = "errorTab";
-            this.errorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.errorTab.Size = new System.Drawing.Size(716, 229);
-            this.errorTab.TabIndex = 1;
-            this.errorTab.Text = "MariaDB Logs";
-            this.errorTab.UseVisualStyleBackColor = true;
             // 
             // _rtxtErrorLog
             // 
@@ -175,16 +159,6 @@ namespace Wampoon.ControlPanel.UI
             this._rtxtErrorLog.TabIndex = 0;
             this._rtxtErrorLog.Text = "";
             // 
-            // accessTab
-            // 
-            this.accessTab.Location = new System.Drawing.Point(4, 24);
-            this.accessTab.Name = "accessTab";
-            this.accessTab.Padding = new System.Windows.Forms.Padding(3);
-            this.accessTab.Size = new System.Drawing.Size(716, 229);
-            this.accessTab.TabIndex = 2;
-            this.accessTab.Text = "Access Logs";
-            this.accessTab.UseVisualStyleBackColor = true;
-            // 
             // headerPanel
             // 
             this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -195,7 +169,7 @@ namespace Wampoon.ControlPanel.UI
             this.headerPanel.Controls.Add(this.bannerIcon);
             this.headerPanel.Location = new System.Drawing.Point(0, 1);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(752, 71);
+            this.headerPanel.Size = new System.Drawing.Size(747, 71);
             this.headerPanel.TabIndex = 8;
             // 
             // titleLabel
@@ -238,7 +212,7 @@ namespace Wampoon.ControlPanel.UI
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Location = new System.Drawing.Point(12, 75);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(740, 326);
+            this.panel2.Size = new System.Drawing.Size(735, 326);
             this.panel2.TabIndex = 9;
             // 
             // grpHelpers
@@ -256,7 +230,7 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.Location = new System.Drawing.Point(10, 241);
             this.grpHelpers.Name = "grpHelpers";
             this.grpHelpers.Padding = new System.Windows.Forms.Padding(15);
-            this.grpHelpers.Size = new System.Drawing.Size(730, 76);
+            this.grpHelpers.Size = new System.Drawing.Size(725, 76);
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "⚡ Quick Actions";
@@ -348,15 +322,26 @@ namespace Wampoon.ControlPanel.UI
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(234)))), ((int)(((byte)(238)))));
             this.groupBox1.Controls.Add(this._apacheServerModule);
             this.groupBox1.Controls.Add(this._mySqlServerModule);
-            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
             this.groupBox1.Location = new System.Drawing.Point(10, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(15);
-            this.groupBox1.Size = new System.Drawing.Size(730, 219);
+            this.groupBox1.Size = new System.Drawing.Size(725, 219);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "🖥️ Server Management";
+            this.groupBox1.Text = "🖥️ Servers Management";
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.logsGroupBox);
+            this.panel1.Location = new System.Drawing.Point(12, 417);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(718, 282);
+            this.panel1.TabIndex = 10;
             // 
             // _apacheServerModule
             // 
@@ -376,23 +361,12 @@ namespace Wampoon.ControlPanel.UI
             this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
             this._mySqlServerModule.TabIndex = 7;
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.logsGroupBox);
-            this.panel1.Location = new System.Drawing.Point(12, 417);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(985, 416);
-            this.panel1.TabIndex = 10;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(755, 719);
+            this.ClientSize = new System.Drawing.Size(750, 719);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.panel2);
@@ -406,7 +380,6 @@ namespace Wampoon.ControlPanel.UI
             this.logsGroupBox.ResumeLayout(false);
             this.logTabControl.ResumeLayout(false);
             this.outputTab.ResumeLayout(false);
-            this.errorTab.ResumeLayout(false);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bannerIcon)).EndInit();
@@ -424,9 +397,8 @@ namespace Wampoon.ControlPanel.UI
         private TabControl logTabControl;
         private TabPage outputTab;
         private RichTextBox _rtxtActionsLog;
-        private TabPage errorTab;
+        //private TabPage errorTab;
         private RichTextBox _rtxtErrorLog;
-        private TabPage accessTab;
         private Controls.MySqlControl _mySqlServerModule;
         private Panel headerPanel;
         private Label titleLabel;

@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Wampoon.ControlPanel.Helpers
 {
     internal static class AppConstants
     {
-        public const string APP_NAME = "WAMPoon Control Panel";        
-        public const string APP_VERSION = "1.0.0";
+        public const string APP_NAME = "Wampoon Control Panel";                
         public const string GITHUB_REPO_URI = "https://github.com/wampoon-box/wampoon-control";
         public const string APP_LOG_FOLDER = "wampoon-logs";
         public const string APP_LOG_FILE = "wampoon-error.log";
@@ -88,7 +88,7 @@ namespace Wampoon.ControlPanel.Helpers
         // Message Templates.
         public static class Messages
         {
-            public const string PORT_IN_USE = "Port {0} is in use. {1} server cannot be started.";
+            public const string PORT_IN_USE = "Port {0} is in use. {1} server cannot be started. Open Task Manager to ensure there isn't another process with the same name already running. ";            
             public const string ERROR_STARTING = "Error starting {0}: {1}";
             public const string FAILED_TO_OPERATION = "Failed to {0}: {1}";
             public const string EXECUTABLE_NOT_FOUND = "Executable not found: {0}";

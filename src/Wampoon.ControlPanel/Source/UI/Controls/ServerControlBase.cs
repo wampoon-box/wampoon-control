@@ -46,12 +46,15 @@ namespace Wampoon.ControlPanel.Controls
         protected virtual void SetupToolsMenu()
         {
             contextMenuTools.Items.Clear();
-            
-            var configItem = contextMenuTools.Items.Add("📄 View Config File (Read-Only)");
+
+            var configItem = contextMenuTools.Items.Add("📄 View httpd.conf (Read-Only)");
             configItem.Click += (s, e) => OpenConfigFile();
             
-            var configLocationItem = contextMenuTools.Items.Add("📁 Open Config File Location");
+            var configLocationItem = contextMenuTools.Items.Add("📁 Open Apache's Config File Location");
             configLocationItem.Click += (s, e) => OpenConfigFileLocation();
+
+            var phpIniLocationItem = contextMenuTools.Items.Add("🐘 Open php.ini File Location");
+            phpIniLocationItem.Click += (s, e) => OpenPhpIniFileLocation();
             
             contextMenuTools.Items.Add("-"); // Separator.
             var portConfigItem = contextMenuTools.Items.Add("⚙️ Port Configuration");
@@ -280,6 +283,41 @@ namespace Wampoon.ControlPanel.Controls
             }
         }
 
+        protected virtual void OpenPhpIniFileLocation()
+        {
+            try
+            {
+                var phpIniPath = ServerPathManager.GetConfigPath(PackageType.PHP.ToServerName());
+                if (string.IsNullOrEmpty(phpIniPath))
+                {
+                    LogMessage("php.ini file path not configured.", LogType.Warning);
+                    MessageBox.Show("php.ini file path not configured.", "Configuration", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (System.IO.File.Exists(phpIniPath))
+                {
+                    // Open Explorer and select the php.ini file
+                    SystemHelper.ExecuteFile("explorer.exe", $"/select,\"{phpIniPath}\"", System.Diagnostics.ProcessWindowStyle.Normal);
+                    LogMessage($"Opened php.ini file location: {System.IO.Path.GetDirectoryName(phpIniPath)}", LogType.Info);
+                }
+                else
+                {
+                    LogMessage($"php.ini file not found: {phpIniPath}", LogType.Warning);
+                    MessageBox.Show($"php.ini file not found: {phpIniPath}", "File Not Found", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogExceptionInfo(ex);
+                LogMessage($"Error opening php.ini file location: {ex.Message}", LogType.Error);
+                MessageBox.Show($"Error opening php.ini file location: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         protected virtual void OpenServerFile(string filePath, string fileTypeDisplayName)
         {
             OpenServerFile(filePath, fileTypeDisplayName, false);
@@ -448,7 +486,7 @@ namespace Wampoon.ControlPanel.Controls
             }
         }
 
-        protected bool CheckPort(int port, bool showDialog = true)
+        /*protected bool CheckPort(int port, bool showDialog = true)
         {
             // Use retry logic for port checking, especially after force stops
             if (NetworkPortHelper.IsPortInUseWithRetry(port))
@@ -461,7 +499,7 @@ namespace Wampoon.ControlPanel.Controls
                 return false;
             }
             return true;
-        }
+        }*/
 
         protected void HandleServerLog(object sender, ServerLogEventArgs e)
         {

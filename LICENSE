@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Frosty Bee
+Copyright (c) 2025 FrostyBee
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,78 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Third-Party Licenses
+=====================
+
+This software distribution includes the following third-party components, each with its own license terms.
+
+---
+
+1. Apache HTTP Server
+----------------------
+License: Apache License 2.0  
+License URL: https://www.apache.org/licenses/LICENSE-2.0  
+Project Site: https://httpd.apache.org/
+
+---
+
+2. MariaDB
+----------
+License: GNU General Public License v2.0  
+License URL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html  
+Project Site: https://mariadb.org/
+
+---
+
+3. PHP
+------
+License: PHP License v3.01  
+License URL: https://www.php.net/license/3_01.txt  
+Project Site: https://www.php.net/
+
+---
+
+4. phpMyAdmin
+-------------
+License: GNU General Public License v2.0  
+License URL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html  
+Project Site: https://www.phpmyadmin.net/
+
+---
+
+5. Browscap (Browser Capabilities Project)
+-------------------------------------------
+License: GNU General Public License v2.0  
+License URL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html  
+Project Site: https://browscap.org/
+
+---
+
+6. Xdebug
+---------
+License: Xdebug License (based on the PHP License v3.01)  
+License URL: https://xdebug.org/license  
+Project Site: https://xdebug.org/
+
+---
+
+7. cURL
+-------
+License: curl License (MIT/X derivate)  
+License URL: https://curl.se/docs/copyright.html  
+Project Site: https://curl.se/
+
+---
+
+8. Composer
+-----------
+License: MIT License  
+License URL: https://opensource.org/licenses/MIT  
+Project Site: https://getcomposer.org/
+
+---
+
+For full license texts and notices, see the respective official license URLs above.

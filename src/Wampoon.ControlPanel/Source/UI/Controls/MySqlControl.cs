@@ -107,10 +107,10 @@ namespace Wampoon.ControlPanel.Controls
         {
             try
             {
-                if (!CheckPort(PortNumber, true))
+                /*if (!CheckPort(PortNumber, true))
                 {
                     return;
-                }
+                }*/
 
                 if (!EnsureServerManagerInitialized())
                 {
@@ -157,7 +157,7 @@ namespace Wampoon.ControlPanel.Controls
                 var configPath = ServerPathManager.GetConfigPath(PackageType.MariaDB.ToServerName());
                 if (!string.IsNullOrEmpty(configPath))
                 {
-                    var configuredPort = MySqlConfigManager.ParsePort(configPath, LogMessage);
+                    var configuredPort = MySqlConfigHelper.ParsePort(configPath, LogMessage);
                     if (configuredPort != PortNumber)
                     {
                         LogMessage($"Port updated from MySQL config: {PortNumber} -> {configuredPort}", LogType.Info);
