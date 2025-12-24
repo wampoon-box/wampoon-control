@@ -40,8 +40,12 @@ namespace Wampoon.ControlPanel.Controllers
         protected override ProcessStartInfo GetProcessStartInfo()
         {
             // Set the environment variable required in httpd.conf and php.ini BEFORE starting Apache.
-            string wampoonRoot = ServerPathManager.AppBaseDirectory; 
+            string wampoonRoot = ServerPathManager.AppBaseDirectory;
             Environment.SetEnvironmentVariable("WAMPOON_ROOT_DIR", wampoonRoot.Replace('\\', '/'));
+
+            // Set OpenSSL config path (fixes hardcoded C:\Apache24\conf\openssl.cnf issue in PHP)
+            string opensslConfPath = Path.Combine(wampoonRoot, "apps", "apache", "conf", "openssl.cnf");
+            Environment.SetEnvironmentVariable("OPENSSL_CONF", opensslConfPath);
 
             ProcessStartInfo startInfo = new ProcessStartInfo(_executablePath)
             {
