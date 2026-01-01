@@ -53,9 +53,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenDocRoot = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this._apacheServerModule = new Wampoon.ControlPanel.Controls.ApacheControl();
             this._mySqlServerModule = new Wampoon.ControlPanel.Controls.MySqlControl();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.trayContextMenuStrip.SuspendLayout();
             this.logsGroupBox.SuspendLayout();
             this.logTabControl.SuspendLayout();
@@ -177,11 +177,11 @@ namespace Wampoon.ControlPanel.UI
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.titleLabel.ForeColor = System.Drawing.Color.White;
-            this.titleLabel.Location = new System.Drawing.Point(95, 8);
+            this.titleLabel.Location = new System.Drawing.Point(93, 8);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(298, 32);
+            this.titleLabel.Size = new System.Drawing.Size(275, 32);
             this.titleLabel.TabIndex = 0;
-            this.titleLabel.Text = "WAMPoon Control Panel";
+            this.titleLabel.Text = "AMPoon Control Panel";
             // 
             // subtitleLabel
             // 
@@ -240,6 +240,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(83)))));
             this.btnQuit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnQuit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnQuit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(62)))), ((int)(((byte)(71)))));
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuit.ForeColor = System.Drawing.Color.White;
@@ -256,6 +257,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStartAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(150)))), ((int)(((byte)(85)))));
             this.btnStartAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStartAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnStartAllServers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(128)))), ((int)(((byte)(72)))));
             this.btnStartAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
@@ -272,6 +274,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(185)))));
             this.btnAbout.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAbout.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnAbout.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(157)))));
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
@@ -288,6 +291,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(43)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStopAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnStopAllServers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(62)))), ((int)(((byte)(37)))));
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
@@ -304,6 +308,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnOpenDocRoot.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
             this.btnOpenDocRoot.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnOpenDocRoot.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
+            this.btnOpenDocRoot.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(55)))), ((int)(((byte)(80)))));
             this.btnOpenDocRoot.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenDocRoot.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnOpenDocRoot.ForeColor = System.Drawing.Color.White;
@@ -311,7 +316,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnOpenDocRoot.Name = "btnOpenDocRoot";
             this.btnOpenDocRoot.Size = new System.Drawing.Size(116, 35);
             this.btnOpenDocRoot.TabIndex = 0;
-            this.btnOpenDocRoot.Text = "Open Doc. Root";
+            this.btnOpenDocRoot.Text = "Open htdocs";
             this.btnOpenDocRoot.UseVisualStyleBackColor = false;
             this.btnOpenDocRoot.Click += new System.EventHandler(this.BtnOpenExplorer_Click);
             // 
@@ -332,6 +337,22 @@ namespace Wampoon.ControlPanel.UI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Servers Management";
             // 
+            // _apacheServerModule
+            //
+            this._apacheServerModule.Location = new System.Drawing.Point(10, 27);
+            this._apacheServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._apacheServerModule.Name = "_apacheServerModule";
+            this._apacheServerModule.Size = new System.Drawing.Size(335, 178);
+            this._apacheServerModule.TabIndex = 4;
+            // 
+            // _mySqlServerModule
+            //
+            this._mySqlServerModule.Location = new System.Drawing.Point(374, 27);
+            this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._mySqlServerModule.Name = "_mySqlServerModule";
+            this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
+            this._mySqlServerModule.TabIndex = 7;
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -342,24 +363,6 @@ namespace Wampoon.ControlPanel.UI
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(718, 282);
             this.panel1.TabIndex = 10;
-            // 
-            // _apacheServerModule
-            // 
-            this._apacheServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this._apacheServerModule.Location = new System.Drawing.Point(10, 27);
-            this._apacheServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._apacheServerModule.Name = "_apacheServerModule";
-            this._apacheServerModule.Size = new System.Drawing.Size(335, 178);
-            this._apacheServerModule.TabIndex = 4;
-            // 
-            // _mySqlServerModule
-            // 
-            this._mySqlServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this._mySqlServerModule.Location = new System.Drawing.Point(374, 27);
-            this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._mySqlServerModule.Name = "_mySqlServerModule";
-            this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
-            this._mySqlServerModule.TabIndex = 7;
             // 
             // MainForm
             // 

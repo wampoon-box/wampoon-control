@@ -32,7 +32,7 @@ namespace Wampoon.ControlPanel.Controls
             InitializeComponent();
             SetupEventHandlers();
             SetupToolsMenu();
-            pnlControls.Paint += PnlControls_Paint;
+            this.Paint += Control_Paint;
         }
 
         protected void SetupEventHandlers()
@@ -168,33 +168,19 @@ namespace Wampoon.ControlPanel.Controls
 
         protected void UpdateStatus(ServerStatus serverStatus)
         {
-            lblStatus.Text = serverStatus.ToString().ToUpper();
-            lblStatus.Refresh();
             CurrentStatus = serverStatus;
             UpdatePortAndPid(serverStatus);
 
-            switch (serverStatus)
-            {
-                case ServerStatus.Stopped:
-                    ApplyControlStyle(Color.Red, Color.DarkRed, Color.FromArgb(232, 162, 162));
-                    break;
-                case ServerStatus.Running:
-                    ApplyControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200));
-                    break;
-                case ServerStatus.Stopping:
-                    ApplyControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
-                    break;
-                case ServerStatus.Starting:
-                    ApplyControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
-                    break;
-                case ServerStatus.Error:
+            // Store the status text for the custom badge drawing.
+            // The label is invisible; we draw the badge with text via Control_Paint.
+            _statusText = serverStatus.ToString().ToUpper();
 
-                    break;
-            }
-
-            // Redraw the control to apply the new styles to the control's left border.
-            pnlControls.Invalidate();
+            // Redraw the control to apply the new styles to the control's left border and status badge.
+            this.Invalidate();
         }
+
+        // Status text for custom badge drawing.
+        private string _statusText = "STOPPED";
 
         protected void UpdatePortAndPid(ServerStatus serverStatus)
         {
@@ -217,20 +203,6 @@ namespace Wampoon.ControlPanel.Controls
 
             lblServerInfo.Text = $"{portInfo} | {pidInfo}";
         }
-
-        private void ApplyControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
-        {
-            pcbServerStatus.BackColor = statusColor;
-            lblStatus.ForeColor = lblForeColor;
-            lblStatus.BackColor = lblBackColor;
-            
-            // Apply left borders to buttons instead of background colors
-            //UiHelper.ApplyLeftBorderToButton(btnStart, statusColor);
-            //UiHelper.ApplyLeftBorderToButton(btnStop, statusColor);
-            //UiHelper.ApplyLeftBorderToButton(btnServerAdmin, statusColor);
-            //UiHelper.ApplyLeftBorderToButton(btnTools, statusColor);
-        }
-
 
         protected virtual void LogMessage(string serverModule, string log, LogType logType = LogType.Default)
         {
@@ -454,35 +426,145 @@ namespace Wampoon.ControlPanel.Controls
             }
         }
 
-        private void PnlControls_Paint(object sender, PaintEventArgs e)
+        private void Control_Paint(object sender, PaintEventArgs e)
         {
             try
             {
-                UiHelper.DrawBootstrapCardShadow(e.Graphics, pnlControls);
+                var g = e.Graphics;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
 
-                using (Brush borderBrush = new SolidBrush(GetLeftBorderColor()))
+                int width = this.Width;
+                int height = this.Height;
+                int radius = 10;
+                int shadowOffset = 3;
+                int leftBorderWidth = 5;
+
+                // 1. Draw drop shadow (multiple layers for blur effect).
+                DrawCardShadow(g, width, height, radius, shadowOffset);
+
+                // 2. Create rounded rectangle path for the card.
+                using (var cardPath = CreateRoundedRectanglePath(shadowOffset, shadowOffset,
+                    width - shadowOffset * 2 - 2, height - shadowOffset * 2 - 2, radius))
                 {
-                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                    using (System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath())
+                    // 3. Draw subtle gradient background.
+                    using (var gradientBrush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                        new Rectangle(0, 0, width, height),
+                        Color.FromArgb(255, 255, 255),      // White at top
+                        Color.FromArgb(248, 250, 252),      // Slightly gray at bottom
+                        System.Drawing.Drawing2D.LinearGradientMode.Vertical))
                     {
-                        int borderWidth = 4;
-                        int radius = 8;
-
-                        path.AddArc(0, 0, radius * 2, radius * 2, 180, 90);
-                        path.AddLine(radius, 0, borderWidth, 0);
-                        path.AddLine(borderWidth, 0, borderWidth, pnlControls.Height - 5);
-                        path.AddLine(borderWidth, pnlControls.Height - 5, radius, pnlControls.Height - 5);
-                        path.AddArc(0, pnlControls.Height - 5 - radius * 2, radius * 2, radius * 2, 90, 90);
-                        path.CloseFigure();
-
-                        e.Graphics.FillPath(borderBrush, path);
+                        g.FillPath(gradientBrush, cardPath);
                     }
-                }                
+
+                    // 4. Draw card border.
+                    using (var borderPen = new Pen(Color.FromArgb(230, 232, 236), 1))
+                    {
+                        g.DrawPath(borderPen, cardPath);
+                    }
+                }
+
+                // 5. Draw gradient left border.
+                DrawGradientLeftBorder(g, height, radius, leftBorderWidth, shadowOffset);
+
+                // 6. Draw header divider line.
+                int dividerY = 62;
+                using (var dividerPen = new Pen(Color.FromArgb(235, 238, 242), 1))
+                {
+                    g.DrawLine(dividerPen, leftBorderWidth + shadowOffset + 10, dividerY,
+                        width - shadowOffset - 15, dividerY);
+                }
+
+                // 7. Draw the status badge pill.
+                DrawStatusBadgePill(g);
             }
             catch (Exception ex)
             {
                 LogExceptionInfo(ex);
+            }
+        }
+
+        private void DrawCardShadow(Graphics g, int width, int height, int radius, int shadowOffset)
+        {
+            // Draw multiple shadow layers for a soft blur effect.
+            int[] alphas = { 8, 12, 16, 20 };
+            int[] offsets = { 4, 3, 2, 1 };
+
+            for (int i = 0; i < alphas.Length; i++)
+            {
+                using (var shadowPath = CreateRoundedRectanglePath(
+                    shadowOffset + offsets[i], shadowOffset + offsets[i] + 1,
+                    width - shadowOffset * 2 - offsets[i] * 2,
+                    height - shadowOffset * 2 - offsets[i] * 2, radius))
+                using (var shadowBrush = new SolidBrush(Color.FromArgb(alphas[i], 0, 0, 0)))
+                {
+                    g.FillPath(shadowBrush, shadowPath);
+                }
+            }
+        }
+
+        private void DrawGradientLeftBorder(Graphics g, int height, int radius, int borderWidth, int shadowOffset)
+        {
+            Color baseColor = GetLeftBorderColor();
+            Color lighterColor = ControlPaint.Light(baseColor, 0.3f);
+
+            using (var borderPath = new System.Drawing.Drawing2D.GraphicsPath())
+            {
+                int x = shadowOffset;
+                int y = shadowOffset;
+                int h = height - shadowOffset * 2 - 2;
+
+                // Create left border shape with rounded corners.
+                borderPath.AddArc(x, y, radius * 2, radius * 2, 180, 90);
+                borderPath.AddLine(x + radius, y, x + borderWidth, y);
+                borderPath.AddLine(x + borderWidth, y, x + borderWidth, y + h);
+                borderPath.AddLine(x + borderWidth, y + h, x + radius, y + h);
+                borderPath.AddArc(x, y + h - radius * 2, radius * 2, radius * 2, 90, 90);
+                borderPath.CloseFigure();
+
+                // Draw with gradient.
+                using (var gradientBrush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                    new Rectangle(x, y, borderWidth + radius, h),
+                    lighterColor,
+                    baseColor,
+                    System.Drawing.Drawing2D.LinearGradientMode.Vertical))
+                {
+                    g.FillPath(gradientBrush, borderPath);
+                }
+            }
+        }
+
+        private System.Drawing.Drawing2D.GraphicsPath CreateRoundedRectanglePath(int x, int y, int width, int height, int radius)
+        {
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            int diameter = radius * 2;
+
+            path.AddArc(x, y, diameter, diameter, 180, 90);
+            path.AddArc(x + width - diameter, y, diameter, diameter, 270, 90);
+            path.AddArc(x + width - diameter, y + height - diameter, diameter, diameter, 0, 90);
+            path.AddArc(x, y + height - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+
+            return path;
+        }
+
+        private void DrawStatusBadgePill(Graphics graphics)
+        {
+            // Get the status badge color based on current status.
+            Color badgeColor = UiHelper.GetStatusBadgeColor(CurrentStatus);
+
+            // Calculate badge bounds based on lblStatus location and size.
+            Rectangle badgeBounds = new Rectangle(
+                lblStatus.Location.X - 2,
+                lblStatus.Location.Y,
+                lblStatus.Width + 4,
+                lblStatus.Height
+            );
+
+            // Draw the pill-shaped badge with the status text.
+            using (Font badgeFont = new Font("Segoe UI", 8.5F, FontStyle.Bold))
+            {
+                UiHelper.DrawStatusBadge(graphics, badgeBounds, badgeColor, _statusText, badgeFont);
             }
         }
 
