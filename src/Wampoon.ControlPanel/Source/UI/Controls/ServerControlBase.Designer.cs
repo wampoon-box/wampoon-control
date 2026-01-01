@@ -45,10 +45,10 @@
             // lblServerIcon
             //
             this.lblServerIcon.BackColor = System.Drawing.Color.Transparent;
-            this.lblServerIcon.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.lblServerIcon.Location = new System.Drawing.Point(14, 9);
+            this.lblServerIcon.Font = new System.Drawing.Font("Segoe UI", 20F);
+            this.lblServerIcon.Location = new System.Drawing.Point(12, 6);
             this.lblServerIcon.Name = "lblServerIcon";
-            this.lblServerIcon.Size = new System.Drawing.Size(30, 30);
+            this.lblServerIcon.Size = new System.Drawing.Size(40, 40);
             this.lblServerIcon.TabIndex = 0;
             this.lblServerIcon.Text = "🌐";
             this.lblServerIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -59,7 +59,7 @@
             this.lblServerTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblServerTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblServerTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
-            this.lblServerTitle.Location = new System.Drawing.Point(46, 14);
+            this.lblServerTitle.Location = new System.Drawing.Point(56, 14);
             this.lblServerTitle.Name = "lblServerTitle";
             this.lblServerTitle.Size = new System.Drawing.Size(109, 20);
             this.lblServerTitle.TabIndex = 1;
@@ -94,7 +94,7 @@
             this.lblServerInfo.BackColor = System.Drawing.Color.Transparent;
             this.lblServerInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblServerInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
-            this.lblServerInfo.Location = new System.Drawing.Point(46, 38);
+            this.lblServerInfo.Location = new System.Drawing.Point(56, 38);
             this.lblServerInfo.Name = "lblServerInfo";
             this.lblServerInfo.Size = new System.Drawing.Size(133, 15);
             this.lblServerInfo.TabIndex = 7;

@@ -316,7 +316,7 @@ namespace Wampoon.ControlPanel.UI
             this.btnOpenDocRoot.Name = "btnOpenDocRoot";
             this.btnOpenDocRoot.Size = new System.Drawing.Size(116, 35);
             this.btnOpenDocRoot.TabIndex = 0;
-            this.btnOpenDocRoot.Text = "Open Doc. Root";
+            this.btnOpenDocRoot.Text = "Open htdocs";
             this.btnOpenDocRoot.UseVisualStyleBackColor = false;
             this.btnOpenDocRoot.Click += new System.EventHandler(this.BtnOpenExplorer_Click);
             // 
