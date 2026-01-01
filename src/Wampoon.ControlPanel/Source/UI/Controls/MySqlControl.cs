@@ -30,7 +30,7 @@ namespace Wampoon.ControlPanel.Controls
             btnServerAdmin.Text = "phpMyAdmin";
 
             // Add tooltip for the phpMyAdmin button.
-            _toolTip = new ToolTip();
+            _toolTip = new ToolTip { InitialDelay = 800, ReshowDelay = 400 };
             _toolTip.SetToolTip(btnServerAdmin, "Open phpMyAdmin in a browser window");
         }
         public void InitializeModule()

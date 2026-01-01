@@ -54,8 +54,8 @@ namespace Wampoon.ControlPanel.UI
             _toolTip = new ToolTip
             {
                 AutoPopDelay = 5000,
-                InitialDelay = 500,
-                ReshowDelay = 200,
+                InitialDelay = 800,
+                ReshowDelay = 400,
                 ShowAlways = true
             };
 
@@ -114,63 +114,94 @@ namespace Wampoon.ControlPanel.UI
         {
             try
             {
-                // Create a professional icon using text since we don't have an image file.
-                var bitmap = new Bitmap(48, 48);
+                // Create a professional icon with shadow and refined styling.
+                int iconSize = 52;
+                var bitmap = new Bitmap(iconSize + 4, iconSize + 4); // Extra space for shadow
                 using (var g = Graphics.FromImage(bitmap))
                 {
-                    // Enable high-quality rendering.
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                     g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
                     g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
 
-                    // Create a gradient background matching the header theme.
-                    using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
-                        new Rectangle(0, 0, 48, 48),
-                        Color.FromArgb(59, 130, 246),
-                        Color.FromArgb(37, 99, 235),
+                    // Draw drop shadow.
+                    using (var shadowBrush = new SolidBrush(Color.FromArgb(40, 0, 0, 0)))
+                    {
+                        g.FillEllipse(shadowBrush, 4, 5, iconSize - 2, iconSize - 2);
+                    }
+
+                    // Create main gradient background with a modern blue palette.
+                    using (var path = new System.Drawing.Drawing2D.GraphicsPath())
+                    {
+                        path.AddEllipse(2, 2, iconSize - 2, iconSize - 2);
+
+                        using (var gradientBrush = new System.Drawing.Drawing2D.PathGradientBrush(path))
+                        {
+                            gradientBrush.CenterColor = Color.FromArgb(96, 165, 250);  // Lighter blue center
+                            gradientBrush.SurroundColors = new[] { Color.FromArgb(37, 99, 235) }; // Darker blue edge
+                            gradientBrush.CenterPoint = new PointF(iconSize * 0.35f, iconSize * 0.35f);
+                            g.FillPath(gradientBrush, path);
+                        }
+                    }
+
+                    // Add inner highlight for depth (top-left).
+                    using (var highlightBrush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                        new Rectangle(4, 4, iconSize / 2, iconSize / 2),
+                        Color.FromArgb(60, 255, 255, 255),
+                        Color.FromArgb(0, 255, 255, 255),
                         System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal))
                     {
-                        g.FillEllipse(brush, 2, 2, 44, 44);
+                        g.FillEllipse(highlightBrush, 6, 4, iconSize / 2 - 4, iconSize / 3);
                     }
 
-                    // Add a subtle outer glow/shadow effect.
-                    using (var glowPen = new Pen(Color.FromArgb(40, 255, 255, 255), 1))
+                    // Add refined border.
+                    using (var borderPen = new Pen(Color.FromArgb(29, 78, 216), 2))
                     {
-                        g.DrawEllipse(glowPen, 3, 3, 42, 42);
+                        g.DrawEllipse(borderPen, 3, 3, iconSize - 4, iconSize - 4);
                     }
 
-                    // Add a refined border.
-                    using (var pen = new Pen(Color.FromArgb(29, 78, 216), 2))
-                    {
-                        g.DrawEllipse(pen, 2, 2, 44, 44);
-                    }
-
-                    // Draw the "W" letter with better positioning.
-                    using (var font = new Font("Segoe UI", 20, FontStyle.Bold))
-                    using (var textBrush = new SolidBrush(Color.White))
+                    // Draw the "W" letter with subtle shadow.
+                    using (var font = new Font("Segoe UI", 22, FontStyle.Bold))
                     {
                         var format = new StringFormat
                         {
                             Alignment = StringAlignment.Center,
                             LineAlignment = StringAlignment.Center
                         };
-                        g.DrawString("W", font, textBrush, new RectangleF(0, 0, 48, 48), format);
+                        var textRect = new RectangleF(2, 2, iconSize - 2, iconSize - 2);
+
+                        // Text shadow.
+                        using (var shadowBrush = new SolidBrush(Color.FromArgb(50, 0, 0, 0)))
+                        {
+                            var shadowRect = textRect;
+                            shadowRect.Offset(1, 1);
+                            g.DrawString("W", font, shadowBrush, shadowRect, format);
+                        }
+
+                        // Main text.
+                        using (var textBrush = new SolidBrush(Color.White))
+                        {
+                            g.DrawString("W", font, textBrush, textRect, format);
+                        }
                     }
                 }
                 bannerIcon.Image = bitmap;
-                bannerIcon.Size = new Size(48, 48);
+                bannerIcon.Size = new Size(iconSize + 4, iconSize + 4);
+                bannerIcon.Location = new Point(16, 8);
 
-                // Improve subtitle contrast.
-                subtitleLabel.ForeColor = Color.FromArgb(220, 225, 230);
+                // Improve layout - position title closer to icon.
+                titleLabel.Location = new Point(72, 12);
+                subtitleLabel.Location = new Point(74, 42);
+                subtitleLabel.ForeColor = Color.FromArgb(200, 210, 220);
 
                 // Update banner title with version if available.
                 var version = SystemHelper.GetFormattedInstallerVersion();
                 if (!string.IsNullOrEmpty(version))
                 {
-                    titleLabel.Text = $"Wampoon Control Panel {version}";
+                    titleLabel.Text = $"ampoon Control Panel {version}";
                 }
 
-                // Add a subtle accent line at the bottom of the header.
+                // Add paint handler for gradient background and accent line.
                 headerPanel.Paint += HeaderPanel_Paint;
             }
             catch
@@ -182,14 +213,36 @@ namespace Wampoon.ControlPanel.UI
 
         private void HeaderPanel_Paint(object sender, PaintEventArgs e)
         {
-            // Draw a subtle accent line at the bottom of the header.
-            using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
+            var g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+            // Draw gradient background (darker at top, slightly lighter at bottom).
+            using (var gradientBrush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                new Rectangle(0, 0, headerPanel.Width, headerPanel.Height),
+                Color.FromArgb(25, 55, 95),    // Darker blue at top
+                Color.FromArgb(35, 75, 125),   // Slightly lighter at bottom
+                System.Drawing.Drawing2D.LinearGradientMode.Vertical))
+            {
+                g.FillRectangle(gradientBrush, 0, 0, headerPanel.Width, headerPanel.Height);
+            }
+
+            // Draw subtle diagonal pattern overlay for texture.
+            using (var patternPen = new Pen(Color.FromArgb(8, 255, 255, 255), 1))
+            {
+                for (int i = -headerPanel.Height; i < headerPanel.Width + headerPanel.Height; i += 20)
+                {
+                    g.DrawLine(patternPen, i, headerPanel.Height, i + headerPanel.Height, 0);
+                }
+            }
+
+            // Draw accent line at the bottom with gradient.
+            using (var accentBrush = new System.Drawing.Drawing2D.LinearGradientBrush(
                 new Rectangle(0, headerPanel.Height - 3, headerPanel.Width, 3),
                 Color.FromArgb(59, 130, 246),
-                Color.FromArgb(37, 99, 235),
+                Color.FromArgb(139, 92, 246),  // Purple accent
                 System.Drawing.Drawing2D.LinearGradientMode.Horizontal))
             {
-                e.Graphics.FillRectangle(brush, 0, headerPanel.Height - 3, headerPanel.Width, 3);
+                g.FillRectangle(accentBrush, 0, headerPanel.Height - 3, headerPanel.Width, 3);
             }
         }
 

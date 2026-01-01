@@ -33,7 +33,7 @@ namespace Wampoon.ControlPanel.Controls
             btnServerAdmin.Text = "localhost";
 
             // Add tooltip for the localhost button.
-            _toolTip = new ToolTip();
+            _toolTip = new ToolTip { InitialDelay = 800, ReshowDelay = 400 };
             _toolTip.SetToolTip(btnServerAdmin, "Open localhost in a browser window");
         }
 

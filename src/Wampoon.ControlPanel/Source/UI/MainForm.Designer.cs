@@ -177,11 +177,11 @@ namespace Wampoon.ControlPanel.UI
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.titleLabel.ForeColor = System.Drawing.Color.White;
-            this.titleLabel.Location = new System.Drawing.Point(95, 8);
+            this.titleLabel.Location = new System.Drawing.Point(93, 8);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(298, 32);
+            this.titleLabel.Size = new System.Drawing.Size(275, 32);
             this.titleLabel.TabIndex = 0;
-            this.titleLabel.Text = "WAMPoon Control Panel";
+            this.titleLabel.Text = "AMPoon Control Panel";
             // 
             // subtitleLabel
             // 
@@ -234,9 +234,9 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "⚡ Quick Actions";
-            //
+            // 
             // btnQuit
-            //
+            // 
             this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(83)))));
             this.btnQuit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnQuit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
@@ -251,9 +251,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnQuit.Text = "Quit";
             this.btnQuit.UseVisualStyleBackColor = false;
             this.btnQuit.Click += new System.EventHandler(this.BtnQuit_Click);
-            //
+            // 
             // btnStartAllServers
-            //
+            // 
             this.btnStartAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(150)))), ((int)(((byte)(85)))));
             this.btnStartAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStartAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
@@ -268,9 +268,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnStartAllServers.Text = "Start All";
             this.btnStartAllServers.UseVisualStyleBackColor = false;
             this.btnStartAllServers.Click += new System.EventHandler(this.BtnStartAllServers_Click);
-            //
+            // 
             // btnAbout
-            //
+            // 
             this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(185)))));
             this.btnAbout.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAbout.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
@@ -285,9 +285,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnAbout.Text = "About";
             this.btnAbout.UseVisualStyleBackColor = false;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
-            //
+            // 
             // btnStopAllServers
-            //
+            // 
             this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(43)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStopAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
@@ -302,9 +302,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers.Text = "Stop All";
             this.btnStopAllServers.UseVisualStyleBackColor = false;
             this.btnStopAllServers.Click += new System.EventHandler(this.BtnStopAllServers_Click);
-            //
+            // 
             // btnOpenDocRoot
-            //
+            // 
             this.btnOpenDocRoot.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
             this.btnOpenDocRoot.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnOpenDocRoot.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
