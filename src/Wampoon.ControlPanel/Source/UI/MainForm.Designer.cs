@@ -53,9 +53,9 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers = new System.Windows.Forms.Button();
             this.btnOpenDocRoot = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this._apacheServerModule = new Wampoon.ControlPanel.Controls.ApacheControl();
             this._mySqlServerModule = new Wampoon.ControlPanel.Controls.MySqlControl();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.trayContextMenuStrip.SuspendLayout();
             this.logsGroupBox.SuspendLayout();
             this.logTabControl.SuspendLayout();
@@ -337,6 +337,22 @@ namespace Wampoon.ControlPanel.UI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "🖥️ Servers Management";
             // 
+            // _apacheServerModule
+            //
+            this._apacheServerModule.Location = new System.Drawing.Point(10, 27);
+            this._apacheServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._apacheServerModule.Name = "_apacheServerModule";
+            this._apacheServerModule.Size = new System.Drawing.Size(335, 178);
+            this._apacheServerModule.TabIndex = 4;
+            // 
+            // _mySqlServerModule
+            //
+            this._mySqlServerModule.Location = new System.Drawing.Point(374, 27);
+            this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._mySqlServerModule.Name = "_mySqlServerModule";
+            this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
+            this._mySqlServerModule.TabIndex = 7;
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -347,24 +363,6 @@ namespace Wampoon.ControlPanel.UI
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(718, 282);
             this.panel1.TabIndex = 10;
-            // 
-            // _apacheServerModule
-            // 
-            this._apacheServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this._apacheServerModule.Location = new System.Drawing.Point(10, 27);
-            this._apacheServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._apacheServerModule.Name = "_apacheServerModule";
-            this._apacheServerModule.Size = new System.Drawing.Size(335, 178);
-            this._apacheServerModule.TabIndex = 4;
-            // 
-            // _mySqlServerModule
-            // 
-            this._mySqlServerModule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this._mySqlServerModule.Location = new System.Drawing.Point(374, 27);
-            this._mySqlServerModule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._mySqlServerModule.Name = "_mySqlServerModule";
-            this._mySqlServerModule.Size = new System.Drawing.Size(335, 178);
-            this._mySqlServerModule.TabIndex = 7;
             // 
             // MainForm
             // 

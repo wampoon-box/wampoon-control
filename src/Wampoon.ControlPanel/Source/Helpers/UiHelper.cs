@@ -51,10 +51,10 @@ namespace Wampoon.ControlPanel.Helpers
             public static readonly Color DocRootButtonHover = Color.FromArgb(45, 55, 80);
             public static readonly Color StopAllButtonHover = Color.FromArgb(175, 62, 37);
 
-            // Status badge colors.
-            public static readonly Color StatusRunning = Color.FromArgb(34, 197, 94);
-            public static readonly Color StatusStopped = Color.FromArgb(239, 68, 68);
-            public static readonly Color StatusPending = Color.FromArgb(245, 158, 11);
+            // Status badge colors (muted tones).
+            public static readonly Color StatusRunning = Color.FromArgb(55, 140, 75);
+            public static readonly Color StatusStopped = Color.FromArgb(195, 75, 75);
+            public static readonly Color StatusPending = Color.FromArgb(200, 130, 30);
         }
         internal static Color GetLogColor(LogType logType)
         {
