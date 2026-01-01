@@ -83,25 +83,28 @@
             this.lblServerTitle.Size = new System.Drawing.Size(109, 21);
             this.lblServerTitle.TabIndex = 1;
             this.lblServerTitle.Text = "Server Name";
-            // 
+            //
             // pcbServerStatus
-            // 
-            this.pcbServerStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            //
+            this.pcbServerStatus.BackColor = System.Drawing.Color.Transparent;
             this.pcbServerStatus.Location = new System.Drawing.Point(207, 11);
             this.pcbServerStatus.Name = "pcbServerStatus";
-            this.pcbServerStatus.Size = new System.Drawing.Size(27, 22);
+            this.pcbServerStatus.Size = new System.Drawing.Size(0, 0);
             this.pcbServerStatus.TabIndex = 2;
             this.pcbServerStatus.TabStop = false;
-            // 
+            this.pcbServerStatus.Visible = false;
+            //
             // lblStatus
-            // 
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.lblStatus.Location = new System.Drawing.Point(241, 10);
+            // Note: This label is used for positioning only. The actual badge is drawn in PnlControls_Paint.
+            //
+            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblStatus.ForeColor = System.Drawing.Color.Transparent;
+            this.lblStatus.Location = new System.Drawing.Point(207, 8);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(79, 24);
+            this.lblStatus.Size = new System.Drawing.Size(90, 24);
             this.lblStatus.TabIndex = 3;
-            this.lblStatus.Text = "STOPPED";
+            this.lblStatus.Text = "";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblServerInfo
@@ -114,12 +117,13 @@
             this.lblServerInfo.Size = new System.Drawing.Size(133, 17);
             this.lblServerInfo.TabIndex = 7;
             this.lblServerInfo.Text = "Port: Not Set | PID: ... ";
-            // 
+            //
             // btnStart
-            // 
+            //
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(150)))), ((int)(((byte)(85)))));
             this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStart.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnStart.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(128)))), ((int)(((byte)(72)))));
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStart.ForeColor = System.Drawing.Color.White;
@@ -129,13 +133,14 @@
             this.btnStart.TabIndex = 4;
             this.btnStart.Text = "▶️ Start";
             this.btnStart.UseVisualStyleBackColor = false;
-            // 
+            //
             // btnStop
-            // 
+            //
             this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(73)))));
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStop.Enabled = false;
             this.btnStop.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStop.ForeColor = System.Drawing.Color.White;
@@ -145,12 +150,13 @@
             this.btnStop.TabIndex = 5;
             this.btnStop.Text = "⏹️ Stop";
             this.btnStop.UseVisualStyleBackColor = false;
-            // 
+            //
             // btnServerAdmin
-            // 
+            //
             this.btnServerAdmin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(120)))), ((int)(((byte)(249)))));
             this.btnServerAdmin.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnServerAdmin.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnServerAdmin.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(102)))), ((int)(((byte)(212)))));
             this.btnServerAdmin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServerAdmin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnServerAdmin.ForeColor = System.Drawing.Color.White;
@@ -160,12 +166,13 @@
             this.btnServerAdmin.TabIndex = 6;
             this.btnServerAdmin.Text = "🔧 Admin";
             this.btnServerAdmin.UseVisualStyleBackColor = false;
-            // 
+            //
             // btnTools
-            // 
+            //
             this.btnTools.BackColor = System.Drawing.Color.Teal;
             this.btnTools.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTools.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnTools.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.btnTools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTools.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnTools.ForeColor = System.Drawing.Color.White;

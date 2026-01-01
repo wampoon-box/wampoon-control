@@ -168,33 +168,19 @@ namespace Wampoon.ControlPanel.Controls
 
         protected void UpdateStatus(ServerStatus serverStatus)
         {
-            lblStatus.Text = serverStatus.ToString().ToUpper();
-            lblStatus.Refresh();
             CurrentStatus = serverStatus;
             UpdatePortAndPid(serverStatus);
 
-            switch (serverStatus)
-            {
-                case ServerStatus.Stopped:
-                    ApplyControlStyle(Color.Red, Color.DarkRed, Color.FromArgb(232, 162, 162));
-                    break;
-                case ServerStatus.Running:
-                    ApplyControlStyle(Color.Green, Color.DarkBlue, Color.FromArgb(200, 255, 200));
-                    break;
-                case ServerStatus.Stopping:
-                    ApplyControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
-                    break;
-                case ServerStatus.Starting:
-                    ApplyControlStyle(Color.Orange, Color.Blue, Color.FromArgb(243, 156, 18));
-                    break;
-                case ServerStatus.Error:
+            // Store the status text for the custom badge drawing.
+            // The label is invisible; we draw the badge with text via PnlControls_Paint.
+            _statusText = serverStatus.ToString().ToUpper();
 
-                    break;
-            }
-
-            // Redraw the control to apply the new styles to the control's left border.
+            // Redraw the control to apply the new styles to the control's left border and status badge.
             pnlControls.Invalidate();
         }
+
+        // Status text for custom badge drawing.
+        private string _statusText = "STOPPED";
 
         protected void UpdatePortAndPid(ServerStatus serverStatus)
         {
@@ -217,20 +203,6 @@ namespace Wampoon.ControlPanel.Controls
 
             lblServerInfo.Text = $"{portInfo} | {pidInfo}";
         }
-
-        private void ApplyControlStyle(Color statusColor, Color lblForeColor, Color lblBackColor)
-        {
-            pcbServerStatus.BackColor = statusColor;
-            lblStatus.ForeColor = lblForeColor;
-            lblStatus.BackColor = lblBackColor;
-            
-            // Apply left borders to buttons instead of background colors
-            //UiHelper.ApplyLeftBorderToButton(btnStart, statusColor);
-            //UiHelper.ApplyLeftBorderToButton(btnStop, statusColor);
-            //UiHelper.ApplyLeftBorderToButton(btnServerAdmin, statusColor);
-            //UiHelper.ApplyLeftBorderToButton(btnTools, statusColor);
-        }
-
 
         protected virtual void LogMessage(string serverModule, string log, LogType logType = LogType.Default)
         {
@@ -460,6 +432,7 @@ namespace Wampoon.ControlPanel.Controls
             {
                 UiHelper.DrawBootstrapCardShadow(e.Graphics, pnlControls);
 
+                // Draw the left border.
                 using (Brush borderBrush = new SolidBrush(GetLeftBorderColor()))
                 {
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -478,11 +451,34 @@ namespace Wampoon.ControlPanel.Controls
 
                         e.Graphics.FillPath(borderBrush, path);
                     }
-                }                
+                }
+
+                // Draw the status badge pill behind the lblStatus.
+                DrawStatusBadgePill(e.Graphics);
             }
             catch (Exception ex)
             {
                 LogExceptionInfo(ex);
+            }
+        }
+
+        private void DrawStatusBadgePill(Graphics graphics)
+        {
+            // Get the status badge color based on current status.
+            Color badgeColor = UiHelper.GetStatusBadgeColor(CurrentStatus);
+
+            // Calculate badge bounds based on lblStatus location and size.
+            Rectangle badgeBounds = new Rectangle(
+                lblStatus.Location.X - 2,
+                lblStatus.Location.Y,
+                lblStatus.Width + 4,
+                lblStatus.Height
+            );
+
+            // Draw the pill-shaped badge with the status text.
+            using (Font badgeFont = new Font("Segoe UI", 8.5F, FontStyle.Bold))
+            {
+                UiHelper.DrawStatusBadge(graphics, badgeBounds, badgeColor, _statusText, badgeFont);
             }
         }
 

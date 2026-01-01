@@ -18,18 +18,23 @@ namespace Wampoon.ControlPanel.Controls
     internal partial class ApacheControl : ServerControlBase, IDisposable
     {
         private ApacheServerManager _apacheManager;
+        private ToolTip _toolTip;
         // Apache and phpMyAdmin-related paths.
         private string _apacheDirectory;
         private string _customConfigPath;
         //private string _httpdAliasConfigPath;
-        
+
         public ApacheControl()
         {
             ServiceName = PackageType.Apache.ToServerName();
             DisplayName = "Apache HTTP Server";
             PortNumber = AppConstants.Ports.APACHE_DEFAULT; // Will be updated in InitializeModule()
-            lblServerIcon.Text = "🌐";            
+            lblServerIcon.Text = "🌐";
             btnServerAdmin.Text = "localhost";
+
+            // Add tooltip for the localhost button.
+            _toolTip = new ToolTip();
+            _toolTip.SetToolTip(btnServerAdmin, "Open localhost in a browser window");
         }
 
         public void InitializeModule()
@@ -349,6 +354,11 @@ namespace Wampoon.ControlPanel.Controls
                     _apacheManager.Dispose();
                     _apacheManager = null;
                     ServerManager = null; // Clear base class reference too.
+                }
+                if (_toolTip != null)
+                {
+                    _toolTip.Dispose();
+                    _toolTip = null;
                 }
             }
             base.Dispose(disposing);

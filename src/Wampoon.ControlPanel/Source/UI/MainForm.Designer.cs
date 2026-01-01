@@ -234,12 +234,13 @@ namespace Wampoon.ControlPanel.UI
             this.grpHelpers.TabIndex = 11;
             this.grpHelpers.TabStop = false;
             this.grpHelpers.Text = "⚡ Quick Actions";
-            // 
+            //
             // btnQuit
-            // 
+            //
             this.btnQuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(83)))));
             this.btnQuit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnQuit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnQuit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(62)))), ((int)(((byte)(71)))));
             this.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuit.ForeColor = System.Drawing.Color.White;
@@ -250,12 +251,13 @@ namespace Wampoon.ControlPanel.UI
             this.btnQuit.Text = "Quit";
             this.btnQuit.UseVisualStyleBackColor = false;
             this.btnQuit.Click += new System.EventHandler(this.BtnQuit_Click);
-            // 
+            //
             // btnStartAllServers
-            // 
+            //
             this.btnStartAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(150)))), ((int)(((byte)(85)))));
             this.btnStartAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStartAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnStartAllServers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(128)))), ((int)(((byte)(72)))));
             this.btnStartAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStartAllServers.ForeColor = System.Drawing.Color.White;
@@ -266,12 +268,13 @@ namespace Wampoon.ControlPanel.UI
             this.btnStartAllServers.Text = "Start All";
             this.btnStartAllServers.UseVisualStyleBackColor = false;
             this.btnStartAllServers.Click += new System.EventHandler(this.BtnStartAllServers_Click);
-            // 
+            //
             // btnAbout
-            // 
+            //
             this.btnAbout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(185)))));
             this.btnAbout.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAbout.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnAbout.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(157)))));
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAbout.ForeColor = System.Drawing.Color.White;
@@ -282,12 +285,13 @@ namespace Wampoon.ControlPanel.UI
             this.btnAbout.Text = "About";
             this.btnAbout.UseVisualStyleBackColor = false;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
-            // 
+            //
             // btnStopAllServers
-            // 
+            //
             this.btnStopAllServers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(73)))), ((int)(((byte)(43)))));
             this.btnStopAllServers.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStopAllServers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnStopAllServers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(62)))), ((int)(((byte)(37)))));
             this.btnStopAllServers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopAllServers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnStopAllServers.ForeColor = System.Drawing.Color.White;
@@ -298,12 +302,13 @@ namespace Wampoon.ControlPanel.UI
             this.btnStopAllServers.Text = "Stop All";
             this.btnStopAllServers.UseVisualStyleBackColor = false;
             this.btnStopAllServers.Click += new System.EventHandler(this.BtnStopAllServers_Click);
-            // 
+            //
             // btnOpenDocRoot
-            // 
+            //
             this.btnOpenDocRoot.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
             this.btnOpenDocRoot.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnOpenDocRoot.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(41)))), ((int)(((byte)(60)))));
+            this.btnOpenDocRoot.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(55)))), ((int)(((byte)(80)))));
             this.btnOpenDocRoot.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenDocRoot.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnOpenDocRoot.ForeColor = System.Drawing.Color.White;

@@ -40,6 +40,21 @@ namespace Wampoon.ControlPanel.Helpers
             // Log background colors.
             public static readonly Color LogBackground = Color.FromArgb(17, 24, 39);
             public static readonly Color LogBackgroundLight = Color.FromArgb(249, 250, 251);
+
+            // Button hover colors (darken by ~15%).
+            public static readonly Color StartButtonHover = Color.FromArgb(66, 128, 72);
+            public static readonly Color StopButtonHover = Color.FromArgb(175, 62, 62);
+            public static readonly Color AdminButtonHover = Color.FromArgb(41, 102, 212);
+            public static readonly Color ToolsButtonHover = Color.FromArgb(0, 109, 109);
+            public static readonly Color QuitButtonHover = Color.FromArgb(175, 62, 71);
+            public static readonly Color AboutButtonHover = Color.FromArgb(0, 105, 157);
+            public static readonly Color DocRootButtonHover = Color.FromArgb(45, 55, 80);
+            public static readonly Color StopAllButtonHover = Color.FromArgb(175, 62, 37);
+
+            // Status badge colors.
+            public static readonly Color StatusRunning = Color.FromArgb(34, 197, 94);
+            public static readonly Color StatusStopped = Color.FromArgb(239, 68, 68);
+            public static readonly Color StatusPending = Color.FromArgb(245, 158, 11);
         }
         internal static Color GetLogColor(LogType logType)
         {
@@ -148,7 +163,7 @@ namespace Wampoon.ControlPanel.Helpers
             if (button == null || button.Tag == null) return;
 
             Color borderColor = (Color)button.Tag;
-            
+
             using (Brush borderBrush = new SolidBrush(borderColor))
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -178,6 +193,61 @@ namespace Wampoon.ControlPanel.Helpers
                         e.Graphics.FillRectangle(borderBrush, borderRect);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Draws a rounded pill-shaped status badge.
+        /// </summary>
+        internal static void DrawStatusBadge(Graphics graphics, Rectangle bounds, Color backgroundColor, string text, Font font)
+        {
+            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+
+            int radius = bounds.Height / 2;
+
+            using (System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath())
+            {
+                // Create pill shape (fully rounded ends).
+                path.AddArc(bounds.X, bounds.Y, radius * 2, bounds.Height, 90, 180);
+                path.AddArc(bounds.Right - radius * 2, bounds.Y, radius * 2, bounds.Height, 270, 180);
+                path.CloseFigure();
+
+                // Fill the badge.
+                using (SolidBrush brush = new SolidBrush(backgroundColor))
+                {
+                    graphics.FillPath(brush, path);
+                }
+            }
+
+            // Draw the text centered.
+            using (SolidBrush textBrush = new SolidBrush(Color.White))
+            {
+                StringFormat format = new StringFormat
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                graphics.DrawString(text, font, textBrush, bounds, format);
+            }
+        }
+
+        /// <summary>
+        /// Gets the appropriate status badge color based on server status.
+        /// </summary>
+        internal static Color GetStatusBadgeColor(Enums.ServerStatus status)
+        {
+            switch (status)
+            {
+                case Enums.ServerStatus.Running:
+                    return Colors.StatusRunning;
+                case Enums.ServerStatus.Starting:
+                case Enums.ServerStatus.Stopping:
+                    return Colors.StatusPending;
+                case Enums.ServerStatus.Stopped:
+                case Enums.ServerStatus.Error:
+                default:
+                    return Colors.StatusStopped;
             }
         }
     }

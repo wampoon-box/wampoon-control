@@ -18,16 +18,20 @@ namespace Wampoon.ControlPanel.Controls
     internal partial class MySqlControl : ServerControlBase, IDisposable
     {
         private MySQLServerManager _mysqlManager;
+        private ToolTip _toolTip;
 
         public MySqlControl()
         {
             ServiceName = PackageType.MariaDB.ToServerName();
             DisplayName = "MariaDB Server";
             // Default MySQL port, will be updated in InitializeModule()
-            PortNumber = AppConstants.Ports.MYSQL_DEFAULT; 
-            lblServerIcon.Text = "🗄️"; 
+            PortNumber = AppConstants.Ports.MYSQL_DEFAULT;
+            lblServerIcon.Text = "🗄️";
             btnServerAdmin.Text = "phpMyAdmin";
 
+            // Add tooltip for the phpMyAdmin button.
+            _toolTip = new ToolTip();
+            _toolTip.SetToolTip(btnServerAdmin, "Open phpMyAdmin in a browser window");
         }
         public void InitializeModule()
         {
@@ -198,6 +202,11 @@ namespace Wampoon.ControlPanel.Controls
                     _mysqlManager.OnLogServerMessage -= HandleServerLog;
                     _mysqlManager.Dispose();
                     _mysqlManager = null;
+                }
+                if (_toolTip != null)
+                {
+                    _toolTip.Dispose();
+                    _toolTip = null;
                 }
             }
             base.Dispose(disposing);

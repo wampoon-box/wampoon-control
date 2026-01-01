@@ -25,6 +25,8 @@ namespace Wampoon.ControlPanel.UI
         private const int MAX_LOG_LINES = 1000;
         private const int TRIMMED_LOG_LINES = 500;
 
+        private ToolTip _toolTip;
+
         public MainForm()
         {
             Text = AppConstants.APP_NAME;
@@ -44,6 +46,24 @@ namespace Wampoon.ControlPanel.UI
 
             InitializeNotifyIcon();
             InitializeBanner();
+            InitializeTooltips();
+        }
+
+        private void InitializeTooltips()
+        {
+            _toolTip = new ToolTip
+            {
+                AutoPopDelay = 5000,
+                InitialDelay = 500,
+                ReshowDelay = 200,
+                ShowAlways = true
+            };
+
+            _toolTip.SetToolTip(btnOpenDocRoot, "Open the Apache document root folder (htdocs)");
+            _toolTip.SetToolTip(btnStartAllServers, "Start both Apache and MariaDB servers");
+            _toolTip.SetToolTip(btnStopAllServers, "Stop all running servers");
+            _toolTip.SetToolTip(btnAbout, "View application information");
+            _toolTip.SetToolTip(btnQuit, "Stop all servers and exit the application");
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -95,32 +115,53 @@ namespace Wampoon.ControlPanel.UI
             try
             {
                 // Create a professional icon using text since we don't have an image file.
-                var bitmap = new Bitmap(40, 40);
+                var bitmap = new Bitmap(48, 48);
                 using (var g = Graphics.FromImage(bitmap))
                 {
-                    // Create a gradient background
+                    // Enable high-quality rendering.
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+                    // Create a gradient background matching the header theme.
                     using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
-                        new Rectangle(0, 0, 40, 40),
-                        Color.FromArgb(37, 99, 235),
+                        new Rectangle(0, 0, 48, 48),
                         Color.FromArgb(59, 130, 246),
-                        45f))
+                        Color.FromArgb(37, 99, 235),
+                        System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal))
                     {
-                        g.FillEllipse(brush, 0, 0, 40, 40);
+                        g.FillEllipse(brush, 2, 2, 44, 44);
                     }
 
-                    // Add a subtle border.
+                    // Add a subtle outer glow/shadow effect.
+                    using (var glowPen = new Pen(Color.FromArgb(40, 255, 255, 255), 1))
+                    {
+                        g.DrawEllipse(glowPen, 3, 3, 42, 42);
+                    }
+
+                    // Add a refined border.
                     using (var pen = new Pen(Color.FromArgb(29, 78, 216), 2))
                     {
-                        g.DrawEllipse(pen, 1, 1, 38, 38);
+                        g.DrawEllipse(pen, 2, 2, 44, 44);
                     }
 
-                    // Draw the "W" letter.
-                    using (var font = new Font("Segoe UI", 18, FontStyle.Bold))
+                    // Draw the "W" letter with better positioning.
+                    using (var font = new Font("Segoe UI", 20, FontStyle.Bold))
+                    using (var textBrush = new SolidBrush(Color.White))
                     {
-                        g.DrawString("W", font, new SolidBrush(Color.White), 10, 8);
+                        var format = new StringFormat
+                        {
+                            Alignment = StringAlignment.Center,
+                            LineAlignment = StringAlignment.Center
+                        };
+                        g.DrawString("W", font, textBrush, new RectangleF(0, 0, 48, 48), format);
                     }
                 }
                 bannerIcon.Image = bitmap;
+                bannerIcon.Size = new Size(48, 48);
+
+                // Improve subtitle contrast.
+                subtitleLabel.ForeColor = Color.FromArgb(220, 225, 230);
 
                 // Update banner title with version if available.
                 var version = SystemHelper.GetFormattedInstallerVersion();
@@ -128,11 +169,27 @@ namespace Wampoon.ControlPanel.UI
                 {
                     titleLabel.Text = $"Wampoon Control Panel {version}";
                 }
+
+                // Add a subtle accent line at the bottom of the header.
+                headerPanel.Paint += HeaderPanel_Paint;
             }
             catch
             {
                 // If bitmap creation fails, hide the icon.
                 bannerIcon.Visible = false;
+            }
+        }
+
+        private void HeaderPanel_Paint(object sender, PaintEventArgs e)
+        {
+            // Draw a subtle accent line at the bottom of the header.
+            using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                new Rectangle(0, headerPanel.Height - 3, headerPanel.Width, 3),
+                Color.FromArgb(59, 130, 246),
+                Color.FromArgb(37, 99, 235),
+                System.Drawing.Drawing2D.LinearGradientMode.Horizontal))
+            {
+                e.Graphics.FillRectangle(brush, 0, headerPanel.Height - 3, headerPanel.Width, 3);
             }
         }
 
