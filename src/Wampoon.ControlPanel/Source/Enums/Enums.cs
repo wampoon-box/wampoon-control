@@ -45,6 +45,15 @@ namespace Wampoon.ControlPanel.Enums
         }
     }
 
+    [Flags]
+    public enum StartupFlags
+    {
+        None = 0,
+        Apache = 1,
+        MariaDB = 2,
+        All = Apache | MariaDB
+    }
+
     public class ServerLogEventArgs : EventArgs
     {
         public string Message { get; }

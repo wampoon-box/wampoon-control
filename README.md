@@ -23,13 +23,36 @@ Wampoon Control Panel lets you manage your local development servers effortlessl
 
 ## Getting Started
 
-1. Run `PwampoonControl.exe` to launch the application
+1. Run `WampoonControl.exe` to launch the application
 2. The control panel will scan for your Apache and MariaDB installations
 3. Click individual start/stop buttons to control each server
 4. Use "Start All" or "Stop All" for bulk operations
 5. Watch the log area for real-time server status updates
 
 Right-click the system tray icon for quick access to common functions when the window is minimized.
+
+## Command-Line Options
+
+You can pass flags when launching the application to automatically start servers:
+
+```shell
+WampoonControl.exe --start-all        # Start both Apache and MariaDB
+WampoonControl.exe --start-apache     # Start Apache only
+WampoonControl.exe --start-mariadb    # Start MariaDB only
+```
+
+Flags can be combined — `--start-apache --start-mariadb` does the same thing as `--start-all`.
+
+### Starting servers on Windows boot
+
+If you want your servers to come up every time you log in, create a shortcut to `WampoonControl.exe` with the `--start-all` flag and drop it in your Startup folder:
+
+1. Press `Win + R`, type `shell:startup`, and hit Enter
+2. Create a shortcut to `WampoonControl.exe` in that folder
+3. Right-click the shortcut → Properties → in the **Target** field, append `--start-all` after the path
+4. Click OK
+
+Next time you log in, the control panel will start both servers automatically and sit quietly in the system tray.
 
 ## Common Issues
 

@@ -85,6 +85,14 @@ namespace Wampoon.ControlPanel.Helpers
             public const string MYSQL_BIN_PATH = MYSQL_BASE + @"\bin";
         }
 
+        // Command-Line Arguments.
+        public static class CommandLine
+        {
+            public const string START_ALL = "--start-all";
+            public const string START_APACHE = "--start-apache";
+            public const string START_MARIADB = "--start-mariadb";
+        }
+
         // Message Templates.
         public static class Messages
         {

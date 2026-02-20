@@ -26,9 +26,14 @@ namespace Wampoon.ControlPanel.UI
         private const int TRIMMED_LOG_LINES = 500;
 
         private ToolTip _toolTip;
+        private readonly StartupFlags _startupFlags;
 
-        public MainForm()
+        public MainForm() : this(StartupFlags.None) { }
+
+        public MainForm(StartupFlags startupFlags)
         {
+            _startupFlags = startupFlags;
+
             Text = AppConstants.APP_NAME;
             InitializeComponent();
 
@@ -77,12 +82,40 @@ namespace Wampoon.ControlPanel.UI
                 _mySqlServerModule.InitializeModule();
 
                 AddLog("Application initialized successfully", LogType.Info);
+
+                if (_startupFlags != StartupFlags.None)
+                {
+                    Shown += MainForm_ShownAutoStart;
+                    BeginInvoke(new Action(() => AutoStartServers(_startupFlags)));
+                }
             }
             catch (Exception ex)
             {
                 AddLog($"Error during application initialization: {ex.Message}", LogType.Error);
                 ErrorLogHelper.ShowErrorReport(ex, "Error occurred during application initialization", this);
             }
+        }
+
+        private void MainForm_ShownAutoStart(object sender, EventArgs e)
+        {
+            Shown -= MainForm_ShownAutoStart;
+            Hide();
+            _notifyIcon.Visible = true;
+        }
+
+        private async void AutoStartServers(StartupFlags flags)
+        {
+            AddLog("Auto-starting servers (via command-line)", LogType.Info);
+
+            btnStopAllServers.Enabled = false;
+
+            if (flags.HasFlag(StartupFlags.Apache))
+                await _apacheServerModule?.StartServer();
+
+            if (flags.HasFlag(StartupFlags.MariaDB))
+                await _mySqlServerModule?.StartServer();
+
+            btnStopAllServers.Enabled = true;
         }
 
         private void SetFromIcon()
