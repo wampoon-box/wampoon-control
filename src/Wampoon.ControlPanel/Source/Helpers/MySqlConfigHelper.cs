@@ -144,6 +144,15 @@ namespace Wampoon.ControlPanel.Helpers
         }
 
         /// <summary>
+        /// Sections whose port setting must be rewritten on a port change. Includes [client]
+        /// so client tools (mariadb-admin shutdown, mysql.exe) follow the server's new port.
+        /// </summary>
+        private static bool IsPortUpdateSection(string section)
+        {
+            return IsRelevantSection(section) || section == "client";
+        }
+
+        /// <summary>
         /// Updates the port number in MySQL configuration file.
         /// </summary>
         /// <param name="configFilePath">Path to the MySQL config file</param>
@@ -183,7 +192,7 @@ namespace Wampoon.ControlPanel.Helpers
                         continue;
                     }
 
-                    if (IsRelevantSection(currentSection))
+                    if (IsPortUpdateSection(currentSection))
                     {
                         var portMatch = PortRegex.Match(line);
                         if (portMatch.Success)
@@ -257,7 +266,8 @@ namespace Wampoon.ControlPanel.Helpers
                     logAction?.Invoke($"Created backup: {Path.GetFileName(backupPath)}", LogType.Info);
 
                     // Write the modified configuration
-                    File.WriteAllLines(configFilePath, modifiedLines, Encoding.UTF8);
+                    // No BOM: MariaDB's option parser aborts on a BOM-prefixed my.ini.
+                    File.WriteAllLines(configFilePath, modifiedLines, new UTF8Encoding(false));
                     logAction?.Invoke($"MySQL configuration updated successfully", LogType.Info);
                     
                     return true;

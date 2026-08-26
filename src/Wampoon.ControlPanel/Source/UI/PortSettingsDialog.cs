@@ -165,6 +165,9 @@ namespace Wampoon.ControlPanel.UI
                     }
 
                     MessageBox.Show(message, "Configuration Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Close the dialog only on success; on failure it stays open so the log is visible.
+                    DialogResult = DialogResult.OK;
                 }
                 else
                 {

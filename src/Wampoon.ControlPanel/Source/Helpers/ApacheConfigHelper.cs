@@ -122,7 +122,7 @@ namespace Wampoon.ControlPanel.Helpers
                 }
 
                 // Write the configuration to the file.
-                File.WriteAllText(variablesFilePath, configContent.ToString(), Encoding.UTF8);
+                File.WriteAllText(variablesFilePath, configContent.ToString(), new UTF8Encoding(false));
 
                 
                 return true;
@@ -181,7 +181,7 @@ namespace Wampoon.ControlPanel.Helpers
                     logAction?.Invoke($"Added new PORT_NUMBER define: {newPort}", LogType.Info);
                 }
 
-                File.WriteAllText(variablesFilePath, modifiedLines.ToString(), Encoding.UTF8);
+                File.WriteAllText(variablesFilePath, modifiedLines.ToString(), new UTF8Encoding(false));
                 logAction?.Invoke($"Apache variables file updated successfully with port {newPort}", LogType.Info);
                 
                 return true;
